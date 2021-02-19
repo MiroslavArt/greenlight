@@ -1,0 +1,4 @@
+<?php
+$MESS['ITRACK_CUSTOM_MENU_TEXT'] = 'Импорт';
+$MESS['ITRACK_CUSTOM_MENU_TITLE'] = 'Импорт';
+$MESS['ITRACK_CUSTOM_MENU_ITEMS_TEXT_SERVICES'] = 'Импорт услуг';

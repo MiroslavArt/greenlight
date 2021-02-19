@@ -20,11 +20,10 @@ __MACOSX
 /.idea
 /nbproject
 /bitrix
-/include
 /test
 /upload
+/html
 /materials_files
-/upload1
 .mc
 *.gz
 /test.php
@@ -38,6 +37,7 @@ Thumbs.db
 /*.old
 /*.log
 /*.sql
+/*.xml
 /.htaccess*
 /restore.php
 /bitrixsetup.php
