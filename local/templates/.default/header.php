@@ -36,7 +36,8 @@ Loc::loadMessages(__FILE__);
     Extension::load(['core', 'ajax', 'fx']);
     Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.min.js');
     Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/select2.full.min.js');
-    Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/jquery.fancybox.min.js');
+    Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.fancybox.min.js');
+    Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.validate.min.js');
     Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/scripts.js');
     ?>
 
