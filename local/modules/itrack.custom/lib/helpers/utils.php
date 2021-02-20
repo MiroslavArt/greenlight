@@ -294,5 +294,45 @@ class Utils
         return $class;
     }
 
+    /**
+     * Кастомизация вывода var_dump
+     * @param mixed ...$vars
+     */
+    public static function varDump(...$vars):void
+    {
+        global $APPLICATION;
+
+        $APPLICATION->RestartBuffer();
+
+        echo '<pre>';
+        foreach ($vars as $var) {
+            //var_dump($var);
+            print_r($var);
+        }
+        echo '</pre>';
+        exit(1);
+    }
+
+    /**
+     * Проверить является ли страница главной
+     *
+     * @access public
+     *
+     * @param mixed $uri Путь к странице, по умолчанию false - текущая страница
+     *
+     * @return bool Вернет "true" если текущий страница главная, в противном случае "false"
+     *
+     */
+    public static function IsMainPage($uri=false)
+    {
+        if(false == $uri)
+            $uri = $GLOBALS["APPLICATION"]->GetCurPage();
+
+        if(!defined("ERROR_404") && ($uri == "/index.php" || in_array(str_replace(SITE_DIR, "", $uri), array("", "index.php", "/"))))
+            return true;
+
+        return false;
+    }
+
 
 }
