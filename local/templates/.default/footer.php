@@ -1,6 +1,10 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
-<?php if(!\Itrack\Custom\Helpers\Utils::IsMainPage()) : ?>
+<?php
+global $USER;
+?>
+
+<?php if(!\Itrack\Custom\Helpers\Utils::IsMainPage() || !($USER->IsAuthorized())) : ?>
     <? $APPLICATION->IncludeComponent(
         "bitrix:main.include",
         "",
