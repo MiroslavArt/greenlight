@@ -7,19 +7,32 @@ $APPLICATION->SetTitle("Главная страница");
 
 <div class="index_container flexbox">
     <div class="index_bg">
-        <h1 class="index_title">Обмен электронными <br />документами по <br />убыткам</h1>
+        <h1 class="index_title">Обмен электронными <br />документами <br />по убыткам</h1>
     </div><!-- END index_bg -->
     <div class="index_content">
         <div class="tiles_container">
             <div class="tile">
-                <a href="/html/edit_profile_user.html"><img src="images/img.png" width="120" height="120" alt="img" /></a>
-                <div class="tile_content">
-                    <span class="who">Брокер</span>
-                    <h2 class="name">Сергей Григорьевич Петровольский</h2>
-                    <span class="company">N-mark Industries Corporation TM</span>
-                    <span class="access">Права доступа «Пользователь»</span>
-                </div><!-- END tile_content -->
-                <a href="/html/authorization.html" class="logout"></a>
+                <?$APPLICATION->IncludeComponent(
+                    "bitrix:main.user.link",
+                    "",
+                    Array(
+                        "CACHE_TIME" => "7200",
+                        "CACHE_TYPE" => "A",
+                        "DATE_TIME_FORMAT" => "d.m.Y H:i:s",
+                        "ID" => $USER->GetID(),
+                        "NAME_TEMPLATE" => "#NOBR##NAME# #SECOND_NAME# #LAST_NAME##/NOBR#",
+                        "PATH_TO_SONET_USER_PROFILE" => "",
+                        "PROFILE_URL" => "/users/profile/",
+                        "SHOW_FIELDS" => Array("PERSONAL_BIRTHDAY","PERSONAL_ICQ","PERSONAL_PHOTO","PERSONAL_CITY","WORK_COMPANY","WORK_POSITION"),
+                        "SHOW_LOGIN" => "Y",
+                        "SHOW_YEAR" => "Y",
+                        "THUMBNAIL_DETAIL_SIZE" => "120",
+                        "THUMBNAIL_LIST_SIZE" => "120",
+                        "USER_PROPERTY" => Array(),
+                        "USE_THUMBNAIL_LIST" => "Y",
+                        "INLINE" => "N"
+                    )
+                );?>
             </div><!-- END tile -->
             <a href="/html/clients.html" class="tile_link ico_1">Клиенты</a>
             <a href="/html/company.html" class="tile_link ico_2">Страховые <br />компании</a>
@@ -41,6 +54,3 @@ $APPLICATION->SetTitle("Главная страница");
 </div><!-- END index_container -->
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
-
-
-
