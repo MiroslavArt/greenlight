@@ -334,5 +334,25 @@ class Utils
         return false;
     }
 
+    /**
+     * Получить ID инфоблока по его коду
+     * @param string $code
+     * @param string $type
+     * @return int
+     * @throws \Bitrix\Main\LoaderException
+     */
+    public static function getIDIblockByCode(string $code, string $type):int
+    {
+
+        if (\Bitrix\Main\Loader::includeModule('iblock')) {
+            $result =   \CIBlock::GetList(['SORT' => 'ASC'], ['TYPE' => $type, '=CODE' => $code]);
+            $data   =   $result->GetNext();
+
+            return (int)$data['ID'];
+        }
+
+        return 0;
+    }
+
 
 }
