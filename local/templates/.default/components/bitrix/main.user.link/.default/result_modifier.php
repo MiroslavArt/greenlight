@@ -7,7 +7,7 @@ if (
 	&& empty($arResult["User"]["PersonalPhotoImgThumbnail"]["Image"])
 )
 {
-	$arResult["User"]["PersonalPhotoImgThumbnail"]["Image"] = '<img src="'.$this->GetFolder().'/images/nopic_30x30.gif" width="'.$arParams["THUMBNAIL_LIST_SIZE"].'" height="'.$arParams["THUMBNAIL_LIST_SIZE"].'">';
+	$arResult["User"]["PersonalPhotoImgThumbnail"]["Image"] = '<img src="'.$this->GetFolder().'/images/nopic_user_100_noborder.gif" width="'.$arParams["THUMBNAIL_LIST_SIZE"].'" height="'.$arParams["THUMBNAIL_LIST_SIZE"].'">';
 }
 
 

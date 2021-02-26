@@ -1,0 +1,13 @@
+<?
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+$APPLICATION->SetTitle("Клиенты");
+?>
+<?php
+$APPLICATION->IncludeComponent(
+    'itrack:clients.list',
+    '',
+    array(),
+    null
+);
+?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -50,10 +50,20 @@ $(function(){
 				},
 				submitHandler: function(form, e) {
 					e.preventDefault();
-					console.log('submit')
+
+					var url = $(form).data('url');
+					var method = $(form).attr('method');
 
 					if($(form).hasClass('js-submit-onvalid')) {
 						form.submit();
+					}
+
+					if($(form).hasClass('js-submit')) {
+						mySubmit({
+							'url': url,
+							'method': method,
+							'data': $(form).serialize(),
+						});
 					}
 
 				},
@@ -73,5 +83,75 @@ $(function(){
 	}
 
 	initFormValidation();
+
+	let mySubmit = function (options) {
+		let url = options.url?options.url:'',
+			method = options.method?options.method:'GET',
+			data = options.data?options.data:'',
+			scrollTo = options.scrollTo?options.scrollTo:'',
+			historyUrl = options.historyUrl?options.historyUrl:'',
+			that = options.that?options.that:''//click event target
+		;
+
+		return new Promise(function (resolve, reject) {
+			$.ajax({
+				'url': url,
+				'method': method,
+				dataType: 'json',
+				'data': data,
+				beforeSend: function () {
+					$('.b-preloader-radial').addClass('active');
+				},
+				complete: function () {
+					$('.b-preloader-radial').removeClass('active');
+				},
+				success: function (json) {
+					if (Boolean(json.success)) {
+
+						if (Boolean(json.html)) {
+							if (Boolean(json.htmlContainer)) {
+								htmlContainer = json.htmlContainer;
+							}
+							if (htmlContainer) {
+								$(htmlContainer).html($(json.html).find(htmlContainer).html());
+							}
+						}
+						if (Boolean(json.timeoutReload)) {
+							setTimeout(function(){
+								location.reload(true);
+							}, json.timeoutReload);
+						}
+						if (Boolean(json.reload)) {
+							location.reload(true);
+						}
+						if (Boolean(json.redirect)) {
+							location.href = json.redirect;
+						}
+
+						if (Boolean(json.url)) {
+							history.pushState({json: json.json}, json.url, json.url);
+						}
+						if (historyUrl.length) {
+							history.pushState(null,null, historyUrl);
+						}
+
+						if(Boolean(json.error_message)) {
+							//UIkit.notification('<h3>' + json.error_message + '</h3>');
+						}
+
+					}
+
+					if (Boolean(json.errors)) {
+						for (let key in json.errors) {
+							let error = {};
+							error[key] = json.errors[key];
+							window.validator.showErrors(error);
+						}
+					}
+
+				}
+			}).done(resolve).fail(reject);
+		});
+	};
 
 });

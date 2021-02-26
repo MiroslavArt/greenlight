@@ -10,7 +10,7 @@ $APPLICATION->SetTitle("Главная страница");
         <h1 class="index_title">Обмен электронными <br />документами <br />по убыткам</h1>
     </div><!-- END index_bg -->
     <div class="index_content">
-        <div class="tiles_container">
+        <div class="tiles_container type_2">
             <div class="tile">
                 <?$APPLICATION->IncludeComponent(
                     "bitrix:main.user.link",
@@ -34,11 +34,11 @@ $APPLICATION->SetTitle("Главная страница");
                     )
                 );?>
             </div><!-- END tile -->
-            <a href="/html/clients.html" class="tile_link ico_1">Клиенты</a>
+            <a href="/clients/" class="tile_link ico_1">Клиенты</a>
             <a href="/html/company.html" class="tile_link ico_2">Страховые <br />компании</a>
             <a href="/html/company.html" class="tile_link ico_3">Аджастеры</a>
             <a href="/html/settings.html" class="tile_link ico_4">Настройки</a>
-            <a href="/html/loss_card.html" class="btn">Все убытки</a>
+            <a href="/html/loss_card.html" class="tile_link ico_5">Все убытки</a>
         </div><!-- END tiles_container -->
         <? $APPLICATION->IncludeComponent(
             "bitrix:main.include",

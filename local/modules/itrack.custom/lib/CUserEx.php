@@ -7,7 +7,7 @@ use Bitrix\Main,
     Bitrix\Main\Localization\Loc;
 
 use Itrack\Custom\Helpers\Utils;
-use Itrack\Custom\InfoBlocks\Companies;
+use Itrack\Custom\InfoBlocks\Company;
 
 
 class CUserEx
@@ -46,7 +46,7 @@ class CUserEx
             return false;
         }
 
-        return Companies::getElementByID($arUser['UF_COMPANY']);
+        return Company::getElementByID($arUser['UF_COMPANY']);
 
     }
 }
