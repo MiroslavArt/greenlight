@@ -1,6 +1,5 @@
 <?
 $aMenuLinks = Array(
-
 	Array(
 		"Главная", 
 		"/", 
@@ -8,7 +7,6 @@ $aMenuLinks = Array(
 		Array(), 
 		"" 
 	),
-
 	Array(
 		"Профиль", 
 		"/personal/", 
@@ -16,5 +14,12 @@ $aMenuLinks = Array(
 		Array(), 
 		"" 
 	),
+	Array(
+		"Клиенты", 
+		"/clients/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
 );
 ?>

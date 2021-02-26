@@ -1,0 +1,51 @@
+<?php
+
+use Bitrix\Main\Loader;
+use Bitrix\Highloadblock as HL;
+use Bitrix\Main\Entity;
+use Itrack\Custom\Helpers\Utils;
+use Itrack\Custom\InfoBlocks\Company;
+
+class ItrClientsList extends CBitrixComponent
+{
+
+    public function onPrepareComponentParams($arParams)
+    {
+        return $arParams;
+    }
+
+    public function executeComponent()
+    {
+        $arFilter = [];
+        if(isset($this->request['q_name'])) {
+            $arFilter = [
+                "NAME" => "%" . trim($this->request['q_name']) . "%"
+            ];
+            $this->arResult['ACTION'] = 'search';
+        }
+
+        if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
+            $this->arResult['IS_AJAX'] = 'Y';
+        }
+
+        //Utils::varDump(Company::getElementsByConditions($arFilter));
+
+        $this->getClients($arFilter);
+        $this->includeComponentTemplate();
+    }
+
+    private function getClients(array $arFilter = [])
+    {
+        $arResult =& $this->arResult;
+        $elements = Company::getFilteredList($arFilter);
+        foreach ($elements as $element) {
+            $arItem = [
+                'ID' => $element->get('ID'),
+                'NAME' => $element->get('NAME'),
+                'LOGO' => $element->getPropertyLogo()->getFile()->getId(),
+            ];
+            $arResult['ITEMS'][$element->get('ID')] = $arItem;
+        }
+    }
+
+}
