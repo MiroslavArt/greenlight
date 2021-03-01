@@ -6,7 +6,7 @@ use Bitrix\Main\Entity;
 use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\InfoBlocks\Company;
 
-class ItrClientsList extends CBitrixComponent
+class ItrCompaniesList extends CBitrixComponent
 {
 
     public function onPrepareComponentParams($arParams)
