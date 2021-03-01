@@ -24,11 +24,13 @@ class ItrCompaniesList extends CBitrixComponent
             $this->arResult['ACTION'] = 'search';
         }
 
+        if(!empty($this->arParams['TYPE_ID'])) {
+            $arFilter['PROPERTY_TYPE'] = $this->arParams['TYPE_ID'];
+        }
+
         if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $this->arResult['IS_AJAX'] = 'Y';
         }
-
-        //Utils::varDump(Company::getElementsByConditions($arFilter));
 
         $this->getClients($arFilter);
         $this->includeComponentTemplate();
@@ -37,14 +39,25 @@ class ItrCompaniesList extends CBitrixComponent
     private function getClients(array $arFilter = [])
     {
         $arResult =& $this->arResult;
-        $elements = Company::getFilteredList($arFilter);
+        //$elements = Company::getFilteredList($arFilter);
+
+        $elements = Company::getElementsByConditions($arFilter);
+
         foreach ($elements as $element) {
-            $arItem = [
+            /*$arItem = [
                 'ID' => $element->get('ID'),
                 'NAME' => $element->get('NAME'),
                 'LOGO' => $element->getPropertyLogo()->getFile()->getId(),
             ];
-            $arResult['ITEMS'][$element->get('ID')] = $arItem;
+
+            $arResult['ITEMS'][$element->get('ID')] = $arItem;*/
+
+            $arItem = [
+                'ID' => $element['ID'],
+                'NAME' => $element['NAME'],
+                'LOGO' => $element['PROPERTIES']['LOGO']['VALUE'],
+            ];
+            $arResult['ITEMS'][$element['ID']] = $arItem;
         }
     }
 

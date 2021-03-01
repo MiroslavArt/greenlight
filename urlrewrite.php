@@ -1,5 +1,13 @@
 <?php
 $arUrlRewrite=array (
+  3 => 
+  array (
+    'CONDITION' => '#^/insurance-companies/index.php/#',
+    'RULE' => '',
+    'ID' => 'itrack:companies',
+    'PATH' => '/insurance-companies/index.php',
+    'SORT' => 100,
+  ),
   0 => 
   array (
     'CONDITION' => '#^\\/?\\/mobileapp/jn\\/(.*)\\/.*#',
@@ -12,7 +20,7 @@ $arUrlRewrite=array (
   array (
     'CONDITION' => '#^/clients/#',
     'RULE' => '',
-    'ID' => 'bitrix:iblock.element.add',
+    'ID' => 'itrack:companies',
     'PATH' => '/clients/index.php',
     'SORT' => 100,
   ),

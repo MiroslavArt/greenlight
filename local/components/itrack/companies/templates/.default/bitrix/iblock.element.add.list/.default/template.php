@@ -17,7 +17,7 @@ $colspan = 2;
 if ($arResult["CAN_EDIT"] == "Y") $colspan++;
 if ($arResult["CAN_DELETE"] == "Y") $colspan++;
 ?>
-<?if ($arResult["MESSAGE"] <> ''):?>
+<?if (strlen($arResult["MESSAGE"]) > 0):?>
 	<?ShowNote($arResult["MESSAGE"])?>
 <?endif?>
 <table class="data-table">
@@ -54,4 +54,4 @@ if ($arResult["CAN_DELETE"] == "Y") $colspan++;
 		</tr>
 	</tfoot>
 </table>
-<?if ($arResult["NAV_STRING"] <> ''):?><?=$arResult["NAV_STRING"]?><?endif?>
+<?if (strlen($arResult["NAV_STRING"]) > 0):?><?=$arResult["NAV_STRING"]?><?endif?>

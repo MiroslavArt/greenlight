@@ -16,7 +16,7 @@ $this->setFrameMode(false);
 if (!empty($arResult["ERRORS"])):?>
 	<?ShowError(implode("<br />", $arResult["ERRORS"]))?>
 <?endif;
-if ($arResult["MESSAGE"] <> ''):?>
+if (strlen($arResult["MESSAGE"]) > 0):?>
 	<?ShowNote($arResult["MESSAGE"])?>
 <?endif?>
 <form name="iblock_add" action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data">
@@ -355,7 +355,7 @@ if ($arResult["MESSAGE"] <> ''):?>
 			<tr>
 				<td colspan="2">
 					<input type="submit" name="iblock_submit" value="<?=GetMessage("IBLOCK_FORM_SUBMIT")?>" />
-					<?if ($arParams["LIST_URL"] <> ''):?>
+					<?if (strlen($arParams["LIST_URL"]) > 0):?>
 						<input type="submit" name="iblock_apply" value="<?=GetMessage("IBLOCK_FORM_APPLY")?>" />
 						<input
 							type="button"

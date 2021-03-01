@@ -13,11 +13,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var CBitrixComponent $component */
 $this->setFrameMode(false);
 
-
 $APPLICATION->IncludeComponent(
     'itrack:companies.list',
     '',
-    array(),
+    array(
+        'TYPE_ID' => $arParams['TYPE_ID'],
+    ),
     null
 );
-
+?>

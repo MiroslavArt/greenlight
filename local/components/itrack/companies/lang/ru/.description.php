@@ -1,0 +1,5 @@
+<?
+$MESS ['IBLOCK_ELEMENT_ADD_NAME'] = "Компании";
+$MESS ['IBLOCK_ELEMENT_ADD_DESCRIPTION'] = "Компании";
+$MESS ['T_IBLOCK_DESC_ELEMENT_ADD'] = "Компании";
+?>
