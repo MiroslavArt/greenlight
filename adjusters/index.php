@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Клиенты");
+$APPLICATION->SetTitle("Аджастеры");
 ?><?$APPLICATION->IncludeComponent(
 	"itrack:companies",
 	"",
@@ -41,7 +41,7 @@ $APPLICATION->SetTitle("Клиенты");
 		"SEF_MODE" => "Y",
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
-		"TYPE_ID" => "4",
+		"TYPE_ID" => "3",
 		"USER_MESSAGE_ADD" => "",
 		"USER_MESSAGE_EDIT" => "",
 		"USE_CAPTCHA" => "N"

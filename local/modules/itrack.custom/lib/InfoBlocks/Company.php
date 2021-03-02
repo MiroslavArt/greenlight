@@ -16,7 +16,7 @@ class Company extends BaseClass
         $arFilter['=ACTIVE'] = 'Y';
 
         $elements = \Bitrix\Iblock\Elements\ElementCompanyTable::getList([
-            'select' => ['ID', 'NAME', 'PROPERTY_LOGO.FILE'],
+            'select' => ['ID', 'NAME', 'LOGO.FILE', 'TYPE.ITEM'],
             'filter' => $arFilter,
             'cache' => ['ttl' => 3600],
         ])->fetchCollection();
