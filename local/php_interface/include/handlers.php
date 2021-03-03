@@ -3,8 +3,6 @@
 use Bitrix\Main\Diag\Debug;
 use Bitrix\Main\Loader;
 use Bitrix\Main\EventManager;
-use Itrack\Custom\Handlers\Form\FormResult;
-use Itrack\Custom\Handlers\Iblock\TariffsHandlers;
 
 $eventManager = EventManager::getInstance();
 

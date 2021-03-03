@@ -14,11 +14,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 $this->setFrameMode(false);
 
 $APPLICATION->IncludeComponent(
-    'itrack:companies.list',
+    'itrack:company.detail',
     '',
     array(
-        'TYPE_ID' => $arParams['TYPE_ID'],
         "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
+        "LIST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["list"],
+        "CLIENT_ID" => $arResult['VARIABLES']["ELEMENT_ID"]
     ),
     null
 );

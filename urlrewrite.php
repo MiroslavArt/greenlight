@@ -16,7 +16,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/mobileapp/jn.php',
     'SORT' => 100,
   ),
-  2 => 
+  4 => 
   array (
     'CONDITION' => '#^/clients/#',
     'RULE' => '',
