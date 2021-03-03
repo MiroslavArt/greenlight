@@ -41,7 +41,8 @@ class ItrCompaniesList extends CBitrixComponent
         $arResult =& $this->arResult;
         //$elements = Company::getFilteredList($arFilter);
 
-        $elements = Company::getElementsByConditions($arFilter);
+        $elements = Company::getElementsByConditions($arFilter, [], [],  $this->arParams["DETAIL_URL"]);
+        //Utils::varDump($this->arParams["DETAIL_URL"], "", $this->arParams["IBLOCK_URL"]);
 
         foreach ($elements as $element) {
             /*$arItem = [
@@ -56,6 +57,7 @@ class ItrCompaniesList extends CBitrixComponent
                 'ID' => $element['ID'],
                 'NAME' => $element['NAME'],
                 'LOGO' => $element['PROPERTIES']['LOGO']['VALUE'],
+                'DETAIL_PAGE_URL' => $element['DETAIL_PAGE_URL'],
             ];
             $arResult['ITEMS'][$element['ID']] = $arItem;
         }

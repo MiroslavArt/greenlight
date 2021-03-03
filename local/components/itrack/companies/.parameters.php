@@ -198,6 +198,21 @@ $arComponentParameters = array(
 			"REFRESH" => "Y",
 			"DEFAULT" => "CREATED_BY",
 		),
+        "VARIABLE_ALIASES" => Array(
+            "ELEMENT_ID" => Array("NAME" => GetMessage("NEWS_ELEMENT_ID_DESC")),
+        ),
+        "SEF_MODE" => Array(
+            "list" => array(
+                "NAME" => GetMessage("T_IBLOCK_SEF_PAGE_NEWS"),
+                "DEFAULT" => "",
+                "VARIABLES" => array(),
+            ),
+            "detail" => array(
+                "NAME" => GetMessage("T_IBLOCK_SEF_PAGE_NEWS_DETAIL"),
+                "DEFAULT" => "#ELEMENT_ID#/",
+                "VARIABLES" => array("ELEMENT_ID", "SECTION_ID"),
+            ),
+        ),
 	),
 );
 

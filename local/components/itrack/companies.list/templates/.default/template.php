@@ -47,15 +47,15 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     <img src="<?= $arItem['LOGO_SRC'] ?>" width="40" height="40"
                                          alt="<?= $arItem['NAME'] ?>"/>
                                 <?php endif; ?>
-                                <span><a href="/html/clients_card.html"><?= $arItem['NAME'] ?></a></span>
+                                <span><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?= $arItem['NAME'] ?></a></span>
                             </div><!-- END table_block -->
                             <div class="table_block stat_column item2" data-name="Убытки, шт">3</div>
                             <div class="table_block stat_column green item2" data-name="Закрыто">1</div>
                             <div class="table_block stat_column yellow item2" data-name="Документы предоставлены">1
                             </div>
                             <div class="table_block stat_column red item2" data-name="Открыто">1</div>
-                            <div class="table_block links_column item8" data-name="Ссылки"><a href="#"
-                                                                                              class="link ico_doc"><span>Список договоров страхования</span></a>
+                            <div class="table_block links_column item8" data-name="Ссылки">
+                                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link ico_doc"><span>Список договоров страхования</span></a>
                             </div>
                         </li>
                     <?php endforeach; ?>
@@ -74,7 +74,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?php else: ?>
             <div id="clients-list">
                 <div class="ui-alert ui-alert-danger ui-alert-icon-danger has-errors">
-                    <span class="ui-alert-message">Поиск не дал результатов</span>
+                    <span class="ui-alert-message">Данные не найдены</span>
                 </div>
             </div>
         <?php endif; ?>
