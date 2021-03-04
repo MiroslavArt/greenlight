@@ -46,14 +46,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </li>
                     <?php foreach ($arResult['CONTRACTS'] as $arItem) : ?>
                         <li class="row">
-                            <div class="table_block align_left item3" data-name="№ договора"><p><a href="/html/contract_card_adjaster2.html"><?=$arItem['NAME']?></a></p></div>
+                            <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                             <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
                             <div class="table_block stat_column" data-name="Убытки, шт">3</div>
                             <div class="table_block stat_column green">1</div>
                             <div class="table_block stat_column yellow item2">1</div>
                             <div class="table_block stat_column red">1</div>
-                            <div class="table_block item3"><p class="ico_check"><a href="/html/insurance_companies_card.html"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
+                            <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
                             <div class="table_block item6 links_column">
                                 <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
                                 <a href="#" class="link ico_doc"><span>Все убытки</span></a>

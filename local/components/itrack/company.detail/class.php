@@ -19,6 +19,8 @@ class ItrCompany extends CBitrixComponent
 
     public function executeComponent()
     {
+        global $APPLICATION;
+
         //get company
         $this->getCompany();
 
@@ -42,6 +44,9 @@ class ItrCompany extends CBitrixComponent
         }
 
         $this->getContractsList($arFilter);
+
+        $APPLICATION->SetTitle($this->arResult['COMPANY']['NAME']);
+
         $this->includeComponentTemplate();
     }
 
@@ -70,6 +75,7 @@ class ItrCompany extends CBitrixComponent
                 'TYPE' => $element['PROPERTIES']['TYPE']['VALUE'],
                 'INSURANCE_COMPANY_LEADER' => $element['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'],
                 'INSURANCE_COMPANY_LEADER_NAME' => $element['PROPERTY_INSURANCE_COMPANY_LEADER_NAME'],
+                'DETAIL_PAGE_URL' => $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $element['ID'] . '/',
             ];
             $arResult['CONTRACTS'][$element['ID']] = $arItem;
         }
