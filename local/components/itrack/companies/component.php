@@ -24,6 +24,7 @@ $arDefaultUrlTemplates404 = array(
     "search" => "search/",
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
+    "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/"
 );
 
 $arDefaultVariableAliases404 = array();
@@ -33,6 +34,7 @@ $arDefaultVariableAliases = array();
 $arComponentVariables = array(
     "ELEMENT_ID",
     "ELEMENT_CODE",
+    "CONTRACT_ID",
 );
 
 
@@ -102,13 +104,15 @@ else
         $componentPage = "detail";
     elseif(isset($arVariables["ELEMENT_CODE"]) && strlen($arVariables["ELEMENT_CODE"]) > 0)
         $componentPage = "detail";
+    if(isset($arVariables["CONTRACT_ID"]) && intval($arVariables["CONTRACT_ID"]) > 0)
+        $componentPage = "contract";
     else
         $componentPage = "list";
 
     $arResult = array(
         "FOLDER" => "",
         "URL_TEMPLATES" => array(
-            "news" => htmlspecialcharsbx($APPLICATION->GetCurPage()),
+            "list" => htmlspecialcharsbx($APPLICATION->GetCurPage()),
             "detail" => htmlspecialcharsbx($APPLICATION->GetCurPage()."?".$arVariableAliases["ELEMENT_ID"]."=#ELEMENT_ID#"),
         ),
         "VARIABLES" => $arVariables,
@@ -117,4 +121,3 @@ else
 }
 
 $this->IncludeComponentTemplate($componentPage);
-?>
