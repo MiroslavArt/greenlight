@@ -109,6 +109,7 @@ class ItrContract extends CBitrixComponent
                 'DATE' => (new \DateTime($element['DATE_CREATE']))->format('d.m.Y'),
                 'STATUS' => $arLostStatus[$element['PROPERTIES']['STATUS']['VALUE']],
                 'DESCRIPTION' => $element['PROPERTIES']['DESCRIPTION']['VALUE'],
+                'DETAIL_PAGE_URL' => $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $this->arParams['CONTRACT_ID'] . '/lost/' . $element['ID'] . '/',
             ];
             $arResult['LOSTS'][$element['ID']] = $arItem;
         }

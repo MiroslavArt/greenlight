@@ -24,7 +24,8 @@ $arDefaultUrlTemplates404 = array(
     "search" => "search/",
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
-    "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/"
+    "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
+    "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost/#LOST_ID#/",
 );
 
 $arDefaultVariableAliases404 = array();
@@ -35,6 +36,7 @@ $arComponentVariables = array(
     "ELEMENT_ID",
     "ELEMENT_CODE",
     "CONTRACT_ID",
+    "LOST_ID",
 );
 
 
@@ -106,6 +108,8 @@ else
         $componentPage = "detail";
     if(isset($arVariables["CONTRACT_ID"]) && intval($arVariables["CONTRACT_ID"]) > 0)
         $componentPage = "contract";
+    if(isset($arVariables["LOST_ID"]) && intval($arVariables["LOST_ID"]) > 0)
+        $componentPage = "lost";
     else
         $componentPage = "list";
 
