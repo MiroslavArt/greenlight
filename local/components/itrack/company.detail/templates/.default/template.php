@@ -161,7 +161,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row">
                     <div class="input_container without_small">
-                        <input type="text" class="text_input" placeholder="Название страховой компании" />
+                        <input id="search_ins" type="text" class="text_input" placeholder="Название страховой компании" />
                     </div><!-- END input_container -->
                     <label class="flag js_checkbox"><input type="checkbox"></label>
                     <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
