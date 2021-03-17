@@ -2,7 +2,7 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-\Itrack\Custom\Helpers\Utils::varDump($arResult['LOST']);
+//\Itrack\Custom\Helpers\Utils::varDump($arResult['LOST']);
 ?>
 
 <?php if ($arResult['IS_AJAX'] == 'Y') {
