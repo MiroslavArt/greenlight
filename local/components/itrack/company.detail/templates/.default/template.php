@@ -27,9 +27,188 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                            placeholder="Поиск по списку договоров"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
-                <a href="/html/stats.html" class="btn">Добавить договор</a>
+                <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
+        <div class="popup" id="add_contract">
+            <h3 class="block_title">Добавление договора</h3>
+            <form class="form_popup">
+                <div class="form_row">
+                    <div class="input_container column_25">
+                        <input type="text" class="text_input" placeholder="Номер договора" />
+                    </div><!-- END input_container -->
+                    <div class="input_container column_25">
+                        <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата договора" />
+                    </div><!-- END input_container -->
+                    <div class="input_container column_50">
+                        <select class="select js_select">
+                            <? foreach ($arResult['INSTYPES'] as $instype) { ?>
+                                <option value="<?= $instype['ID']?>"><?= $instype['UF_NAME']?></option>
+                            <? } ?>
+                        </select><!-- END select -->
+                    </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row">
+                    <label class="big_label">Прикрепить полезные документы</label>
+                    <div class="input_container column_25">
+                        <div class="logo_upload_container without_img">
+                            <div class="logo_upload">
+                                <input type="file" />
+                                <span class="upload"><span>Договор страхования</span></span>
+                            </div><!-- END logo_upload -->
+                        </div><!-- END logo_upload_container -->
+                    </div><!-- END input_container -->
+                    <div class="input_container column_25">
+                        <div class="logo_upload_container without_img">
+                            <div class="logo_upload">
+                                <input type="file" />
+                                <span class="upload"><span>Памятка</span></span>
+                            </div><!-- END logo_upload -->
+                        </div><!-- END logo_upload_container -->
+                    </div><!-- END input_container -->
+                    <div class="input_container column_25">
+                        <div class="logo_upload_container without_img">
+                            <div class="logo_upload">
+                                <input type="file" />
+                                <span class="upload"><span>Прочие документы</span></span>
+                            </div><!-- END logo_upload -->
+                        </div><!-- END logo_upload_container -->
+                    </div><!-- END input_container -->
+                    <div class="input_container column_25">
+                        <p class="upload_desc">Прикрепите прочие документы в разделе «Полезные документы»</p>
+                    </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <h3 class="subtitle">Кураторы</h3>
+                <h4 class="big_label">Клиент</h4>
+                <div class="gray_block">
+                    <div class="input_container">
+                        <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
+                    </div><!-- END input_container -->
+                    <a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+                </div><!-- END gray_block -->
+                <div class="company_card_container">
+                    <div class="company_card">
+                        <span class="delete"></span>
+                        <ul class="company_card_list">
+                            <li class="js_open_dropdown with_dropdown">
+                                <span>ФИО</span>
+                                <p>Петровольский С.А.</p>
+                                <div class="company_card_dropdown">
+                                    <a href="#">Петровольский С.А.</a>
+                                    <a href="#">Петровольский С.А.</a>
+                                    <a href="#">Петровольский С.А.</a>
+                                </div><!-- END company_card_dropdown -->
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p class="gray">Укажите должность</p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p>petrovod87@mail.ru</p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+7 952 118 3688</p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p>+7 495 118 3688</p>
+                            </li>
+                            <li>
+                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
+                </div><!-- END company_card_container -->
+                <h4 class="big_label">Страховой брокер</h4>
+                <div class="gray_block">
+                    <div class="input_container">
+                        <label class="big_label"><?=$arResult['BROKER']?></label>
+                    </div><!-- END input_container -->
+                    <a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+                </div><!-- END gray_block -->
+                <div class="company_card_container">
+                    <div class="company_card">
+                        <span class="delete"></span>
+                        <ul class="company_card_list">
+                            <li>
+                                <span>ФИО</span>
+                                <p>Петровольский С.А.</p>
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p class="gray">Укажите должность</p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p>petrovod87@mail.ru</p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+7 952 118 3688</p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p>+7 495 118 3688</p>
+                            </li>
+                            <li>
+                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
+                </div><!-- END company_card_container -->
+                <h4 class="big_label">Страховая компания</h4>
+                <div class="form_row">
+                    <div class="input_container without_small">
+                        <input type="text" class="text_input" placeholder="Название страховой компании" />
+                    </div><!-- END input_container -->
+                    <label class="flag js_checkbox"><input type="checkbox"></label>
+                    <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
+                </div><!-- END form_row -->
+                <div class="form_row">
+                    <div class="switches_container">
+                        <label class="big_label">Необходимость акцепта</label>
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Клиент</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Страховой Брокер</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Страховая Компания</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Аджастер</span>
+                        </div><!-- END switch_container -->
+                    </div><!-- END switches_container -->
+                    <div class="switches_container">
+                        <label class="big_label">Уведомления</label>
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Клиент</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Страховой Брокер</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Страховая Компания</span>
+                        </div><!-- END switch_container -->
+                        <div class="switch_container">
+                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <span>Аджастер</span>
+                        </div><!-- END switch_container -->
+                    </div><!-- END switches_container -->
+                </div><!-- END form_row -->
+                <input type="submit" class="btn" value="Добавить договор" />
+            </form><!-- END form_edit_profile -->
+        </div><!-- END popup -->
         <?php if (!empty($arResult['CONTRACTS'])) : ?>
             <div id="contracts-list">
                 <ul class="data_table">
