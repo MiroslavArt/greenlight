@@ -1,7 +1,38 @@
 $(function(){
+
+	$('.js_open_dropdown').click(function(){
+		if ($(this).hasClass('active')) {
+			// если кликаем по кнопке с классом active (то есть блок уже открыт)
+			$('.company_card_dropdown').fadeOut();
+			$('.company_card_list li').removeClass('active');
+		}else{
+			//сначала прячем все открытые блоки
+			$('.company_card_dropdown').fadeOut();
+			$('.company_card_list li').removeClass('active');
+			//показываем нужный относительно родительского
+			$(this).closest('li').find('.company_card_dropdown').fadeToggle();
+			$(this).closest('li').toggleClass('active');
+		}
+	});
+	//закрываем всё при нажатии на любую свободную область
+	$(document).click(function(event){
+		if (!$(event.target).closest('.company_card_dropdown,.js_open_dropdown').length){
+			$('body').find('.company_card_dropdown').fadeOut();
+			$('.company_card_list li').removeClass('active');
+		}
+	});
+	//закрываем всё при нажатии на esc
+	$(document).keyup(function(event){
+		if (event.keyCode == 27){
+			$('.company_card_dropdown').fadeOut();
+			$('.company_card_list li').removeClass('active');
+		}
+	});
+
 	$('.class').click(function(){
 		$(this).toggleClass('active');
 	});
+
 	$('.js_open_menu').click(function(){
 		$('.main_menu').toggleClass('open');
 		var menuHide = $('.user_content,.menu_btn_container a span');
