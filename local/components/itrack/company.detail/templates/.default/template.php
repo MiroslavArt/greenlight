@@ -1,7 +1,10 @@
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-
+use Bitrix\Main\Page\Asset;
 \Bitrix\Main\UI\Extension::load("ui.alerts");
+//Asset::getInstance()->addJs(SITE_TEMPLATE_PATH ."/js/jquery.js");
+Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH ."/css/jquery-ui.css");
+Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
 
 ?>
 
@@ -41,7 +44,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата договора" />
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
-                        <select class="select js_select">
+                        <select data-placeholder="Введите часть имени..." class="select js_select" name='responsibleIds[]'>
+                        <!-- <select class="select js_select"> -->
+                        <!-- <select class="select js_select"> -->
                             <? foreach ($arResult['INSTYPES'] as $instype) { ?>
                                 <option value="<?= $instype['ID']?>"><?= $instype['UF_NAME']?></option>
                             <? } ?>
@@ -160,8 +165,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div><!-- END company_card_container -->
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row">
+                    <!--<select data-placeholder="Введите часть имени..." class="chosen-select" name='responsibleIds[]'>
+                        <option value="Bubnova">Bubnova</option>
+                        <option value="Gorodetsky">Gorodetsky</option>
+                        <option value="Gorsky">Gorsky</option>
+                    </select> -->
                     <div class="input_container without_small">
                         <input id="search_ins" type="text" class="text_input" placeholder="Название страховой компании" />
+                        <input id="sel_ins" type="hidden" />
                     </div><!-- END input_container -->
                     <label class="flag js_checkbox"><input type="checkbox"></label>
                     <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
