@@ -59,5 +59,39 @@ class Signal extends Controller
 
         return $result;
     }
+
+    public function getUsersAction($company)
+    {
+        $result = [];
+
+        $filter = Array
+        (
+            "ACTIVE" => "Y",
+            "UF_COMPANY" => $company
+        );
+
+        $params = Array
+        (
+            'SELECT' =>  array("UF_*")
+        );
+
+
+        $rsUser = \CUser::GetList(($by="ID"), ($order="desc"), $filter, $params);
+        // заносим прочие показатели
+        $users = array();
+
+        while ($ob = $rsUser->Fetch()) {
+            $item = [];
+            $item['value'] = $ob['ID'];
+            $item['label'] = $ob['NAME'].' '.$ob['LAST_NAME'];
+            $item['email'] = $ob['EMAIL'];
+            $item['position'] = $ob['WORK_POSITION'];
+            $item['wphone'] = $ob['WORK_PHONE'];
+            $item['mphone'] = $ob['PERSONAL_MOBILE'];
+
+            array_push($result, $item);
+        }
+        return $result;
+    }
 }
 

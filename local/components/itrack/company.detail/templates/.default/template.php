@@ -171,11 +171,11 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                         <option value="Gorsky">Gorsky</option>
                     </select> -->
                     <div class="input_container without_small">
-                        <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия и после добавьте ее" />
+                        <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
                         <!-- <input type="hidden" class="inserted_co_label" />
                         <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
-                    <label class="flag js_checkbox"><input type="checkbox"></label>
+                   <label class="flag js_checkbox"><input type="checkbox"></label>
                     <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
                 </div><!-- END form_row -->
                 <div class="form_row">
