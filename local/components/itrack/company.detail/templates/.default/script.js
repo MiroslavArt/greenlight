@@ -90,7 +90,11 @@ $(document).ready(function() {
                                 uls.append(liwphone)
                                 var lileader = $("<li></li>")
                                 var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox active").text("Назначен лидером")
-                                lileaderlabel.append($("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value));
+                                var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
+                                lileaderlabel.append(lileaderinput);
+                                lileaderinput.click(function(e){
+                                    lileaderinput.parent().toggleClass('active')
+                                })
                                 lileader.append(lileaderlabel)
                                 uls.append(lileader)
                                 cardblockinc.append(uls)
@@ -114,5 +118,6 @@ $(document).ready(function() {
         console.log(error);
 
     });
+
 
 })
