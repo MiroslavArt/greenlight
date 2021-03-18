@@ -79,6 +79,12 @@ $(function(){
 		width: '100%'
 	});
 
+	/* Datepicker */
+	$('.js_datapicker').datepicker({
+		// Можно выбрать тольо даты, идущие за сегодняшним днем, включая сегодня
+		minDate: new Date()
+	})
+
 	//form validation
 	var initFormValidation = function() {
 		$.each($(".js-needs-validation"), function(){
