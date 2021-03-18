@@ -164,18 +164,19 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     </div><!-- END company_card -->
                 </div><!-- END company_card_container -->
                 <h4 class="big_label">Страховая компания</h4>
-                <div class="form_row">
+                <div class="form_row ins_comp">
                     <!--<select data-placeholder="Введите часть имени..." class="chosen-select" name='responsibleIds[]'>
                         <option value="Bubnova">Bubnova</option>
                         <option value="Gorodetsky">Gorodetsky</option>
                         <option value="Gorsky">Gorsky</option>
                     </select> -->
                     <div class="input_container without_small">
-                        <input id="search_ins" type="text" class="text_input" placeholder="Название страховой компании" />
-                        <input id="sel_ins" type="hidden" />
+                        <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия и после добавьте ее" />
+                        <!-- <input type="hidden" class="inserted_co_label" />
+                        <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
                     <label class="flag js_checkbox"><input type="checkbox"></label>
-                    <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
+                    <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
                 </div><!-- END form_row -->
                 <div class="form_row">
                     <div class="switches_container">
