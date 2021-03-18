@@ -42,7 +42,7 @@ $(function(){
 			menuHide.delay(300).fadeIn();
 		}
 	});
-	$('.js_checkbox input').click(function(){
+	$(document).on('click', '.js_checkbox input', function(){
 		$(this).parent().toggleClass('active');
 	});
 	/* Select */
