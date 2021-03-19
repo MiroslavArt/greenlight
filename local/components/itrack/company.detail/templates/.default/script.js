@@ -1,5 +1,84 @@
 $(document).ready(function() {
 
+    // добавление файлов
+    var inputFile1 = $('.cont_file1');
+    var inputFile2 = $('.cont_file2');
+    var inputFile3 = $('.cont_file3');
+    var filesContainer= $('.docs_list');
+    var files = [];
+
+    inputFile1.change(function() {
+        let newFiles = [];
+        for(let index = 0; index < inputFile1[0].files.length; index++) {
+            let file = inputFile1[0].files[index];
+            newFiles.push(file);
+            files.push(file);
+        }
+
+        newFiles.forEach(file => {
+            console.log(file)
+            var point =  $("<li></li>")
+            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            fileElement.data('fileData', file);
+            point.append(fileElement)
+            filesContainer.append(point)
+
+            fileElement.click(function(event) {
+                let fileElement = $(event.target);
+                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                fileElement.parent().remove();
+                files.splice(indexToRemove, 1);
+            });
+        });
+    });
+
+    inputFile2.change(function() {
+        let newFiles = [];
+        for(let index = 0; index < inputFile2[0].files.length; index++) {
+            let file = inputFile2[0].files[index];
+            newFiles.push(file);
+            files.push(file);
+        }
+
+        newFiles.forEach(file => {
+            var point =  $("<li></li>")
+            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            fileElement.data('fileData', file);
+            point.append(fileElement)
+            filesContainer.append(point)
+
+            fileElement.click(function(event) {
+                let fileElement = $(event.target);
+                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                fileElement.parent().remove();
+                files.splice(indexToRemove, 1);
+            });
+        });
+    });
+
+    inputFile3.change(function() {
+        let newFiles = [];
+        for(let index = 0; index < inputFile3[0].files.length; index++) {
+            let file = inputFile3[0].files[index];
+            newFiles.push(file);
+            files.push(file);
+        }
+
+        newFiles.forEach(file => {
+            var point =  $("<li></li>")
+            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            fileElement.data('fileData', file);
+            point.append(fileElement)
+            filesContainer.append(point)
+
+            fileElement.click(function(event) {
+                let fileElement = $(event.target);
+                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                fileElement.parent().remove();
+                files.splice(indexToRemove, 1);
+            });
+        });
+    });
 
     // клиент и его кураторы
     var clientid = $( "#kur_client_search_ins").attr('data-id');

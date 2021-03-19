@@ -58,7 +58,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input type="file" />
+                                <input class="cont_file1" type="file" />
                                 <span class="upload"><span>Договор страхования</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -66,7 +66,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input type="file" />
+                                <input class="cont_file2" type="file" />
                                 <span class="upload"><span>Памятка</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -74,7 +74,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input type="file" />
+                                <input class="cont_file3"  type="file" />
                                 <span class="upload"><span>Прочие документы</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -82,6 +82,23 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <p class="upload_desc">Прикрепите прочие документы в разделе «Полезные документы»</p>
                     </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row attached_container">
+                    <label class="big_label">Документы</label>
+                    <ul class="docs_list">
+                        <!-- <li>
+                            <a href="#" class="link">dogovor_ob_avariia_na_zav....doc</a>
+                            <span class="delete"></span>
+                        </li>
+                        <li>
+                            <a href="#" class="link">Договор от 28 декабря 20....doc</a>
+                            <span class="delete"></span>
+                        </li>
+                        <li>
+                            <a href="#" class="link">Документ №98712.doc</a>
+                            <span class="delete"></span>
+                        </li> -->
+                    </ul><!-- END docs_list -->
                 </div><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
                 <h4 class="big_label">Клиент</h4>
