@@ -89,136 +89,33 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container">
                         <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
                     </div><!-- END input_container -->
-                    <a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+                    <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <div class="company_card_container">
-                    <div class="company_card">
-                        <span class="delete"></span>
-                        <ul class="company_card_list">
-                            <li class="js_open_dropdown with_dropdown">
-                                <span>ФИО</span>
-                                <p>Петровольский С.А.</p>
-                                <div class="company_card_dropdown">
-                                    <a href="#">Петровольский С.А.</a>
-                                    <a href="#">Петровольский С.А.</a>
-                                    <a href="#">Петровольский С.А.</a>
-                                </div><!-- END company_card_dropdown -->
-                            </li>
-                            <li>
-                                <span>Должность</span>
-                                <p class="gray">Укажите должность</p>
-                            </li>
-                            <li>
-                                <span>email</span>
-                                <p>petrovod87@mail.ru</p>
-                            </li>
-                            <li>
-                                <span>Моб.телефон</span>
-                                <p>+7 952 118 3688</p>
-                            </li>
-                            <li>
-                                <span>Раб. телефон</span>
-                                <p>+7 495 118 3688</p>
-                            </li>
-                            <li>
-                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
-                            </li>
-                        </ul><!-- END company_card_list -->
-                    </div><!-- END company_card -->
-                </div><!-- END company_card_container -->
+                <div class="form_row client_comp">
+                    <div class="input_container without_small">
+                        <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
+                        <!-- <input type="hidden" class="inserted_co_label" />
+                        <input type="hidden" class="inserted_co_id" /> -->
+                    </div><!-- END input_container -->
+                </div>
+                <div id="ins_kur_card" class="company_card_container">
+                </div>
                 <h4 class="big_label">Страховой брокер</h4>
                 <div class="gray_block">
                     <div class="input_container">
-                        <label class="big_label"><?=$arResult['BROKER']?></label>
+                        <label class="big_label"><?=$arResult['BROKER']['NAME']?></label>
                     </div><!-- END input_container -->
-                    <a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+                    <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <div class="company_card_container">
-                    <div class="company_card">
-                        <span class="delete"></span>
-                        <ul class="company_card_list">
-                            <li>
-                                <span>ФИО</span>
-                                <p>Петровольский С.А.</p>
-                            </li>
-                            <li>
-                                <span>Должность</span>
-                                <p class="gray">Укажите должность</p>
-                            </li>
-                            <li>
-                                <span>email</span>
-                                <p>petrovod87@mail.ru</p>
-                            </li>
-                            <li>
-                                <span>Моб.телефон</span>
-                                <p>+7 952 118 3688</p>
-                            </li>
-                            <li>
-                                <span>Раб. телефон</span>
-                                <p>+7 495 118 3688</p>
-                            </li>
-                            <li>
-                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
-                            </li>
-                        </ul><!-- END company_card_list -->
-                    </div><!-- END company_card -->
-                    <div class="company_card">
-                        <span class="delete"></span>
-                        <ul class="company_card_list">
-                            <li>
-                                <span>ФИО</span>
-                                <p>Петровольский С.А.</p>
-                            </li>
-                            <li>
-                                <span>Должность</span>
-                                <p class="gray">Укажите должность</p>
-                            </li>
-                            <li>
-                                <span>email</span>
-                                <p>petrovod87@mail.ru</p>
-                            </li>
-                            <li>
-                                <span>Моб.телефон</span>
-                                <p>+7 952 118 3688</p>
-                            </li>
-                            <li>
-                                <span>Раб. телефон</span>
-                                <p>+7 495 118 3688</p>
-                            </li>
-                            <li>
-                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
-                            </li>
-                        </ul><!-- END company_card_list -->
-                    </div><!-- END company_card -->
-                    <div class="company_card">
-                        <span class="delete"></span>
-                        <ul class="company_card_list">
-                            <li>
-                                <span>ФИО</span>
-                                <p>Петровольский С.А.</p>
-                            </li>
-                            <li>
-                                <span>Должность</span>
-                                <p class="gray">Укажите должность</p>
-                            </li>
-                            <li>
-                                <span>email</span>
-                                <p>petrovod87@mail.ru</p>
-                            </li>
-                            <li>
-                                <span>Моб.телефон</span>
-                                <p>+7 952 118 3688</p>
-                            </li>
-                            <li>
-                                <span>Раб. телефон</span>
-                                <p>+7 495 118 3688</p>
-                            </li>
-                            <li>
-                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
-                            </li>
-                        </ul><!-- END company_card_list -->
-                    </div><!-- END company_card -->
-                </div><!-- END company_card_container -->
+                <div class="form_row brok_comp">
+                    <div class="input_container without_small">
+                        <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?> type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
+                        <!-- <input type="hidden" class="inserted_co_label" />
+                        <input type="hidden" class="inserted_co_id" /> -->
+                    </div><!-- END input_container -->
+                </div>
+                <div id="brok_kur_card" class="company_card_container">
+                </div>
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row ins_comp">
                     <!--<select data-placeholder="Введите часть имени..." class="chosen-select" name='responsibleIds[]'>
@@ -231,9 +128,9 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                         <!-- <input type="hidden" class="inserted_co_label" />
                         <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
-                   <label class="flag js_checkbox"><input type="checkbox"></label>
+                   <!-- <label class="flag js_checkbox"><input type="checkbox"></label> -->
                     <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
-                </div><!-- END form_row -->
+                </div> <!-- END form_row -->
                 <div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>

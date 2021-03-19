@@ -33,6 +33,7 @@ $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_TYPE");
 $arFilter = Array("IBLOCK_ID"=>1, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y", "PROPERTY_TYPE"=>1);
 $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>50), $arSelect);
 $broker = $res->fetch();
-$arResult['BROKER'] = $broker['NAME'];
+$arResult['BROKER'] = $broker;
+
 
 
