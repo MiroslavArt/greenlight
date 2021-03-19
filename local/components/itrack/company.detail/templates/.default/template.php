@@ -162,6 +162,62 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                             </li>
                         </ul><!-- END company_card_list -->
                     </div><!-- END company_card -->
+                    <div class="company_card">
+                        <span class="delete"></span>
+                        <ul class="company_card_list">
+                            <li>
+                                <span>ФИО</span>
+                                <p>Петровольский С.А.</p>
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p class="gray">Укажите должность</p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p>petrovod87@mail.ru</p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+7 952 118 3688</p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p>+7 495 118 3688</p>
+                            </li>
+                            <li>
+                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
+                    <div class="company_card">
+                        <span class="delete"></span>
+                        <ul class="company_card_list">
+                            <li>
+                                <span>ФИО</span>
+                                <p>Петровольский С.А.</p>
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p class="gray">Укажите должность</p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p>petrovod87@mail.ru</p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+7 952 118 3688</p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p>+7 495 118 3688</p>
+                            </li>
+                            <li>
+                                <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
                 </div><!-- END company_card_container -->
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row ins_comp">

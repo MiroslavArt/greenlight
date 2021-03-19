@@ -45,6 +45,9 @@ $(function(){
 	$(document).on('click', '.js_checkbox input', function(){
 		$(this).parent().toggleClass('active');
 	});
+    $(document).on('click', '.js_delete', function(e){
+        BX.remove(e.target.parentElement)
+    });
 	/* Select */
 	function matchCustom(params, data) {
 		// If there are no search terms, return all of the data
