@@ -1,10 +1,9 @@
 $(function(){
-
 	$('.js_open_dropdown').click(function(){
 		if ($(this).hasClass('active')) {
 			// если кликаем по кнопке с классом active (то есть блок уже открыт)
 			$('.company_card_dropdown').fadeOut();
-			$('.company_card_list li').removeClass('active');
+        	$('.company_card_list li').removeClass('active');
 		}else{
 			//сначала прячем все открытые блоки
 			$('.company_card_dropdown').fadeOut();
@@ -28,11 +27,6 @@ $(function(){
 			$('.company_card_list li').removeClass('active');
 		}
 	});
-
-	$('.class').click(function(){
-		$(this).toggleClass('active');
-	});
-
 	$('.js_open_menu').click(function(){
 		$('.main_menu').toggleClass('open');
 		var menuHide = $('.user_content,.menu_btn_container a span');
@@ -44,6 +38,11 @@ $(function(){
 	});
 	$('.js_checkbox input').click(function(){
 		$(this).parent().toggleClass('active');
+	});
+	/* Radio */
+	$('.js_radio').click(function(){
+		$(this).closest('.radio_container').find('.js_radio').removeClass('active');
+		$(this).toggleClass('active');
 	});
 	/* Select */
 	$('.js_select').select2({
