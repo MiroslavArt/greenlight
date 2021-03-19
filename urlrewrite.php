@@ -24,7 +24,15 @@ $arUrlRewrite=array (
     'PATH' => '/clients/index.php',
     'SORT' => 100,
   ),
-  1 => 
+  4 =>
+    array (
+      'CONDITION' => '#^/settings/users/#',
+      'RULE' => '',
+      'ID' => 'itrack:users',
+      'PATH' => '/settings/users/index.php',
+      'SORT' => 100,
+    ),
+  1 =>
   array (
     'CONDITION' => '#^/rest/#',
     'RULE' => '',
