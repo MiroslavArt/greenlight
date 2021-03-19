@@ -99,12 +99,12 @@ $(document).ready(function() {
                 });
                 if(foundcomp==false) {
                     var coblock = $("<div></div>").attr("class", "gray_block")
-                    var inplock = $("<div></div>").attr("class", "input_container")
+                    var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
                     var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id").val(ui.item.value)
-                    //var labelleader = $("<label></label>").addClass("flag js_checkbox")
-                    //var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value);
-                    //labelleader.append(leaderbox)
+                    var labelleader = $("<label></label>").attr("class", "flag js_checkbox")
+                    var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
+                    labelleader.append(leaderbox)
                     var kursearch = $("<div></div>").attr("class", "input_container without_small")
                     var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
                         .attr("placeholder", 'Выберите куратора(-ов) от страховой компании по вводу букв из ФИО')
@@ -112,7 +112,7 @@ $(document).ready(function() {
                     kursearch.append(kursearchinp)
                     inplock.append(inpcomp)
                     inplock.append(labelcomp)
-                    //inplock.append(labelleader)
+                    inplock.append(labelleader)
                     coblock.append(inplock)
                     //coblock.append(labelleader)
                     //$(".ins_comp").append(labelleader)

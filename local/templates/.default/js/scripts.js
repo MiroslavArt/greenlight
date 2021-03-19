@@ -43,6 +43,7 @@ $(function(){
 		}
 	});
 	$(document).on('click', '.js_checkbox input', function(e){
+		//console.log(e)
 		if(BX.hasClass(e.target.parentElement, 'leader') && !BX.hasClass(e.target.parentElement, 'active')) {
             var cardcont = BX.findParent(e.target.parentElement, {"class" : "company_card_container"})
             var leaders = BX.findChild(cardcont, {"class" : "leader"}, true, true)
@@ -56,6 +57,19 @@ $(function(){
 		} else if(BX.hasClass(e.target.parentElement, 'leader') && BX.hasClass(e.target.parentElement, 'active')) {
             $(this).parent().toggleClass('active')
         }
+		if(BX.hasClass(e.target.parentElement, 'flag') && !BX.hasClass(e.target.parentElement, 'active')) {
+			var cardcont = BX.findParent(e.target.parentElement, {"tag" : "form"})
+			var leaders = BX.findChild(cardcont, {"class" : "flag"}, true, true)
+			leaders.forEach(function(element){
+				if(element != e.target.parentElement && BX.hasClass(element, 'active')) {
+					$(element).toggleClass('active')
+				} else if(element == e.target.parentElement ) {
+					$(element).toggleClass('active')
+				}
+			})
+		} else if(BX.hasClass(e.target.parentElement, 'flag') && BX.hasClass(e.target.parentElement, 'active')) {
+			$(this).parent().toggleClass('active')
+		}
 	});
     $(document).on('click', '.js_delete', function(e){
         BX.remove(e.target.parentElement)
