@@ -7,6 +7,7 @@ $(document).ready(function() {
     var filesContainer= $('.docs_list');
     var files = [];
 
+    // обработчики добавления файлов
     inputFile1.change(function() {
         let newFiles = [];
         for(let index = 0; index < inputFile1[0].files.length; index++) {
@@ -16,15 +17,17 @@ $(document).ready(function() {
         }
 
         newFiles.forEach(file => {
-            console.log(file)
             var point =  $("<li></li>")
             var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            var delElement = $('<span></span>').attr("class", "delete")
+
             fileElement.data('fileData', file);
             point.append(fileElement)
+            point.append(delElement)
             filesContainer.append(point)
 
-            fileElement.click(function(event) {
-                let fileElement = $(event.target);
+            delElement.click(function(event) {
+                let fileElement = $(event.target).prev();
                 let indexToRemove = files.indexOf(fileElement.data('fileData'));
                 fileElement.parent().remove();
                 files.splice(indexToRemove, 1);
@@ -43,12 +46,15 @@ $(document).ready(function() {
         newFiles.forEach(file => {
             var point =  $("<li></li>")
             var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            var delElement = $('<span></span>').attr("class", "delete")
             fileElement.data('fileData', file);
+
             point.append(fileElement)
+            point.append(delElement)
             filesContainer.append(point)
 
-            fileElement.click(function(event) {
-                let fileElement = $(event.target);
+            delElement.click(function(event) {
+                let fileElement = $(event.target).prev();
                 let indexToRemove = files.indexOf(fileElement.data('fileData'));
                 fileElement.parent().remove();
                 files.splice(indexToRemove, 1);
@@ -67,12 +73,15 @@ $(document).ready(function() {
         newFiles.forEach(file => {
             var point =  $("<li></li>")
             var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            var delElement = $('<span></span>').attr("class", "delete")
             fileElement.data('fileData', file);
+
             point.append(fileElement)
+            point.append(delElement)
             filesContainer.append(point)
 
-            fileElement.click(function(event) {
-                let fileElement = $(event.target);
+            delElement.click(function(event) {
+                let fileElement = $(event.target).prev();
                 let indexToRemove = files.indexOf(fileElement.data('fileData'));
                 fileElement.parent().remove();
                 files.splice(indexToRemove, 1);
@@ -243,7 +252,30 @@ $(document).ready(function() {
 
     });
 
-
+    // функция при отправке формы
+    $( ".form_popup" ).submit(function( event ){ // задаем функцию при срабатывании события "submit" на элементе <form>
+        event.preventDefault(); // действие события по умолчанию не будет срабатывать
+        var form_data = new FormData();
+        //console.log(files[0])
+        form_data.append('id', '2');
+        $.each(files,function(index,value){
+            //console.log(value)
+            form_data.append('file'+index, value);
+        });
+        $.ajax({
+            url: '/ajax/add_contract.php',
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                console.log(data);
+                location.reload();
+            }
+        })
+    });
 })
 
 function kuratoradd(cardblock, item) {

@@ -5,9 +5,7 @@ use Bitrix\Main\Page\Asset;
 //Asset::getInstance()->addJs(SITE_TEMPLATE_PATH ."/js/jquery.js");
 Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH ."/css/jquery-ui.css");
 Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
-
 ?>
-
 <?php if ($arResult['IS_AJAX'] == 'Y') {
     $APPLICATION->RestartBuffer();
     ob_start();
@@ -38,10 +36,10 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
             <form class="form_popup">
                 <div class="form_row">
                     <div class="input_container column_25">
-                        <input type="text" class="text_input" placeholder="Номер договора" />
+                        <input type="text" class="text_input" name="docnum" placeholder="Номер договора" />
                     </div><!-- END input_container -->
                     <div class="input_container column_25">
-                        <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата договора" />
+                        <input type="text" class="text_input ico_date js_datapicker" name="docdata" placeholder="Дата договора" />
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
                         <select data-placeholder="Введите часть имени..." class="select js_select" name='responsibleIds[]'>
@@ -58,7 +56,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input class="cont_file1" type="file" />
+                                <input name='file1' class="cont_file1" type="file" />
                                 <span class="upload"><span>Договор страхования</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -66,7 +64,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input class="cont_file2" type="file" />
+                                <input name='file2' class="cont_file2" type="file" />
                                 <span class="upload"><span>Памятка</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -74,7 +72,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input class="cont_file3"  type="file" />
+                                <input name='file3' class="cont_file3"  type="file" />
                                 <span class="upload"><span>Прочие документы</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
@@ -188,8 +186,10 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                         </div><!-- END switch_container -->
                     </div><!-- END switches_container -->
                 </div><!-- END form_row -->
-                <input type="submit" class="btn" value="Добавить договор" />
+                <!-- <div class="btn senddoc">Добавить договор</div> -->
+                <input type="submit" class="btn senddoc" value="Добавить договор" />
             </form><!-- END form_edit_profile -->
+
         </div><!-- END popup -->
         <?php if (!empty($arResult['CONTRACTS'])) : ?>
             <div id="contracts-list">
