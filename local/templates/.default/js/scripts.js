@@ -36,20 +36,85 @@ $(function(){
 			menuHide.delay(300).fadeIn();
 		}
 	});
-	$('.js_checkbox input').click(function(){
-		$(this).parent().toggleClass('active');
+	$(document).on('click', '.js_checkbox input', function(e){
+		//console.log(e)
+		if(BX.hasClass(e.target.parentElement, 'leader') && !BX.hasClass(e.target.parentElement, 'active')) {
+            var cardcont = BX.findParent(e.target.parentElement, {"class" : "company_card_container"})
+            var leaders = BX.findChild(cardcont, {"class" : "leader"}, true, true)
+            leaders.forEach(function(element){
+                if(element != e.target.parentElement && BX.hasClass(element, 'active')) {
+                    $(element).toggleClass('active')
+                } else if(element == e.target.parentElement ) {
+                    $(element).toggleClass('active')
+                }
+            })
+		} else if(BX.hasClass(e.target.parentElement, 'leader') && BX.hasClass(e.target.parentElement, 'active')) {
+            $(this).parent().toggleClass('active')
+        }
+		if(BX.hasClass(e.target.parentElement, 'flag') && !BX.hasClass(e.target.parentElement, 'active')) {
+			var cardcont = BX.findParent(e.target.parentElement, {"tag" : "form"})
+			var leaders = BX.findChild(cardcont, {"class" : "flag"}, true, true)
+			leaders.forEach(function(element){
+				if(element != e.target.parentElement && BX.hasClass(element, 'active')) {
+					$(element).toggleClass('active')
+				} else if(element == e.target.parentElement ) {
+					$(element).toggleClass('active')
+				}
+			})
+		} else if(BX.hasClass(e.target.parentElement, 'flag') && BX.hasClass(e.target.parentElement, 'active')) {
+			$(this).parent().toggleClass('active')
+		}
+		if(BX.hasClass(e.target.parentElement, 'switch')) {
+			$(this).parent().toggleClass('active');
+		}
 	});
+    $(document).on('click', '.js_delete', function(e){
+        BX.remove(e.target.parentElement)
+    });
 	/* Radio */
 	$('.js_radio').click(function(){
 		$(this).closest('.radio_container').find('.js_radio').removeClass('active');
 		$(this).toggleClass('active');
 	});
 	/* Select */
+	function matchCustom(params, data) {
+		// If there are no search terms, return all of the data
+		if ($.trim(params.term) === '') {
+			return data;
+		}
+
+		// Do not display the item if there is no 'text' property
+		if (typeof data.text === 'undefined') {
+			return null;
+		}
+
+		// `params.term` should be the term that is used for searching
+		// `data.text` is the text that is displayed for the data object
+		if (data.text.indexOf(params.term) > -1) {
+			var modifiedData = $.extend({}, data, true);
+			modifiedData.text += ' (найдено)';
+
+			// You can return modified objects from here
+			// This includes matching the `children` how you want in nested data sets
+			return modifiedData;
+		}
+
+		// Return `null` if the term should not be displayed
+		return null;
+	}
+
 	$('.js_select').select2({
-		minimumResultsForSearch: -1,
+		//minimumResultsForSearch: -1,
+		matcher: matchCustom,
 		placeholder: "",
 		width: '100%'
 	});
+
+	/* Datepicker */
+	$('.js_datapicker').datepicker({
+		// Можно выбрать тольо даты, идущие за сегодняшним днем, включая сегодня
+		minDate: new Date()
+	})
 
 	//form validation
 	var initFormValidation = function() {
