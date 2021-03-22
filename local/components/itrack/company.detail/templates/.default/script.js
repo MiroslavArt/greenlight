@@ -198,8 +198,8 @@ $(document).ready(function() {
                         .attr("placeholder", 'Выберите куратора(-ов) от страховой компании по вводу букв из ФИО')
                     var cardblock = $("<div></div>").attr("class", "company_card_container")
                     kursearch.append(kursearchinp)
-                    inplock.append(inpcomp)
                     inplock.append(labelcomp)
+                    inplock.append(inpcomp)
                     inplock.append(labelleader)
                     coblock.append(inplock)
                     //coblock.append(labelleader)
@@ -258,7 +258,37 @@ $(document).ready(function() {
         var docnum = $("#docnum").val()
         var docdate = $("#docdate").val()
         //var instype = $("#instype").val()
-        var instype = $('#instype option:selected').text();
+        var instype = $('#instype option:selected').text()
+        var original = 0
+        if($("#provideoriginal").hasClass('active')) {
+            original = 5
+        }
+
+        var inscompanies = []
+        var insleader = 0
+        var kurators = []
+        var kurleaders = []
+
+        $(".inserted_co_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) inscompanies.push(v);
+            if($(el).next().hasClass('active')) {
+                insleader = v
+            }
+        })
+
+        $(".inserted_kur_co_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) kurators.push(v);
+            if($(el).next().hasClass('active')) {
+                kurleaders.push(v)
+            }
+        })
+
         var form_data = new FormData();
         //console.log(files[0])
         form_data.append('docnum', docnum)
@@ -266,6 +296,12 @@ $(document).ready(function() {
         form_data.append('instype', instype)
         form_data.append('clientid', clientid)
         form_data.append('brokerid', brokerid)
+        form_data.append('original', original)
+        form_data.append('inscompanies', inscompanies)
+        form_data.append('insleader', insleader)
+        form_data.append('kurators', kurators)
+        form_data.append('kurleaders', kurleaders)
+
         $.each(files,function(index,value){
             //console.log(value)
             form_data.append('file'+index, value);
@@ -288,7 +324,7 @@ $(document).ready(function() {
 
 function kuratoradd(cardblock, item) {
     var cardblockinc = $("<div></div>").attr("class", "company_card")
-    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_kur_co_id").val(item.value)
+    var inpkur =  $("<input>").attr("type", "hidden").attr("class", "inserted_kur_co_id").val(item.value)
     var delblock = $("<span></span>").attr("class", "delete js_delete")
     var uls = $("<span></span>").attr("class", "company_card_list")
     var liname = $("<li></li>")
@@ -315,9 +351,10 @@ function kuratoradd(cardblock, item) {
     var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox").text("Назначен лидером")
     var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", item.value)
     lileaderlabel.append(lileaderinput)
+    lileader.append(inpkur)
     lileader.append(lileaderlabel)
     uls.append(lileader)
-    cardblockinc.append(inpcomp)
+    //cardblockinc.append(inpcomp)
     cardblockinc.append(uls)
     cardblockinc.append(delblock)
     cardblock.append(cardblockinc)

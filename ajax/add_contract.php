@@ -47,6 +47,18 @@ foreach ($_FILES as $file) {
     $fid = CFile::SaveFile($arr_file, "contractdocs");
     array_push($fidids, $fid);
 }
+if($_POST['inscompanies']) {
+    $insarray = explode(",", $_POST['inscompanies']);
+}
+
+if($_POST['kurators']) {
+    $kurators = explode(",", $_POST['kurators']);
+}
+
+if($_POST['kurleaders']) {
+    $kurleaders = explode(",", $_POST['kurleaders']);
+}
+
 Loader::includeModule('iblock');
 $add = new \CIBlockElement();
 
@@ -61,6 +73,11 @@ $data = [
         'CLIENT_LEADER'=> $_POST['clientid'],
         'INSURANCE_BROKER'=> array($_POST['brokerid']),
         'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
+        'INSURANCE_COMPANY' => $insarray,
+        'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
+        'KURATORS' => $kurators,
+        'KURATORS_LEADERS' => $kurleaders,
+        'ORIGIN_REQUIRED' => $_POST['original'],
         'DOCS' => $fidids
     ]
 ];
