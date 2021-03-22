@@ -18,20 +18,20 @@ $arUrlRewrite=array (
   ),
   4 => 
   array (
+    'CONDITION' => '#^/settings/users/#',
+    'RULE' => '',
+    'ID' => 'itrack:users',
+    'PATH' => '/settings/users/index.php',
+    'SORT' => 100,
+  ),
+  5 =>
+  array (
     'CONDITION' => '#^/clients/#',
     'RULE' => '',
     'ID' => 'itrack:companies',
     'PATH' => '/clients/index.php',
     'SORT' => 100,
   ),
-  4 =>
-    array (
-      'CONDITION' => '#^/settings/users/#',
-      'RULE' => '',
-      'ID' => 'itrack:users',
-      'PATH' => '/settings/users/index.php',
-      'SORT' => 100,
-    ),
   1 =>
   array (
     'CONDITION' => '#^/rest/#',

@@ -17,18 +17,20 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <span class="type_page"><?=GetMessage('LOST_CARD')?></span>
                 <h2 class="block_title"><?=$arResult['LOST']['NAME']?></h2>
                 <div class="card_status_container">
-                    <span class="card_status red">Открытый статус</span>
-                    <span class="type_page">от 01.07.2017</span>
+                    <span class="card_status <?=$arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']?>">Статус: <?=(!empty($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']) ? $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME'] : ' не установлен')?></span>
+                    <span class="type_page">от <?=(new \DateTime($arResult['TIMESTAMP_X']))->format('d.m.Y')?></span>
                 </div><!-- END card_status_container -->
             </div><!-- END title_block -->
             <div class="title_right_block">
-                <a href="#" class="btn">Добавить убыток</a>
+                <a href="#" class="btn">Добавить документ</a>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="desc_container">
             <div class="desc">
                 <span class="desc_title">Описание страхового случая</span>
-                <p>В результате залива подтверждена отделка офиса, который расположен в полуподвальном помещении. Вздулась паркетная доска, отошел плинтус, повреждены обои, дверь в ванную не закрывается.</p>
+                <?php if(!empty($arResult['LOST']['PREVIEW_TEXT'])) : ?>
+                    <?=$arResult['LOST']['~PREVIEW_TEXT']?>
+                <?php endif;?>
             </div><!-- END desc -->
             <div class="table_container">
                 <table class="table_curators">
@@ -38,30 +40,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <th width="160">Должность</th>
                         <th width="160">Телефон (моб)</th>
                     </tr>
-                    <tr>
-                        <td>Клиент <br />MВМ Entertainment</td>
-                        <td>Сергеев С.М.</td>
-                        <td>Заместитель директора</td>
-                        <td>7 962 692 2288</td>
-                    </tr>
-                    <tr>
-                        <td>СБ Лидер <br />Ингосстрах</td>
-                        <td>Федоренков Е.Г.</td>
-                        <td>Ведущий специалист <br />казначейства</td>
-                        <td>7 920 256 8833</td>
-                    </tr>
-                    <tr>
-                        <td>СК Лидер <br />Ингосстрах</td>
-                        <td>Михалеченко А.Л.</td>
-                        <td>Ведущий специалист</td>
-                        <td>7 956 873 1111</td>
-                    </tr>
-                    <tr>
-                        <td>Аджастер Лидер <br />Ингосстрах</td>
-                        <td>Федоренков Е.Г.</td>
-                        <td>Ведущий специалист <br />казначейства</td>
-                        <td>7 920 256 8833</td>
-                    </tr>
+                    <?php if (!empty($arResult['CURATORS'])) : ?>
+                        <?php foreach ($arResult['CURATORS'] as $arCurator) : ?>
+                            <tr>
+                                <td><?=$arCurator['COMPANY_TYPE']?> <br /><?=$arCurator['COMPANY_NAME']?></td>
+                                <td><?=CUser::formatName('#NAME# #SECOND_NAME# #LAST_NAME#', $arCurator, false, false);?></td>
+                                <td><?=$arCurator['POSITION']?></td>
+                                <td><?=$arCurator['PHONE']?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </table><!-- END table_curators -->
                 <a href="/html/all_curators.html" class="all_curators"><span>Все кураторы по убытку</span></a>
             </div><!-- END table_container -->
@@ -87,6 +75,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div><!-- END docs_container_bottom -->
             </div><!-- END docs_container -->
         </div><!-- END desc_container -->
+        <?php if(!empty($arResult['REQUESTS'])) : ?>
         <ul class="data_table">
             <li class="row table_head">
                 <div class="table_block align_left"><p>Статус</p></div>
@@ -100,67 +89,22 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="table_block align_left item2"><p>Информация <br />предоставлена <br />в печатном виде</p></div>
                 <div class="table_block align_left item3"><p>Комментарий</p></div>
             </li>
+            <?php foreach ($arResult['REQUESTS'] as $arItem) : ?>
             <li class="row">
-                <div class="table_block align_left align_top" data-name="Статус"><span class="status"></span></div>
-                <div class="table_block align_left align_top item2" data-name="Детали">Передан в печатном виде</div>
-                <div class="table_block align_left align_top item3" data-name="Запрошенные документы">Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Автор запроса">Матрешенкович В.С.</div>
+                <div class="table_block align_left align_top" data-name="Статус"><span class="status <?=$arItem['PROPERTIES']['STATUS']['VALUE']?>"></span></div>
+                <div class="table_block align_left align_top item2" data-name="Детали"><?=$arItem['STATUS_NAME']?></div>
+                <div class="table_block align_left align_top item3" data-name="Запрошенные документы"><?=$arItem['STATUS_NAME']?></div>
+                <div class="table_block align_left align_top item2" data-name="Дата запроса"><?=(new \DateTime($arItem['DATE_CREATE']))->format('d.m.Y')?></div>
+                <div class="table_block align_left align_top item3" data-name="Автор запроса"><?=$arItem['USER_FIO']?></div>
                 <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена">25.08.2020</div>
+                <div class="table_block align_left align_top item2" data-name="Информация предоставлена"></div>
                 <div class="table_block align_left align_top item2" data-name="Документы"><a href="/html/doc_card.html" class="link">Запрос</a></div>
                 <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
                 <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
             </li>
-            <li class="row">
-                <div class="table_block align_left align_top" data-name="Статус"><span class="status"></span></div>
-                <div class="table_block align_left align_top item2" data-name="Детали">Передан в печатном виде</div>
-                <div class="table_block align_left align_top item3" data-name="Запрошенные документы">Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Автор запроса">Матрешенкович В.С.</div>
-                <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена">25.08.2020</div>
-                <div class="table_block align_left align_top item2" data-name="Документы"><a href="/html/doc_card.html" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
-            </li>
-            <li class="row">
-                <div class="table_block align_left align_top" data-name="Статус"><span class="status yellow"></span></div>
-                <div class="table_block align_left align_top item2" data-name="Детали">Передан в печатном виде</div>
-                <div class="table_block align_left align_top item3" data-name="Запрошенные документы">Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Автор запроса">Матрешенкович В.С.</div>
-                <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена">25.08.2020</div>
-                <div class="table_block align_left align_top item2" data-name="Документы"><a href="/html/doc_card.html" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
-            </li>
-            <li class="row">
-                <div class="table_block align_left align_top" data-name="Статус"><span class="status yellow"></span></div>
-                <div class="table_block align_left align_top item2" data-name="Детали">Передан в печатном виде</div>
-                <div class="table_block align_left align_top item3" data-name="Запрошенные документы">Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Автор запроса">Матрешенкович В.С.</div>
-                <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена">25.08.2020</div>
-                <div class="table_block align_left align_top item2" data-name="Документы"><a href="/html/doc_card.html" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
-            </li>
-            <li class="row">
-                <div class="table_block align_left align_top" data-name="Статус"><span class="status red"></span></div>
-                <div class="table_block align_left align_top item2" data-name="Детали">Передан в печатном виде</div>
-                <div class="table_block align_left align_top item3" data-name="Запрошенные документы">Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Автор запроса">Матрешенкович В.С.</div>
-                <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена">25.08.2020</div>
-                <div class="table_block align_left align_top item2" data-name="Документы"><a href="/html/doc_card.html" class="link">Запрос</a></div>
-                <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
-                <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
-            </li>
+            <?php endforeach;?>
         </ul><!-- END data_table -->
+        <?php endif;?>
     </div><!-- END wrapper -->
 
 <?php

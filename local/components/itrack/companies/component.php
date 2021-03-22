@@ -25,7 +25,7 @@ $arDefaultUrlTemplates404 = array(
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
-    "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost/#LOST_ID#/",
+    "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
 );
 
 $arDefaultVariableAliases404 = array();
@@ -38,7 +38,6 @@ $arComponentVariables = array(
     "CONTRACT_ID",
     "LOST_ID",
 );
-
 
 if($arParams["SEF_MODE"] == "Y")
 {

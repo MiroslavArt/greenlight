@@ -284,7 +284,7 @@ class BaseInfoBlockClass extends AbstractInfoBlock
      */
     public static function getElementsByConditions(array $filter = [], array $sort = [], array $selectElement = []):array
     {
-               $key        =   0;
+        $key        =   0;
         $elements   =   [];
 
         if (empty($selectElement)) {
