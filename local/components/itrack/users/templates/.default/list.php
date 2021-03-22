@@ -25,9 +25,76 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
 				<input type="text" class="search_text" name="search" value="<?=$request->get('search')?>" placeholder="Поиск по списку клиентов" />
 				<input type="submit" class="search" value="" />
 			</form><!-- END search_form -->
-			<a href="#" class="btn">Добавить пользователя</a>
+			<!-- <a href="#" class="btn">Добавить пользователя</a> -->
+            <a href="#add_user" class="btn" data-fancybox>Добавить пользователя</a>
 		</div><!-- END title_right_block -->
 	</div><!-- END title_container -->
+    <div class="popup" id="add_user">
+        <h3 class="block_title">Добавление пользователя</h3>
+        <form class="form_popup">
+            <div class="form_row">
+                <div class="input_container column_25">
+                    <input type="text" class="text_input" placeholder="Фамилия" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
+                    <input type="text" class="text_input" placeholder="Имя" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
+                    <input type="text" class="text_input" placeholder="Отчество" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
+                    <input data-id="<?=$arResult['PWD']?>" type="email" class="text_input" placeholder="Email" />
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container">
+                    <select id="company" class="select js_select">
+                        <? foreach ($arResult['COMPANIES'] as $company) { ?>
+                            <option value="<?= $company['ID']?>"><?= $company['NAME']?></option>
+                        <? } ?>
+                    </select><!-- END select -->
+                    <!-- <input type="text" class="text_input" placeholder="Название компании" /> -->
+                </div><!-- END input_container -->
+                <div class="input_container">
+                    <input type="text" class="text_input" placeholder="Должность" />
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container column_25">
+                    <input type="tel" class="text_input" placeholder="Контактный телефон" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
+                    <input type="tel" class="text_input" placeholder="Рабочий телефон" />
+                </div><!-- END input_container -->
+                <div class="input_container small">
+                    <input type="text" class="text_input" placeholder="Доб. код" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25 superuser">
+                    <label class="switch big js_checkbox"><input type="checkbox" /></label>
+                    <label class="label">Суперпользователь</label>
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container">
+                    <label class="big_label">Прикрепить к договору страхования</label>
+                    <select id="contract" class="select js_select">
+                        <? foreach ($arResult['CONTRACTS'] as $contract) { ?>
+                            <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
+                        <? } ?>
+                    </select><!-- END select -->
+                </div><!-- END input_container -->
+                <div class="input_container">
+                    <label class="big_label">Прикрепить к убытку</label>
+                    <select id="loss" class="select js_select">
+                        <? foreach ($arResult['LOSSES'] as $contract) { ?>
+                            <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
+                        <? } ?>
+                    </select><!-- END select -->
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <input type="submit" class="btn" value="Добавить пользователя" />
+        </form><!-- END form_edit_profile -->
+    </div><!-- END popup -->
 
 	<?
 	$tabs = [
