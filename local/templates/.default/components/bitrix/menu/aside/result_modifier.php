@@ -36,5 +36,5 @@ if(empty($arUser['PERSONAL_PHOTO']['SRC']) ) {
 }
 
 $arResult['USER'] = $arUser;
-$arResult['USER']["DETAIL_URL"] = '/users/profile/';
+$arResult['USER']["DETAIL_URL"] = '/settings/users/my/profile/';
 $arResult['USER']['NAME_FORMATTED'] = CUser::formatName('#NAME# #SECOND_NAME# #LAST_NAME#', $arUser, false, false);

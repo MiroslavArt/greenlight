@@ -28,7 +28,7 @@ class Test extends Engine\Controller
      */
     protected function checkModules()
     {
-        if (!Loader::includeModule('sale')) {
+        if (!Loader::includeModule('iblock')) {
             throw new Main\LoaderException('not install module iblock');
         }
 
@@ -38,7 +38,7 @@ class Test extends Engine\Controller
 
     }
 
-    public function configureActions()
+    /*public function configureActions()
     {
         return [
             'location' => [
@@ -61,6 +61,12 @@ class Test extends Engine\Controller
         $result['city'] = $location;
 
         return $result ?? [];
+    }*/
+
+    public function getSignalAction($location)
+    {
+        //$signalarr = [1,2,3];
+        return $location;
     }
 
 }

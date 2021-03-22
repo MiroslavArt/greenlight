@@ -1,0 +1,28 @@
+.profile-checkbox + label{
+	background-color: #fff;
+	border: 2px #D8D9DC solid;
+	border-radius: 20px;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	height: 40px;
+	width: 72px;
+}
+.profile-checkbox + label:before{
+	background-color: #D8D9DC;
+	border-radius: 50%;
+	content: "";
+	position: absolute;
+	transition: all .3s linear;
+	height: 32px;
+	left: 2px;
+	top: 2px;
+	width: 32px;
+
+}
+
+.profile-checkbox:checked + label:before{
+	background-color: #800080;
+	left: calc(100% - 34px);
+}
