@@ -3,6 +3,9 @@
 
 namespace Itrack\Custom;
 
+use \Bitrix\Main\GroupTable;
+use \Bitrix\Main\UserGroupTable;
+
 
 class CUserRole
 {
@@ -14,14 +17,82 @@ class CUserRole
 	const SUPER = '_superuser';
 
 	private $userGroups;
+	private $userId;
 
-	public function __construct()
+	public function __construct(?int $userId = null)
 	{
-		$userGroups = CUserEx::getUserGroups();
-
-		foreach ($userGroups as $group) {
-			$this->userGroups[] = $group["GROUP_CODE"];
+		if (empty($userId)) {
+			$userId = $GLOBALS["USER"]->GetID();
 		}
+
+		$this->userId = $userId;
+
+		$this->userGroups = self::getUserRoleGroups($userId);
+	}
+
+	public static function getUserRoleGroups($userId) {
+		$result = UserGroupTable::query()
+			->setSelect(["GROUP_ID", "GROUP_CODE" => "GROUP.STRING_ID"])
+			->where("USER_ID", $userId)
+			->whereIn("GROUP.STRING_ID", self::getAllRoles())
+			->exec();
+
+		$groups = [];
+
+		while ($row = $result->fetch()) {
+			$id = $row["GROUP_ID"];
+			$code = $row["GROUP_CODE"];
+			$groups[$id] = $code;
+		}
+
+		return $groups;
+	}
+
+	public function setUserRole(string $party, bool $isSuperUser = false) {
+		if (!in_array($party, self::getParties())) {
+			throw new \Exception("Unknown party");
+		}
+
+		$role = $isSuperUser ? $party . self::SUPER : $party;
+
+		$roleGroups = self::getRoleGroups();
+
+		$this->dropUserRoles();
+
+		UserGroupTable::add([
+			"USER_ID" => $this->userId,
+			"GROUP_ID" => $roleGroups[$role],
+		]);
+	}
+
+	private function dropUserRoles() {
+		if (!is_array($this->userGroups) || empty($this->userGroups)) return;
+
+		foreach ($this->userGroups as $id => $code) {
+			UserGroupTable::delete([
+				"USER_ID" => $this->userId,
+				"GROUP_ID" => $id,
+			]);
+		}
+	}
+
+	public static function getRoleGroups() {
+		$result = GroupTable::query()
+			->setSelect(["ID", "STRING_ID"])
+			->whereIn("STRING_ID", self::getAllRoles())
+			->setCacheTtl(86400)
+			->exec();
+
+		$groups = [];
+
+		while ($row = $result->fetch()) {
+			$id = $row["ID"];
+			$code = $row["STRING_ID"];
+
+			$groups[$code] = $id;
+		}
+
+		return $groups;
 	}
 
 	private function isUserRole($code)
@@ -37,9 +108,9 @@ class CUserRole
 
 	public function getUserParty(): ?string
 	{
-		foreach ([self::BROKER, self::CLIENT, self::INSURER, self::ADJUSTER] as $role) {
-			if ($this->isUserParty($role)) {
-				return $role;
+		foreach (self::getParties() as $party) {
+			if ($this->isUserParty($party)) {
+				return $party;
 			}
 		}
 	}
@@ -71,6 +142,19 @@ class CUserRole
 
 	public static function getSuperGroups(): array {
 		return [
+			self::BROKER . self::SUPER,
+			self::CLIENT . self::SUPER,
+			self::INSURER . self::SUPER,
+			self::ADJUSTER . self::SUPER
+		];
+	}
+
+	public static function getAllRoles(): array {
+		return [
+			self::BROKER,
+			self::CLIENT,
+			self::INSURER,
+			self::ADJUSTER,
 			self::BROKER . self::SUPER,
 			self::CLIENT . self::SUPER,
 			self::INSURER . self::SUPER,
