@@ -24,7 +24,7 @@ $arUrlRewrite=array (
     'PATH' => '/clients/index.php',
     'SORT' => 100,
   ),
-  4 =>
+  5 =>
     array (
       'CONDITION' => '#^/settings/users/#',
       'RULE' => '',
