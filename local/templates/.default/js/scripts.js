@@ -70,6 +70,9 @@ $(function(){
 		} else if(BX.hasClass(e.target.parentElement, 'flag') && BX.hasClass(e.target.parentElement, 'active')) {
 			$(this).parent().toggleClass('active')
 		}
+		if(BX.hasClass(e.target.parentElement, 'switch')) {
+			$(this).parent().toggleClass('active');
+		}
 	});
     $(document).on('click', '.js_delete', function(e){
         BX.remove(e.target.parentElement)

@@ -36,13 +36,13 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
             <form class="form_popup">
                 <div class="form_row">
                     <div class="input_container column_25">
-                        <input type="text" class="text_input" name="docnum" placeholder="Номер договора" />
+                        <input type="text" id="docnum" class="text_input" name="docnum" placeholder="Номер договора" />
                     </div><!-- END input_container -->
                     <div class="input_container column_25">
-                        <input type="text" class="text_input ico_date js_datapicker" name="docdata" placeholder="Дата договора" />
+                        <input type="text" id="docdate" class="text_input ico_date js_datapicker" name="docdata" placeholder="Дата договора" />
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
-                        <select data-placeholder="Введите часть имени..." class="select js_select" name='responsibleIds[]'>
+                        <select data-placeholder="Введите часть имени..." id="instype" class="select js_select" name='responsibleIds[]'>
                         <!-- <select class="select js_select"> -->
                         <!-- <select class="select js_select"> -->
                             <? foreach ($arResult['INSTYPES'] as $instype) { ?>
@@ -124,7 +124,7 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 </div><!-- END gray_block -->
                 <div class="form_row brok_comp">
                     <div class="input_container without_small">
-                        <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?> type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
+                        <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
                         <!-- <input type="hidden" class="inserted_co_label" />
                         <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
@@ -146,48 +146,55 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                    <!-- <label class="flag js_checkbox"><input type="checkbox"></label> -->
                     <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
                 </div> <!-- END form_row -->
+                <div class="gray_block originals_required">
+                    <div class="switch_container">
+                        <label id="provideoriginal" class="switch js_checkbox"><input type="checkbox"></label>
+                        <span>Предоставлять оригиналы</span>
+                    </div><!-- END switch_container -->
+                    <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
+                </div><!-- END originals_required -->
                 <div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="clientaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="brokeraccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="insaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="adjaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
                         </div><!-- END switch_container -->
                     </div><!-- END switches_container -->
                     <div class="switches_container">
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="clientnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="brokernot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="insnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
                         </div><!-- END switch_container -->
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
                         </div><!-- END switch_container -->
                     </div><!-- END switches_container -->
                 </div><!-- END form_row -->
                 <!-- <div class="btn senddoc">Добавить договор</div> -->
-                <input type="submit" class="btn senddoc" value="Добавить договор" />
+                <input type="submit" class="btn" value="Добавить договор" />
             </form><!-- END form_edit_profile -->
 
         </div><!-- END popup -->

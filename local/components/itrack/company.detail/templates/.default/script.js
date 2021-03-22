@@ -82,7 +82,7 @@ $(document).ready(function() {
 
             delElement.click(function(event) {
                 let fileElement = $(event.target).prev();
-                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                let indexToRemove = files.indexOf(fileElement.data('fileData'))
                 fileElement.parent().remove();
                 files.splice(indexToRemove, 1);
             });
@@ -90,7 +90,7 @@ $(document).ready(function() {
     });
 
     // клиент и его кураторы
-    var clientid = $( "#kur_client_search_ins").attr('data-id');
+    var clientid = $( "#kur_client_search_ins").attr('data-id')
     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
         data: {
             company: clientid
@@ -255,9 +255,17 @@ $(document).ready(function() {
     // функция при отправке формы
     $( ".form_popup" ).submit(function( event ){ // задаем функцию при срабатывании события "submit" на элементе <form>
         event.preventDefault(); // действие события по умолчанию не будет срабатывать
+        var docnum = $("#docnum").val()
+        var docdate = $("#docdate").val()
+        //var instype = $("#instype").val()
+        var instype = $('#instype option:selected').text();
         var form_data = new FormData();
         //console.log(files[0])
-        form_data.append('id', '2');
+        form_data.append('docnum', docnum)
+        form_data.append('docdate', docdate)
+        form_data.append('instype', instype)
+        form_data.append('clientid', clientid)
+        form_data.append('brokerid', brokerid)
         $.each(files,function(index,value){
             //console.log(value)
             form_data.append('file'+index, value);
