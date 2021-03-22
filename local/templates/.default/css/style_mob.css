@@ -403,6 +403,7 @@
 }
 .originals{margin-bottom: 10px;}
 .company_card{width: calc(100% - 10px);}
+.originals_required p{text-align: center;}
 }/* END 1023px */
 @media screen and (max-width: 768px){
 .authorization_container{
@@ -451,7 +452,7 @@
 	background-position: 20px center;
 	padding: 0 10px 2px 37px;
 }
-.without_small.input_container{width: calc(100% - 105px);}
+.without_small.input_container,.input_container.with_flag .big_label{width: calc(100% - 105px);}
 .flag{width: 60px;}
 .company_card_dropdown{
 	left: -10px;
@@ -462,6 +463,23 @@
 	padding: 9px 10px 10px;
 }
 .form_popup .company_card_container + .link.ico_add{margin: 0 0 20px;}
+.ico_read{
+	margin: 20px 0 0;
+	width: 100%;
+}
+.originals_required{
+	align-items: flex-start;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 25px 15px;
+}
+	.originals_required p{
+		margin-top: 20px;
+		text-align: left;
+		width: 100%;
+	}
+.attached_container .big_label{margin-bottom: 15px;}
+.attached_container .big_label,.docs_list{width: 100%;}
 }/* END 768px */
 @media only screen and (max-width: 480px){
 .authorization_form .btn{width: 100%;}
@@ -486,6 +504,7 @@
 }
 .company_card_list li{width: calc(100% - 15px);}
 .company_card_list li:first-child{width: calc(100% - 45px);}
+.docs_list{max-width: none;}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 
