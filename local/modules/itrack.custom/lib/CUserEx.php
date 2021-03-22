@@ -49,4 +49,13 @@ class CUserEx
         return Company::getElementByID($arUser['UF_COMPANY']);
 
     }
+
+    public static function getUserCompanyId($userId) {
+		$result = \Bitrix\Main\UserTable::query()
+			->setSelect(["UF_COMPANY"])
+			->where("ID", $userId)
+			->exec();
+
+		return $result->fetch()["UF_COMPANY"];
+	}
 }
