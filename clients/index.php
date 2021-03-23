@@ -1,7 +1,9 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Клиенты");
-?><?$APPLICATION->IncludeComponent(
+?>
+
+<?$APPLICATION->IncludeComponent(
 	"itrack:companies",
 	"",
 	Array(
@@ -39,7 +41,7 @@ $APPLICATION->SetTitle("Клиенты");
 		"RESIZE_IMAGES" => "N",
 		"SEF_FOLDER" => "/clients/",
 		"SEF_MODE" => "Y",
-		"SEF_URL_TEMPLATES" => Array("detail"=>"#ELEMENT_ID#/","list"=>""),
+		"SEF_URL_TEMPLATES" => Array("detail"=>"#ELEMENT_ID#/","list"=>"", "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/"),
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
 		"TYPE_ID" => "4",

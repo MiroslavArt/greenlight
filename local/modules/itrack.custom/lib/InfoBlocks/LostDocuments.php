@@ -7,10 +7,10 @@ namespace Itrack\Custom\InfoBlocks;
 use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\InfoBlocks\BaseInfoBlockClass as BaseClass;
 
-class Lost extends BaseClass
+class LostDocuments extends BaseClass
 {
     protected static $selectElement =   ['ID', 'IBLOCK_ID', 'ACTIVE', 'SORT', 'IBLOCK_SECTION', 'CODE', 'DATE_CREATE', 'TIMESTAMP_X', 'NAME', 'PREVIEW_TEXT', 'DETAIL_PAGE_URL', 'PROPERTY_*'];
-    protected static $ibBlockCode   =   'lost';
+    protected static $ibBlockCode   =   'lost_doc';
     protected static $ibBlockType   =   'main_data';
 
 }

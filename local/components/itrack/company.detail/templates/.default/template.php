@@ -43,8 +43,6 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
                         <select data-placeholder="Введите часть имени..." id="instype" class="select js_select" name='responsibleIds[]'>
-                        <!-- <select class="select js_select"> -->
-                        <!-- <select class="select js_select"> -->
                             <? foreach ($arResult['INSTYPES'] as $instype) { ?>
                                 <option value="<?= $instype['ID']?>"><?= $instype['UF_NAME']?></option>
                             <? } ?>
