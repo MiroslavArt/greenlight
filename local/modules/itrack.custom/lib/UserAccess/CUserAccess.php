@@ -34,19 +34,19 @@ class CUserAccess
 
 
 	public function hasNotificationForContract(int $targetId): bool {
-		return UserContractNotificationTable::has($this->userId, $targetId);
+		return UserContractNotificationTable::isRowExists($this->userId, $targetId);
 	}
 
 	public function hasNotificationForLost(int $targetId): bool {
-		return UserLostNotificationTable::has($this->userId, $targetId);
+		return UserLostNotificationTable::isRowExists($this->userId, $targetId);
 	}
 
 	public function hasAcceptanceForContract(int $targetId): bool {
-		return UserContractAcceptanceTable::has($this->userId, $targetId);
+		return UserContractAcceptanceTable::isRowExists($this->userId, $targetId);
 	}
 
 	public function hasAcceptanceForLost(int $targetId): bool {
-		return UserLostAcceptanceTable::has($this->userId, $targetId);
+		return UserLostAcceptanceTable::isRowExists($this->userId, $targetId);
 	}
 
 
@@ -80,6 +80,6 @@ class CUserAccess
 	}
 
 	public function dropAcceptanceForLost(int $targetId) {
-		return UserContractAcceptanceTable::drop($this->userId, $targetId);
+		return UserLostAcceptanceTable::drop($this->userId, $targetId);
 	}
 }
