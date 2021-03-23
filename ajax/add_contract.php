@@ -29,9 +29,9 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
     }
 }
 
-$request = Context::getCurrent()->getRequest();
-\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
-\Bitrix\Main\Diag\Debug::writeToFile($_FILES, "files", "__miros.log");
+//$request = Context::getCurrent()->getRequest();
+//\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
+//\Bitrix\Main\Diag\Debug::writeToFile($_FILES, "files", "__miros.log");
 
 $fidids = [];
 
