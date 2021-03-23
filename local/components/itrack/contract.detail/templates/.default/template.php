@@ -85,18 +85,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         </div><!-- END input_container -->
                     </div><!-- END gray_block -->
                 <? } ?>
-                <div class="gray_block">
-                    <div class="input_container">
-                        <label class="big_label">Аджастер</label>
-                        <select class="select js_select">
-                            <option>МВМ Entertainment industries</option>
-                            <option>1Untropetion Ltd Companies International</option>
-                            <option>2Untropetion Ltd Companies International</option>
-                            <option>3Untropetion Ltd Companies International</option>
-                            <option>4Untropetion Ltd Companies International</option>
-                        </select><!-- END select -->
+                <h4 class="big_label">Аджастер</h4>
+                <div class="form_row adj_comp">
+                    <div class="input_container without_small">
+                        <input id="search_adj" type="text" class="text_input inserted_co_label" placeholder="Выберите аджастера по вводу букв из названия" />
                     </div><!-- END input_container -->
-                </div><!-- END gray_block -->
+                </div> <!-- END form_row -->
                 <div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
