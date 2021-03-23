@@ -14,7 +14,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 $this->setFrameMode(false);
 
 $APPLICATION->IncludeComponent(
-    'itrack:contract.detail',
+    'itrack:lost.detail',
     '',
     array(
         "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
@@ -22,7 +22,8 @@ $APPLICATION->IncludeComponent(
         "CLIENT_ID" => $arResult['VARIABLES']["ELEMENT_ID"],
         "CONTRACT_ID" => $arResult['VARIABLES']["CONTRACT_ID"],
         "CONTRACT_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["contract"],
-        "LOST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["lost"]
+        "LOST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["lost"],
+        "LOST_ID" => $arResult['VARIABLES']["LOST_ID"],
     ),
     null
 );
