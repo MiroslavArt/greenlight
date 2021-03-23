@@ -64,54 +64,27 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <h4 class="big_label">Клиент</h4>
                 <div class="gray_block">
                     <div class="input_container">
-                        <label class="big_label">Компания</label>
-                        <select class="select js_select">
-                            <option>МВМ Entertainment industries</option>
-                            <option>1Untropetion Ltd Companies International</option>
-                            <option>2Untropetion Ltd Companies International</option>
-                            <option>3Untropetion Ltd Companies International</option>
-                            <option>4Untropetion Ltd Companies International</option>
-                        </select><!-- END select -->
+                        <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
                     </div><!-- END input_container -->
+                    <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
                 <h4 class="big_label">Страховой брокер</h4>
                 <div class="gray_block">
                     <div class="input_container">
-                        <label class="big_label">Компания</label>
-                        <select class="select js_select">
-                            <option>МВМ Entertainment industries</option>
-                            <option>1Untropetion Ltd Companies International</option>
-                            <option>2Untropetion Ltd Companies International</option>
-                            <option>3Untropetion Ltd Companies International</option>
-                            <option>4Untropetion Ltd Companies International</option>
-                        </select><!-- END select -->
+                        <label class="big_label"><?=$arResult['BROKER']['NAME']?></label>
                     </div><!-- END input_container -->
+                    <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
                 <h4 class="big_label">Страховая компания</h4>
-                <div class="gray_block">
-                    <div class="input_container">
-                        <label class="big_label">Компания</label>
-                        <select class="select js_select">
-                            <option>МВМ Entertainment industries</option>
-                            <option>1Untropetion Ltd Companies International</option>
-                            <option>2Untropetion Ltd Companies International</option>
-                            <option>3Untropetion Ltd Companies International</option>
-                            <option>4Untropetion Ltd Companies International</option>
-                        </select><!-- END select -->
-                    </div><!-- END input_container -->
-                </div><!-- END gray_block -->
-                <div class="gray_block">
-                    <div class="input_container">
-                        <label class="big_label">Компания</label>
-                        <select class="select js_select">
-                            <option>МВМ Entertainment industries</option>
-                            <option>1Untropetion Ltd Companies International</option>
-                            <option>2Untropetion Ltd Companies International</option>
-                            <option>3Untropetion Ltd Companies International</option>
-                            <option>4Untropetion Ltd Companies International</option>
-                        </select><!-- END select -->
-                    </div><!-- END input_container -->
-                </div><!-- END gray_block -->
+                <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
+                    <div class="gray_block">
+                        <div class="input_container with_flag">
+                            <label class="big_label"><?=$insco['NAME']?></label>
+                            <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                            <span class="delete"></span>
+                        </div><!-- END input_container -->
+                    </div><!-- END gray_block -->
+                <? } ?>
                 <div class="gray_block">
                     <div class="input_container">
                         <label class="big_label">Аджастер</label>
