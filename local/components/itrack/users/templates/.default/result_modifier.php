@@ -20,7 +20,7 @@ while($ob = $res->fetch())
 }
 
 $arSelect = Array("ID", "NAME");
-$arFilter = Array("IBLOCK_ID"=>5, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
+$arFilter = Array("IBLOCK_ID"=>3, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
 $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
 while($ob = $res->fetch())
 {
