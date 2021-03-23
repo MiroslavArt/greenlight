@@ -93,5 +93,89 @@ class Signal extends Controller
         }
         return $result;
     }
+
+    public function addUserAction($userdata)
+    {
+        Loader::includeModule('iblock');
+        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_TYPE");
+        $arFilter = Array("IBLOCK_ID" => 1, "ID" => $userdata['company'], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
+        $company = $res->fetch();
+        $groups = array(5);
+        if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
+            array_push($groups, 7);
+            if ($userdata['superuser']) {
+                array_push($groups, 8);
+            }
+        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
+            array_push($groups, 11);
+            if ($userdata['superuser']) {
+                array_push($groups, 12);
+            }
+        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
+            array_push($groups, 9);
+            if ($userdata['superuser']) {
+                array_push($groups, 10);
+            }
+        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
+            array_push($groups, 13);
+            if ($userdata['superuser']) {
+                array_push($groups, 14);
+            }
+        }
+
+        $user = new \CUser;
+        $arFields = Array(
+            "NAME" => $userdata['name'],
+            "LAST_NAME" => $userdata['lastname'],
+            "SECOND_NAME" => $userdata['secondname'],
+            "EMAIL" => $userdata['email'],
+            "WORK_POSITION" => $userdata['position'],
+            "PERSONAL_PHONE" => $userdata['persphone'],
+            "WORK_PHONE" => $userdata['workphone'],
+            "LOGIN" => $userdata['email'],
+            "ACTIVE" => "Y",
+            "GROUP_ID" => $groups,
+            "PASSWORD" => $userdata['pwd'],
+            "CONFIRM_PASSWORD" => $userdata['pwd'],
+            "UF_COMPANY" => $userdata['company']
+        );
+
+        $ID = $user->Add($arFields);
+        if(intval($ID) > 0) {
+            $arSelect = Array("ID", "NAME", "PROPERTY_*");
+            $arFilter = Array("IBLOCK_ID" => 2, "ID" => $userdata['contract'], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+            $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
+            $PROP = array();
+            $PROP[4] = $res['PROPERTY_4'];
+            $PROP[5] = $res['PROPERTY_5'];
+            $PROP[6] = $res['PROPERTY_6'];
+            $PROP[7] = $res['PROPERTY_7'];
+            $PROP[8] = $res['PROPERTY_8'];
+            $PROP[9] = $res['PROPERTY_9'];
+            $PROP[9] = $res['PROPERTY_9'];
+            $PROP[10] = $res['PROPERTY_10'];
+            $PROP[11] = $res['PROPERTY_11'];
+            $PROP[12] = $res['PROPERTY_12'];
+            $PROP[13] = $res['PROPERTY_13'];
+            $kontkurators = array();
+            if ($res['PROPERTY_28']) {
+                $kontkurators = $res['PROPERTY_28'];
+            }
+            array_push($kontkurators, $ID);
+            $PROP[28] = $kontkurators;
+            $PROP[29] = $res['PROPERTY_29'];
+            $el = new \CIBlockElement;
+            $arLoadContractArray = Array(
+                "PROPERTY_VALUES"=> $PROP
+            );
+            $res1 = $el->Update($res['ID'], $arLoadContractArray);
+            $result = 'added';
+        } else {
+            $result = strip_tags($user->LAST_ERROR);
+        }
+
+        return $result;
+    }
 }
 
