@@ -52,7 +52,7 @@ $(function(){
             $(this).parent().toggleClass('active')
         }
 		if(BX.hasClass(e.target.parentElement, 'flag') && !BX.hasClass(e.target.parentElement, 'active')) {
-			var cardcont = BX.findParent(e.target.parentElement, {"tag" : "form"})
+			var cardcont = BX.findParent(e.target.parentElement, {"class" : "gray_blocks"})
 			var leaders = BX.findChild(cardcont, {"class" : "flag"}, true, true)
 			leaders.forEach(function(element){
 				if(element != e.target.parentElement && BX.hasClass(element, 'active')) {

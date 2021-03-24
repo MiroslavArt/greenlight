@@ -33,8 +33,14 @@ class ItrContract extends CBitrixComponent
         //get company
         $arResult['COMPANY'] = $this->getCompany($this->companyId);
         //get insurance company
+        $insarray = [];
+        foreach($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY']['VALUE'] as $insco) {
+            $inscodata = $this->getCompany($insco);
+            array_push($insarray, $inscodata);
+        }
+        $arResult['INSURANCE_COMPANIES'] = $insarray;
         $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
-
+        $arResult['BROKER'] = $this->getCompany(current($arResult['CONTRACT']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
         $arFilter = [
             "ACTIVE" => 'Y',
             "PROPERTY_CONTRACT.ID" => [$this->contractId],

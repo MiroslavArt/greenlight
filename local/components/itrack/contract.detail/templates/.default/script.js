@@ -1,91 +1,41 @@
 $(document).ready(function() {
 
-    // добавление файлов
-    var inputFile1 = $('.cont_file1');
-    var inputFile2 = $('.cont_file2');
-    var inputFile3 = $('.cont_file3');
-    var filesContainer= $('.docs_list');
-    var files = [];
-
-    // обработчики добавления файлов
-    inputFile1.change(function() {
-        let newFiles = [];
-        for(let index = 0; index < inputFile1[0].files.length; index++) {
-            let file = inputFile1[0].files[index];
-            newFiles.push(file);
-            files.push(file);
-        }
-
-        newFiles.forEach(file => {
-            var point =  $("<li></li>")
-            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
-            var delElement = $('<span></span>').attr("class", "delete")
-
-            fileElement.data('fileData', file);
-            point.append(fileElement)
-            point.append(delElement)
-            filesContainer.append(point)
-
-            delElement.click(function(event) {
-                let fileElement = $(event.target).prev();
-                let indexToRemove = files.indexOf(fileElement.data('fileData'));
-                fileElement.parent().remove();
-                files.splice(indexToRemove, 1);
-            });
-        });
-    });
-
-    inputFile2.change(function() {
-        let newFiles = [];
-        for(let index = 0; index < inputFile2[0].files.length; index++) {
-            let file = inputFile2[0].files[index];
-            newFiles.push(file);
-            files.push(file);
-        }
-
-        newFiles.forEach(file => {
-            var point =  $("<li></li>")
-            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
-            var delElement = $('<span></span>').attr("class", "delete")
-            fileElement.data('fileData', file);
-
-            point.append(fileElement)
-            point.append(delElement)
-            filesContainer.append(point)
-
-            delElement.click(function(event) {
-                let fileElement = $(event.target).prev();
-                let indexToRemove = files.indexOf(fileElement.data('fileData'));
-                fileElement.parent().remove();
-                files.splice(indexToRemove, 1);
-            });
-        });
-    });
-
-    inputFile3.change(function() {
-        let newFiles = [];
-        for(let index = 0; index < inputFile3[0].files.length; index++) {
-            let file = inputFile3[0].files[index];
-            newFiles.push(file);
-            files.push(file);
-        }
-
-        newFiles.forEach(file => {
-            var point =  $("<li></li>")
-            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
-            var delElement = $('<span></span>').attr("class", "delete")
-            fileElement.data('fileData', file);
-
-            point.append(fileElement)
-            point.append(delElement)
-            filesContainer.append(point)
-
-            delElement.click(function(event) {
-                let fileElement = $(event.target).prev();
-                let indexToRemove = files.indexOf(fileElement.data('fileData'))
-                fileElement.parent().remove();
-                files.splice(indexToRemove, 1);
-            });
+    // подтянуть кураторов из договора
+    var contractnum = $(".contract_number").attr("data-id")
+    $("#kurtransfer").click(function(e){
+        var form = BX.findParent(this, {"tag" : "form"})
+        var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+        BX.ajax.runAction('itrack:custom.api.signal.getContkurators', {
+            data: {
+                contract: contractnum
+            }
+        }).then(function (response) {
+            console.log(response.data)
+            response.data.forEach(function(kurator){
+                var foundkur = false
+                kurids.forEach(function(element){
+                    if(element.getAttribute("value") == kurator.value) {
+                        foundkur = true
+                    }
+                })
+                if(foundkur==false) {
+                    console.log(kurator)
+                    if(kurator.type=='client') {
+                        kuratoradd($( "#ins_kur_card" ), kurator)
+                    } else if(kurator.type=='broker') {
+                        kuratoradd($( "#brok_kur_card" ), kurator)
+                    } else if(kurator.type=='insuer') {
+                        $(".ins_kurators").each(function (index, el){
+                            if($(el).attr("data-id") == kurator.companyid) {
+                                kuratoradd($(el), kurator)
+                            }
+                        })
+                    }
+                }
+            })
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error);
         });
     });
 
@@ -157,22 +107,66 @@ $(document).ready(function() {
         console.log(error);
     });
 
-    // страховая компания и ее кураторы
-    var inscompanies = []
+    // клиент и его кураторы
+    $(".inserted_co_id").each(function (index, el){
+        var compid = $(el).val()
+        var cardblock = $("<div></div>").attr("class", "company_card_container ins_kurators").attr("data-id", compid)
+        var kursearch = $("<div></div>").attr("class", "input_container without_small")
+        var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
+            .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
+        kursearch.append(kursearchinp)
+        $(el).parent().parent().after(cardblock)
+        $(el).parent().parent().after(kursearch)
+        BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+            data: {
+                company: compid
+            }
+        }).then(function (response) {
+            kursearchinp.autocomplete({
+                source: response.data,
+                focus: function( event, ui ) {
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var form = BX.findParent(this, {"tag" : "form"});
+                    //console.log(form);
+                    var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+                    var foundkur = false
+                    kurids.forEach(function(element){
+                        if(element.getAttribute("value") == ui.item.value) {
+                            foundkur = true
+                        }
+                    })
+                    if(foundkur==false) {
+                        kursearchinp .val(ui.item.label);
+                        kuratoradd(cardblock, ui.item)
+                    }
+                    return false;
+                }
+            });
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error);
+        });
+
+    })
+
+    // аджастер и его кураторы
+    var adjcompanies = []
     BX.ajax.runAction('itrack:custom.api.signal.getCompanies', {
         data: {
-            type: '2'
+            type: '3'
         }
     }).then(function (response) {
-        inscompanies = response.data
-        $( "#search_ins" ).autocomplete({
-            source: inscompanies,
+        adjcompanies = response.data
+        $( "#search_adj" ).autocomplete({
+            source: adjcompanies,
             focus: function( event, ui ) {
-                $( "#search_ins" ).val( ui.item.label );
+                $( "#search_adj" ).val( ui.item.label );
                 return false;
             },
             select: function( event, ui ) {
-                $( "#search_ins" ).val( ui.item.label );
+                $( "#search_adj" ).val( ui.item.label );
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
                 var form = BX.findParent(this, {"tag" : "form"});
@@ -186,31 +180,28 @@ $(document).ready(function() {
                     }
                 });
                 if(foundcomp==false) {
+                    //var allblocks = $("<div></div>").attr("class", "gray_blocks")
                     var coblock = $("<div></div>").attr("class", "gray_block")
                     var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
-                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id").val(ui.item.value)
+                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_adj_id").val(ui.item.value)
                     var labelleader = $("<label></label>").attr("class", "flag js_checkbox")
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)
                     var kursearch = $("<div></div>").attr("class", "input_container without_small")
                     var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
-                        .attr("placeholder", 'Выберите куратора(-ов) от страховой компании по вводу букв из ФИО')
+                        .attr("placeholder", 'Выберите куратора(-ов) от аджастера по вводу букв из ФИО')
                     var cardblock = $("<div></div>").attr("class", "company_card_container")
                     kursearch.append(kursearchinp)
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
                     coblock.append(inplock)
-                    //coblock.append(labelleader)
-                    //$(".ins_comp").append(labelleader)
-                    $("#ins_insuers").append(coblock)
-                    $("#ins_insuers").append(kursearch)
-                    $("#ins_insuers").append(cardblock)
-                    //$(".ins_comp").after(cardblock)
-                    //$(".ins_comp").after(kursearch)
-                    //$(".ins_comp").after(coblock)
+                    $("#ins_adjusters").append(coblock)
+                    $("#ins_adjusters").append(kursearch)
+                    $("#ins_adjusters").append(cardblock)
 
+                    //$(".ins_comp").after(allblocks)
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
                         data: {
                             company: ui.item.value
@@ -251,23 +242,48 @@ $(document).ready(function() {
     }, function (error) {
         //сюда будут приходить все ответы, у которых status !== 'success'
         console.log(error);
+    });
 
+    // добавление файлов
+    var inputFile = $('.loss_file')
+    var filesContainer= $('.docs_list')
+    var files = []
+
+    // обработчики добавления файлов
+    inputFile.change(function() {
+        let newFiles = [];
+        for(let index = 0; index < inputFile[0].files.length; index++) {
+            let file = inputFile[0].files[index];
+            newFiles.push(file);
+            files.push(file);
+        }
+
+        newFiles.forEach(file => {
+            var point =  $("<li></li>")
+            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            var delElement = $('<span></span>').attr("class", "delete")
+
+            fileElement.data('fileData', file);
+            point.append(fileElement)
+            point.append(delElement)
+            filesContainer.append(point)
+
+            delElement.click(function(event) {
+                let fileElement = $(event.target).prev();
+                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                fileElement.parent().remove();
+                files.splice(indexToRemove, 1);
+            });
+        });
     });
 
     // функция при отправке формы
-    $( ".form_popup" ).submit(function( event ){ // задаем функцию при срабатывании события "submit" на элементе <form>
+    $( ".form_popup" ).submit(function( event ) { // задаем функцию при срабатывании события "submit" на элементе <form>
         event.preventDefault(); // действие события по умолчанию не будет срабатывать
-        var docnum = $("#docnum").val()
-        var docdate = $("#docdate").val()
-        //var instype = $("#instype").val()
-        var instype = $('#instype option:selected').text()
-        var original = 0
-        if($("#provideoriginal").hasClass('active')) {
-            original = 5
-        }
-
         var inscompanies = []
         var insleader = 0
+        var adjusters = []
+        var adjleader = 0
         var kurators = []
         var kurleaders = []
 
@@ -278,6 +294,16 @@ $(document).ready(function() {
             if (v) inscompanies.push(v);
             if($(el).next().hasClass('active')) {
                 insleader = v
+            }
+        })
+
+        $(".inserted_adj_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) adjusters.push(v);
+            if($(el).next().hasClass('active')) {
+                adjleader = v
             }
         })
 
@@ -293,23 +319,29 @@ $(document).ready(function() {
 
         var form_data = new FormData();
         //console.log(files[0])
-        form_data.append('docnum', docnum)
-        form_data.append('docdate', docdate)
-        form_data.append('instype', instype)
+        form_data.append('contract', contractnum)
         form_data.append('clientid', clientid)
         form_data.append('brokerid', brokerid)
-        form_data.append('original', original)
+        form_data.append('docnum',$("#doc_num").val())
+        form_data.append('docdate',$("#doc_date").val())
+        form_data.append('description',$("#loss_descr").val())
+        form_data.append('reqdoc',$("#req_doc").val())
+        form_data.append('reqdate',$("#req_date").val())
+        form_data.append('user',$("#users").val())
+        form_data.append('req_term',$("#req_term").val())
+        form_data.append('status','red')
         form_data.append('inscompanies', inscompanies)
         form_data.append('insleader', insleader)
+        form_data.append('adjusters', adjusters)
+        form_data.append('adjleader', adjleader)
         form_data.append('kurators', kurators)
         form_data.append('kurleaders', kurleaders)
-
         $.each(files,function(index,value){
             //console.log(value)
             form_data.append('file'+index, value);
         });
         $.ajax({
-            url: '/ajax/add_contract.php',
+            url: '/ajax/add_loss.php',
             dataType: 'json',
             cache: false,
             contentType: false,
@@ -321,7 +353,8 @@ $(document).ready(function() {
                 location.reload();
             }
         })
-    });
+
+    })
 })
 
 function kuratoradd(cardblock, item) {
@@ -350,7 +383,11 @@ function kuratoradd(cardblock, item) {
     liwphone.append($("<p></p>").text(item.wphone))
     uls.append(liwphone)
     var lileader = $("<li></li>")
-    var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox").text("Назначен лидером")
+    if(item.isleader==true) {
+        var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox active").text("Назначен лидером")
+    } else {
+        var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox").text("Назначен лидером")
+    }
     var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", item.value)
     lileaderlabel.append(lileaderinput)
     lileader.append(inpkur)
