@@ -34,7 +34,7 @@
 				<svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.4545 21V18.7778C18.4545 17.599 17.9948 16.4686 17.1765 15.6351C16.3581 14.8016 15.2482 14.3333 14.0909 14.3333H5.36364C4.20633 14.3333 3.09642 14.8016 2.27808 15.6351C1.45974 16.4686 1 17.599 1 18.7778V21M25 21V18.7778C24.9993 17.793 24.6775 16.8364 24.0851 16.0581C23.4928 15.2798 22.6634 14.724 21.7273 14.4778M17.3636 1.14444C18.3023 1.38922 19.1342 1.94522 19.7283 2.72479C20.3224 3.50436 20.6449 4.46314 20.6449 5.45C20.6449 6.43686 20.3224 7.39564 19.7283 8.17521C19.1342 8.95478 18.3023 9.51078 17.3636 9.75556M14.0909 5.44444C14.0909 7.89904 12.1372 9.88889 9.72727 9.88889C7.3173 9.88889 5.36364 7.89904 5.36364 5.44444C5.36364 2.98985 7.3173 1 9.72727 1C12.1372 1 14.0909 2.98985 14.0909 5.44444Z" stroke="#800080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				<span>Мои Клиенты</span>
 			</a>
-			<a href="/html/contract_card_adjaster.html">
+			<a href="/html/contract_card_adjaster2.html">
 				<svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.25 1H3.25C2.65326 1 2.08097 1.22125 1.65901 1.61508C1.23705 2.0089 1 2.54305 1 3.1V19.9C1 20.457 1.23705 20.9911 1.65901 21.3849C2.08097 21.7787 2.65326 22 3.25 22H16.75C17.3467 22 17.919 21.7787 18.341 21.3849C18.7629 20.9911 19 20.457 19 19.9V7.3M12.25 1L19 7.3M12.25 1V7.3H19M14.5 12.55H5.5M14.5 16.75H5.5M7.75 8.35H5.5" stroke="#C2C7CF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				<span>Договоры <br />страхования</span>
 			</a>
@@ -67,7 +67,7 @@
 					<input type="text" class="search_text" placeholder="Поиск по страховым компаниям" />
 					<input type="submit" class="search" value="" />
 				</form><!-- END search_form -->
-				<a href="#" class="btn">Добавить компанию</a>
+				<a href="#add_user" data-fancybox class="btn">Добавить компанию</a>
 			</div><!-- END title_right_block -->
 		</div><!-- END title_container -->
 		<ul class="data_table">
@@ -169,5 +169,70 @@
 		<a href="#" class="logo"></a>
 		<p class="copy">Copyright &copyl; 2020 Willis Towers Watson. All rights reserved.</p>
 	</div><!-- END footer -->
+<div class="popup" id="add_user">
+	<h3 class="block_title">Добавление пользователя</h3>
+	<form class="form_popup">
+		<div class="form_row">
+			<div class="input_container column_25">
+				<input type="text" class="text_input" placeholder="Фамилия" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="text" class="text_input" placeholder="Имя" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="text" class="text_input" placeholder="Отчество" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="email" class="text_input" placeholder="Email" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container">
+				<input type="text" class="text_input" placeholder="Название компании" />
+			</div><!-- END input_container -->
+			<div class="input_container">
+				<input type="text" class="text_input" placeholder="Должность" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container column_25">
+				<input type="tel" class="text_input" placeholder="Контактный телефон" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="tel" class="text_input" placeholder="Рабочий телефон" />
+			</div><!-- END input_container -->
+			<div class="input_container small">
+				<input type="text" class="text_input" placeholder="Доб. код" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25 superuser">
+				<label class="switch big js_checkbox"><input type="checkbox" /></label>
+				<label class="label">Суперпользователь</label>
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container">
+				<label class="big_label">Прикрепить к договору страхования</label>
+				<select class="select js_select">
+					<option>Договор страхования</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<div class="input_container">
+				<label class="big_label">Прикрепить к убытку</label>
+				<select class="select js_select">
+					<option>Договор страхования</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<input type="submit" class="btn" value="Добавить пользователя" />
+	</form><!-- END form_edit_profile -->
+</div><!-- END popup -->
 </body>
 </html>

@@ -34,7 +34,7 @@
 				<svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.4545 21V18.7778C18.4545 17.599 17.9948 16.4686 17.1765 15.6351C16.3581 14.8016 15.2482 14.3333 14.0909 14.3333H5.36364C4.20633 14.3333 3.09642 14.8016 2.27808 15.6351C1.45974 16.4686 1 17.599 1 18.7778V21M25 21V18.7778C24.9993 17.793 24.6775 16.8364 24.0851 16.0581C23.4928 15.2798 22.6634 14.724 21.7273 14.4778M17.3636 1.14444C18.3023 1.38922 19.1342 1.94522 19.7283 2.72479C20.3224 3.50436 20.6449 4.46314 20.6449 5.45C20.6449 6.43686 20.3224 7.39564 19.7283 8.17521C19.1342 8.95478 18.3023 9.51078 17.3636 9.75556M14.0909 5.44444C14.0909 7.89904 12.1372 9.88889 9.72727 9.88889C7.3173 9.88889 5.36364 7.89904 5.36364 5.44444C5.36364 2.98985 7.3173 1 9.72727 1C12.1372 1 14.0909 2.98985 14.0909 5.44444Z" stroke="#800080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				<span>Мои Клиенты</span>
 			</a>
-			<a href="/html/contract_card_adjaster.html">
+			<a href="/html/contract_card_adjaster2.html">
 				<svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.25 1H3.25C2.65326 1 2.08097 1.22125 1.65901 1.61508C1.23705 2.0089 1 2.54305 1 3.1V19.9C1 20.457 1.23705 20.9911 1.65901 21.3849C2.08097 21.7787 2.65326 22 3.25 22H16.75C17.3467 22 17.919 21.7787 18.341 21.3849C18.7629 20.9911 19 20.457 19 19.9V7.3M12.25 1L19 7.3M12.25 1V7.3H19M14.5 12.55H5.5M14.5 16.75H5.5M7.75 8.35H5.5" stroke="#C2C7CF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				<span>Договоры <br />страхования</span>
 			</a>
@@ -77,7 +77,7 @@
 					<input type="text" class="search_text" placeholder="Поиск по списку клиентов" />
 					<input type="submit" class="search" value="" />
 				</form><!-- END search_form -->
-				<a href="#" class="btn">Добавить убыток</a>
+				<a href="#add_loss" data-fancybox class="btn">Добавить убыток</a>
 			</div><!-- END title_right_block -->
 		</div><!-- END title_container -->
 		<ul class="data_table type5">
@@ -202,5 +202,419 @@
 		<a href="#" class="logo"></a>
 		<p class="copy">Copyright &copyl; 2020 Willis Towers Watson. All rights reserved.</p>
 	</div><!-- END footer -->
+<div class="popup" id="add_loss">
+	<h3 class="block_title">Добавление убытка</h3>
+	<form class="form_popup">
+		<div class="form_row">
+			<div class="input_container column_25">
+				<input type="text" class="text_input" placeholder="Номер убытка" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="text" class="text_input ico_date js_datapicker" placeholder="Дата убытка" />
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить договор страхования</span></a>
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container without_small">
+				<select class="select js_select">
+					<option>Аджастер</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<label class="flag js_checkbox"><input type="checkbox"></label>
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container column_50">
+				 <a href="#" class="btn white">Перенести кураторов из договора страхования</a>
+			</div><!-- END input_container -->
+			<div class="input_container column_100">
+				 <textarea class="textarea" placeholder="Описание убытка"></textarea>
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<h3 class="subtitle">Кураторы</h3>
+		<h4 class="big_label">Клиент</h4>
+		<div class="gray_block">
+			<div class="input_container">
+				<label class="big_label">Компания</label>
+				<select class="select js_select">
+					<option>МВМ Entertainment industries</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END gray_block -->
+		<div class="company_card_container">
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li class="js_open_dropdown with_dropdown">
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+						<div class="company_card_dropdown">
+							<a href="#">Петровольский С.А.</a>
+							<a href="#">Петровольский С.А.</a>
+							<a href="#">Петровольский С.А.</a>
+						</div><!-- END company_card_dropdown -->
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li class="js_open_dropdown with_dropdown">
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+						<div class="company_card_dropdown">
+							<a href="#">Петровольский С.А.</a>
+							<a href="#">Петровольский С.А.</a>
+							<a href="#">Петровольский С.А.</a>
+						</div><!-- END company_card_dropdown -->
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<div class="edit_container">
+							<span class="edit_input_title">Моб.телефон</span>
+							<input type="text" class="edit_input" value="+7 952 118 3688" />
+						</div><!-- END edit_container -->
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+		</div><!-- END company_card_container -->
+		<a href="#" class="link ico_add"><span>Добавить страхового брокера</span></a>
+		<h4 class="big_label">Страховой брокер</h4>
+		<div class="gray_block">
+			<span class="delete"></span>
+			<div class="input_container">
+				<label class="big_label">Компания</label>
+				<select class="select js_select">
+					<option>МВМ Entertainment industries</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END gray_block -->
+		<div class="company_card_container">
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li>
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+		</div><!-- END company_card_container -->
+		<a href="#" class="link ico_add"><span>Добавить страхового брокера</span></a>
+		<h4 class="big_label">Страховая компания</h4>
+		<div class="gray_block">
+			<span class="delete"></span>
+			<div class="input_container">
+				<label class="big_label">Компания</label>
+				<select class="select js_select">
+					<option>МВМ Entertainment industries</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END gray_block -->
+		<div class="company_card_container">
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li>
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+		</div><!-- END company_card_container -->
+		<div class="gray_block">
+			<span class="delete"></span>
+			<div class="input_container">
+				<label class="big_label">Компания</label>
+				<select class="select js_select">
+					<option>МВМ Entertainment industries</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END gray_block -->
+		<div class="company_card_container">
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li>
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li>
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+		</div><!-- END company_card_container -->
+		<a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
+		<div class="gray_block">
+			<div class="input_container">
+				<label class="big_label">Аджастер</label>
+				<select class="select js_select">
+					<option>МВМ Entertainment industries</option>
+					<option>1Untropetion Ltd Companies International</option>
+					<option>2Untropetion Ltd Companies International</option>
+					<option>3Untropetion Ltd Companies International</option>
+					<option>4Untropetion Ltd Companies International</option>
+				</select><!-- END select -->
+			</div><!-- END input_container -->
+			<a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+		</div><!-- END gray_block -->
+		<div class="company_card_container">
+			<div class="company_card">
+				<span class="delete"></span>
+				<ul class="company_card_list">
+					<li>
+						<span>ФИО</span>
+						<p>Петровольский С.А.</p>
+					</li>
+					<li>
+						<span>Должность</span>
+						<p class="gray">Укажите должность</p>
+					</li>
+					<li>
+						<span>email</span>
+						<p>petrovod87@mail.ru</p>
+					</li>
+					<li>
+						<span>Моб.телефон</span>
+						<p>+7 952 118 3688</p>
+					</li>
+					<li>
+						<span>Раб. телефон</span>
+						<p>+7 495 118 3688</p>
+					</li>
+					<li>
+						<label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+					</li>
+				</ul><!-- END company_card_list -->
+			</div><!-- END company_card -->
+		</div><!-- END company_card_container -->
+		<a href="#" class="link ico_add"><span>Добавить страхового брокера</span></a>
+		<div class="form_row">
+			<div class="switches_container">
+				<label class="big_label">Необходимость акцепта</label>
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Клиент</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Страховой Брокер</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Страховая Компания</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Аджастер</span>
+				</div><!-- END switch_container -->
+			</div><!-- END switches_container -->
+			<div class="switches_container">
+				<label class="big_label">Уведомления</label>
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Клиент</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Страховой Брокер</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Страховая Компания</span>
+				</div><!-- END switch_container -->
+				<div class="switch_container">
+					<label class="switch js_checkbox"><input type="checkbox"></label>
+					<span>Аджастер</span>
+				</div><!-- END switch_container -->
+			</div><!-- END switches_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container column_100">
+				<input type="text" class="text_input" placeholder="Запрашиваемые документы" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container column_25">
+				<input type="text" class="text_input ico_date js_datapicker" placeholder="Дата запроса" />
+			</div><!-- END input_container -->
+			<div class="input_container column_50">
+				<input type="text" class="text_input" placeholder="Автор запроса" />
+			</div><!-- END input_container -->
+			<div class="input_container column_25">
+				<input type="text" class="text_input ico_date js_datapicker" placeholder="Срок предоставления" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<label class="big_label">Прикрепить полезные документы</label>
+			<div class="input_container column_3">
+				<div class="logo_upload_container without_img">
+					<div class="logo_upload">
+						<input type="file" />
+						<span class="upload"><span>Прикрепить запрос</span></span>
+					</div><!-- END logo_upload -->
+				</div><!-- END logo_upload_container -->
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row attached_container">
+			<label class="big_label">Запросы</label>
+			<ul class="docs_list">
+				<li>
+					<a href="#" class="link">dogovor_ob_avariia_na_zav....doc</a>
+					<span class="delete"></span>
+				</li>
+				<li>
+					<a href="#" class="link">Договор от 28 декабря 20....doc</a>
+					<span class="delete"></span>
+				</li>
+				<li>
+					<a href="#" class="link">Документ №98712.doc</a>
+					<span class="delete"></span>
+				</li>
+			</ul><!-- END docs_list -->
+		</div><!-- END form_row -->
+		<input type="submit" class="btn" value="Добавить договор" />
+	</form><!-- END form_edit_profile -->
+</div><!-- END popup -->
 </body>
 </html>
