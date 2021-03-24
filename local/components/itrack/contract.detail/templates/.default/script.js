@@ -243,6 +243,39 @@ $(document).ready(function() {
         //сюда будут приходить все ответы, у которых status !== 'success'
         console.log(error);
     });
+
+    // добавление файлов
+    var inputFile = $('.loss_file')
+    var filesContainer= $('.docs_list')
+    var files = []
+
+    // обработчики добавления файлов
+    inputFile.change(function() {
+        let newFiles = [];
+        for(let index = 0; index < inputFile[0].files.length; index++) {
+            let file = inputFile[0].files[index];
+            newFiles.push(file);
+            files.push(file);
+        }
+
+        newFiles.forEach(file => {
+            var point =  $("<li></li>")
+            var fileElement = $(`<p>${file.name}</p>`).attr("class", "link")
+            var delElement = $('<span></span>').attr("class", "delete")
+
+            fileElement.data('fileData', file);
+            point.append(fileElement)
+            point.append(delElement)
+            filesContainer.append(point)
+
+            delElement.click(function(event) {
+                let fileElement = $(event.target).prev();
+                let indexToRemove = files.indexOf(fileElement.data('fileData'));
+                fileElement.parent().remove();
+                files.splice(indexToRemove, 1);
+            });
+        });
+    });
 })
 
 function kuratoradd(cardblock, item) {

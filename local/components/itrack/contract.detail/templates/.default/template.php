@@ -178,11 +178,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <div class="input_container column_3">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
-                                <input type="file" />
+                                <input class="loss_file" type="file" />
                                 <span class="upload"><span>Прикрепить запрос</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
                     </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row attached_container">
+                    <label class="big_label">Документы</label>
+                    <ul class="docs_list">
+                    </ul><!-- END docs_list -->
                 </div><!-- END form_row -->
                 <input type="submit" class="btn" value="Добавить договор" />
             </form><!-- END form_edit_profile -->

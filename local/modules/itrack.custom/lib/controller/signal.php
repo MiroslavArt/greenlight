@@ -88,7 +88,7 @@ class Signal extends Controller
             $item['position'] = $ob['WORK_POSITION'];
             $item['wphone'] = $ob['WORK_PHONE'];
             $item['mphone'] = $ob['PERSONAL_MOBILE'];
-            $item['leader'] = false;
+            $item['isleader'] = false;
 
             array_push($result, $item);
         }
