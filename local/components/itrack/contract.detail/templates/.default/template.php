@@ -45,16 +45,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <form class="form_popup">
                 <div class="form_row">
                     <div class="input_container column_25">
-                        <input type="text" class="text_input" placeholder="Номер убытка" />
+                        <input type="text" class="text_input" id="doc_num" placeholder="Номер убытка" />
                     </div><!-- END input_container -->
                     <div class="input_container column_25">
-                        <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата убытка" />
+                        <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата убытка" />
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить договор страхования</span></a> -->
                 </div><!-- END form_row -->
                 <div class="form_row">
                     <div class="input_container column_100">
-                        <textarea class="textarea" placeholder="Описание убытка"></textarea>
+                        <textarea class="textarea" id="loss_descr" placeholder="Описание убытка"></textarea>
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
                         <a href="#" class="btn white" id="kurtransfer">Перенести кураторов из договора страхования</a>
@@ -151,15 +151,15 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div><!-- END form_row -->
                 <div class="form_row">
                     <div class="input_container column_100">
-                        <input type="text" class="text_input" placeholder="Запрашиваемые документы" />
+                        <input type="text" class="text_input" id="req_doc" placeholder="Запрашиваемые документы" />
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
                 <div class="form_row">
                     <div class="input_container column_25">
-                        <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата запроса" />
+                        <input type="text" class="text_input ico_date js_datapicker" id="req_date" placeholder="Дата запроса" />
                     </div><!-- END input_container -->
                     <div class="input_container">
-                        <select id="users" class="select js_select">
+                        <select class="select js_select" id="users">
                             <? foreach ($arResult['USERS'] as $user) { ?>
                                 <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
                             <? } ?>
@@ -170,7 +170,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <input type="text" class="text_input" placeholder="Автор запроса" />
                     </div>--><!-- END input_container -->
                     <div class="input_container column_25">
-                        <input type="text" class="text_input ico_date js_datapicker" placeholder="Срок предоставления" />
+                        <input type="text" class="text_input ico_date js_datapicker" id="req_term" placeholder="Срок предоставления" />
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
                 <div class="form_row">

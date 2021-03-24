@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
     // подтянуть кураторов из договора
+    var contractnum = $(".contract_number").attr("data-id")
     $("#kurtransfer").click(function(e){
-        var contractnum = $(".contract_number").attr("data-id")
         var form = BX.findParent(this, {"tag" : "form"})
         var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
         BX.ajax.runAction('itrack:custom.api.signal.getContkurators', {
@@ -276,6 +276,85 @@ $(document).ready(function() {
             });
         });
     });
+
+    // функция при отправке формы
+    $( ".form_popup" ).submit(function( event ) { // задаем функцию при срабатывании события "submit" на элементе <form>
+        event.preventDefault(); // действие события по умолчанию не будет срабатывать
+        var inscompanies = []
+        var insleader = 0
+        var adjusters = []
+        var adjleader = 0
+        var kurators = []
+        var kurleaders = []
+
+        $(".inserted_co_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) inscompanies.push(v);
+            if($(el).next().hasClass('active')) {
+                insleader = v
+            }
+        })
+
+        $(".inserted_adj_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) adjusters.push(v);
+            if($(el).next().hasClass('active')) {
+                adjleader = v
+            }
+        })
+
+        $(".inserted_kur_co_id").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) kurators.push(v);
+            if($(el).next().hasClass('active')) {
+                kurleaders.push(v)
+            }
+        })
+
+        var form_data = new FormData();
+        //console.log(files[0])
+        form_data.append('contract', contractnum)
+        form_data.append('clientid', clientid)
+        form_data.append('brokerid', brokerid)
+        form_data.append('docnum',$("#doc_num").val())
+        form_data.append('docdate',$("#doc_date").val())
+        form_data.append('description',$("#loss_descr").val())
+        form_data.append('reqdoc',$("#req_doc").val())
+        form_data.append('reqdate',$("#req_date").val())
+        form_data.append('user',$("#users").val())
+        form_data.append('req_term',$("#req_term").val())
+        form_data.append('status','red')
+        form_data.append('inscompanies', inscompanies)
+        form_data.append('insleader', insleader)
+        form_data.append('adjusters', adjusters)
+        form_data.append('adjleader', adjleader)
+        form_data.append('kurators', kurators)
+        form_data.append('kurleaders', kurleaders)
+        $.each(files,function(index,value){
+            //console.log(value)
+            form_data.append('file'+index, value);
+        });
+        $.ajax({
+            url: '/ajax/add_loss.php',
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(data){
+                console.log(data);
+                location.reload();
+            }
+        })
+
+    })
 })
 
 function kuratoradd(cardblock, item) {

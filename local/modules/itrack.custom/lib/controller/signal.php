@@ -6,6 +6,7 @@ use Bitrix\Crm;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
+use Bitrix\Main\Request;
 
 class Signal extends Controller
 {
