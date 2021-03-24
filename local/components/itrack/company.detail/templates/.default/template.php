@@ -2,9 +2,6 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 use Bitrix\Main\Page\Asset;
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-//Asset::getInstance()->addJs(SITE_TEMPLATE_PATH ."/js/jquery.js");
-Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH ."/css/jquery-ui.css");
-Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
 ?>
 <?php if ($arResult['IS_AJAX'] == 'Y') {
     $APPLICATION->RestartBuffer();
@@ -82,18 +79,6 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 <div class="form_row attached_container">
                     <label class="big_label">Документы</label>
                     <ul class="docs_list">
-                        <!-- <li>
-                            <a href="#" class="link">dogovor_ob_avariia_na_zav....doc</a>
-                            <span class="delete"></span>
-                        </li>
-                        <li>
-                            <a href="#" class="link">Договор от 28 декабря 20....doc</a>
-                            <span class="delete"></span>
-                        </li>
-                        <li>
-                            <a href="#" class="link">Документ №98712.doc</a>
-                            <span class="delete"></span>
-                        </li> -->
                     </ul><!-- END docs_list -->
                 </div><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
@@ -107,8 +92,6 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 <div class="form_row client_comp">
                     <div class="input_container without_small">
                         <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
-                        <!-- <input type="hidden" class="inserted_co_label" />
-                        <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
                 </div>
                 <div id="ins_kur_card" class="company_card_container">
@@ -131,19 +114,12 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 </div>
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row ins_comp">
-                    <!--<select data-placeholder="Введите часть имени..." class="chosen-select" name='responsibleIds[]'>
-                        <option value="Bubnova">Bubnova</option>
-                        <option value="Gorodetsky">Gorodetsky</option>
-                        <option value="Gorsky">Gorsky</option>
-                    </select> -->
                     <div class="input_container without_small">
                         <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
-                        <!-- <input type="hidden" class="inserted_co_label" />
-                        <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
-                   <!-- <label class="flag js_checkbox"><input type="checkbox"></label> -->
-                    <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
                 </div> <!-- END form_row -->
+                <div class="gray_blocks" id="ins_insuers">
+                </div>
                 <div class="gray_block originals_required">
                     <div class="switch_container">
                         <label id="provideoriginal" class="switch js_checkbox"><input type="checkbox"></label>

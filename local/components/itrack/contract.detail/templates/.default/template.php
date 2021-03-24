@@ -76,21 +76,25 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
                 <h4 class="big_label">Страховая компания</h4>
-                <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
-                    <div class="gray_block">
-                        <div class="input_container with_flag">
-                            <label class="big_label"><?=$insco['NAME']?></label>
-                            <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
-                            <span class="delete"></span>
-                        </div><!-- END input_container -->
-                    </div><!-- END gray_block -->
-                <? } ?>
+                <div class="gray_blocks" id="ins_insuers">
+                    <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
+                        <div class="gray_block">
+                            <div class="input_container with_flag">
+                                <label class="big_label"><?=$insco['NAME']?></label>
+                                <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                                <!-- <span class="delete"></span> -->
+                            </div><!-- END input_container -->
+                        </div><!-- END gray_block -->
+                    <? } ?>
+                </div>
                 <h4 class="big_label">Аджастер</h4>
-                <div class="form_row adj_comp">
+                <div class="form_row ins_comp">
                     <div class="input_container without_small">
-                        <input id="search_adj" type="text" class="text_input inserted_co_label" placeholder="Выберите аджастера по вводу букв из названия" />
+                        <input type="text" class="text_input inserted_co_label" id="search_adj" placeholder="Выберите аджастера по вводу букв из названия" />
                     </div><!-- END input_container -->
                 </div> <!-- END form_row -->
+                <div class="gray_blocks" id="ins_adjusters">
+                </div>
                 <div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
@@ -140,9 +144,17 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата запроса" />
                     </div><!-- END input_container -->
-                    <div class="input_container column_50">
-                        <input type="text" class="text_input" placeholder="Автор запроса" />
+                    <div class="input_container">
+                        <select id="users" class="select js_select">
+                            <? foreach ($arResult['USERS'] as $user) { ?>
+                                <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
+                            <? } ?>
+                        </select><!-- END select -->
+                        <!-- <input type="text" class="text_input" placeholder="Название компании" /> -->
                     </div><!-- END input_container -->
+                    <!-- <div class="input_container column_50">
+                        <input type="text" class="text_input" placeholder="Автор запроса" />
+                    </div>--><!-- END input_container -->
                     <div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" placeholder="Срок предоставления" />
                     </div><!-- END input_container -->

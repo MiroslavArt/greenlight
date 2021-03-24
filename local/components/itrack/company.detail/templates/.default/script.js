@@ -204,10 +204,12 @@ $(document).ready(function() {
                     coblock.append(inplock)
                     //coblock.append(labelleader)
                     //$(".ins_comp").append(labelleader)
-
-                    $(".ins_comp").after(cardblock)
-                    $(".ins_comp").after(kursearch)
-                    $(".ins_comp").after(coblock)
+                    $("#ins_insuers").append(coblock)
+                    $("#ins_insuers").append(kursearch)
+                    $("#ins_insuers").append(cardblock)
+                    //$(".ins_comp").after(cardblock)
+                    //$(".ins_comp").after(kursearch)
+                    //$(".ins_comp").after(coblock)
 
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
                         data: {
