@@ -1,5 +1,44 @@
 $(document).ready(function() {
 
+    // подтянуть кураторов из договора
+    $("#kurtransfer").click(function(e){
+        var contractnum = $(".contract_number").attr("data-id")
+        var form = BX.findParent(this, {"tag" : "form"})
+        var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+        BX.ajax.runAction('itrack:custom.api.signal.getContkurators', {
+            data: {
+                contract: contractnum
+            }
+        }).then(function (response) {
+            console.log(response.data)
+            response.data.forEach(function(kurator){
+                var foundkur = false
+                kurids.forEach(function(element){
+                    if(element.getAttribute("value") == kurator.value) {
+                        foundkur = true
+                    }
+                })
+                if(foundkur==false) {
+                    console.log(kurator)
+                    if(kurator.type=='client') {
+                        kuratoradd($( "#ins_kur_card" ), kurator)
+                    } else if(kurator.type=='broker') {
+                        kuratoradd($( "#brok_kur_card" ), kurator)
+                    } else if(kurator.type=='insuer') {
+                        $(".ins_kurators").each(function (index, el){
+                            if($(el).attr("data-id") == kurator.companyid) {
+                                kuratoradd($(el), kurator)
+                            }
+                        })
+                    }
+                }
+            })
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error);
+        });
+    });
+
     // клиент и его кураторы
     var clientid = $( "#kur_client_search_ins").attr('data-id')
     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
@@ -71,7 +110,7 @@ $(document).ready(function() {
     // клиент и его кураторы
     $(".inserted_co_id").each(function (index, el){
         var compid = $(el).val()
-        var cardblock = $("<div></div>").attr("class", "company_card_container")
+        var cardblock = $("<div></div>").attr("class", "company_card_container ins_kurators").attr("data-id", compid)
         var kursearch = $("<div></div>").attr("class", "input_container without_small")
         var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
             .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
@@ -232,7 +271,11 @@ function kuratoradd(cardblock, item) {
     liwphone.append($("<p></p>").text(item.wphone))
     uls.append(liwphone)
     var lileader = $("<li></li>")
-    var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox").text("Назначен лидером")
+    if(item.isleader==true) {
+        var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox active").text("Назначен лидером")
+    } else {
+        var lileaderlabel = $("<label></label>").attr("class", "leader js_checkbox").text("Назначен лидером")
+    }
     var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", item.value)
     lileaderlabel.append(lileaderinput)
     lileader.append(inpkur)

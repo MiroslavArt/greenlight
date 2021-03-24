@@ -88,11 +88,68 @@ class Signal extends Controller
             $item['position'] = $ob['WORK_POSITION'];
             $item['wphone'] = $ob['WORK_PHONE'];
             $item['mphone'] = $ob['PERSONAL_MOBILE'];
+            $item['leader'] = false;
 
             array_push($result, $item);
         }
         return $result;
     }
+
+    public function getContkuratorsAction($contract)
+    {
+        Loader::includeModule('iblock');
+        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_28", "PROPERTY_29");
+        $arFilter = Array("IBLOCK_ID"=>2, "ID"=>26, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
+        $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
+
+        $result = [
+            //'broker' => [],
+            //'insuer' => [],
+            //'client' => []
+        ];
+
+        $leaders = $res['PROPERTY_29_VALUE'];
+
+        foreach($res['PROPERTY_28_VALUE'] as $user) {
+            $rsUser = \CUser::GetByID($user);
+            $arUser = $rsUser->Fetch();
+            $companyid = $arUser['UF_COMPANY'];
+
+            $item = [];
+            $item['value'] = $arUser['ID'];
+            $item['label'] = $arUser['NAME'].' '.$arUser['LAST_NAME'];
+            $item['email'] = $arUser['EMAIL'];
+            $item['position'] = $arUser['WORK_POSITION'];
+            $item['wphone'] = $arUser['WORK_PHONE'];
+            $item['mphone'] = $arUser['PERSONAL_MOBILE'];
+            $item['companyid'] = $companyid;
+            if(in_array($user, $leaders)) {
+                $item['isleader'] = true;
+            } else {
+                $item['isleader'] = false;
+            }
+
+            $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_TYPE");
+            $arFilter = Array("IBLOCK_ID" => 1, "ID" => $companyid, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+            $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
+            $company = $res->fetch();
+
+            if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
+                $item['type'] = 'broker';
+                //array_push($result['broker'], $item);
+            } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
+                $item['type'] = 'insuer';
+                //array_push($result['insuer'], $item);
+            } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
+                $item['type'] = 'client';
+                //array_push($result['client'], $item);
+            }
+            array_push($result, $item);
+        }
+
+        return $result;
+    }
+
 
     public function addUserAction($userdata)
     {
@@ -114,13 +171,13 @@ class Signal extends Controller
             if ($userdata['superuser']) {
                 array_push($groups, 12);
             }
-        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
+        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
             $type = 'Клиент';
             array_push($groups, 9);
             if ($userdata['superuser']) {
                 array_push($groups, 10);
             }
-        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
+        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
             $type = 'Аджастер';
             array_push($groups, 13);
             if ($userdata['superuser']) {

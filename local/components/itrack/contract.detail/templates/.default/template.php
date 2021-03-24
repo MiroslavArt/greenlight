@@ -19,7 +19,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <img src="<?=$arResult['INSURANCE_COMPANY']['LOGO_SRC']?>" alt="<?=$arResult['INSURANCE_COMPANY']['NAME']?>" width="40" height="40">
                     <h1 class="block_title"><?=$arResult['INSURANCE_COMPANY']['NAME']?></h1>
                 </div><!-- END client -->
-                <p class="contract_number">№ договора<span><?=$arResult['CONTRACT']['NAME']?></span></p>
+                <p class="contract_number" data-id="<?=$arResult['CONTRACT']['ID']?>">№ договора<span><?=$arResult['CONTRACT']['NAME']?></span></p>
             </div><!-- END cart_block -->
         </div>
         <div class="title_container">
@@ -57,7 +57,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <textarea class="textarea" placeholder="Описание убытка"></textarea>
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
-                        <a href="#" class="btn white">Перенести кураторов из договора страхования</a>
+                        <a href="#" class="btn white" id="kurtransfer">Перенести кураторов из договора страхования</a>
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
