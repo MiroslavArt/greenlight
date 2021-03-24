@@ -68,6 +68,50 @@ $(document).ready(function() {
         console.log(error);
     });
 
+    // клиент и его кураторы
+    $(".inserted_co_id").each(function (index, el){
+        var compid = $(el).val()
+        var cardblock = $("<div></div>").attr("class", "company_card_container")
+        var kursearch = $("<div></div>").attr("class", "input_container without_small")
+        var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
+            .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
+        kursearch.append(kursearchinp)
+        $(el).parent().parent().after(cardblock)
+        $(el).parent().parent().after(kursearch)
+        BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+            data: {
+                company: compid
+            }
+        }).then(function (response) {
+            kursearchinp.autocomplete({
+                source: response.data,
+                focus: function( event, ui ) {
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var form = BX.findParent(this, {"tag" : "form"});
+                    //console.log(form);
+                    var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+                    var foundkur = false
+                    kurids.forEach(function(element){
+                        if(element.getAttribute("value") == ui.item.value) {
+                            foundkur = true
+                        }
+                    })
+                    if(foundkur==false) {
+                        kursearchinp .val(ui.item.label);
+                        kuratoradd(cardblock, ui.item)
+                    }
+                    return false;
+                }
+            });
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error);
+        });
+
+    })
+
     // аджастер и его кураторы
     var adjcompanies = []
     BX.ajax.runAction('itrack:custom.api.signal.getCompanies', {
@@ -101,7 +145,7 @@ $(document).ready(function() {
                     var coblock = $("<div></div>").attr("class", "gray_block")
                     var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
-                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id").val(ui.item.value)
+                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_adj_id").val(ui.item.value)
                     var labelleader = $("<label></label>").attr("class", "flag js_checkbox")
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)

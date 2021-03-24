@@ -95,8 +95,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <div class="gray_block">
                             <div class="input_container with_flag">
                                 <label class="big_label"><?=$insco['NAME']?></label>
+                                <input class="inserted_co_id" type="hidden" value="<?=$insco['ID'] ?>"/>
                                 <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
-                                <!-- <span class="delete"></span> -->
                             </div><!-- END input_container -->
                         </div><!-- END gray_block -->
                     <? } ?>
