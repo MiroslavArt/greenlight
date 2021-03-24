@@ -11,10 +11,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+
 $this->setFrameMode(false);
 
 $APPLICATION->IncludeComponent(
-    'itrack:lost.detail',
+    'itrack:lost.document',
     '',
     array(
         "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
@@ -24,8 +25,8 @@ $APPLICATION->IncludeComponent(
         "CONTRACT_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["contract"],
         "LOST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["lost"],
         "LOST_ID" => $arResult['VARIABLES']["LOST_ID"],
+        "LOST_DOCUMENT_ID" => $arResult['VARIABLES']["LOST_DOCUMENT_ID"],
         "PATH_TO" => $arResult['PATH_TO']
     ),
     null
 );
-?>

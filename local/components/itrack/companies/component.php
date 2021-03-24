@@ -26,6 +26,7 @@ $arDefaultUrlTemplates404 = array(
     "edit" => "",
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
     "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
+    "lost-document" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/",
 );
 
 $arDefaultVariableAliases404 = array();
@@ -37,6 +38,7 @@ $arComponentVariables = array(
     "ELEMENT_CODE",
     "CONTRACT_ID",
     "LOST_ID",
+    "LOST_DOCUMENT_ID"
 );
 
 if($arParams["SEF_MODE"] == "Y")
@@ -93,6 +95,10 @@ if($arParams["SEF_MODE"] == "Y")
         "VARIABLES" => $arVariables,
         "ALIASES" => $arVariableAliases,
     );
+
+    foreach ($arUrlTemplates as $url => $value) {
+        $arResult["PATH_TO"][$url] = CComponentEngine::MakePathFromTemplate($arParams["SEF_FOLDER"] . $value, $arVariables);
+    }
 }
 else
 {

@@ -17,7 +17,7 @@ use \Itrack\Custom\CUserRole;
 use Itrack\Custom\InfoBlocks\LostDocuments;
 
 
-class ItrLost extends CBitrixComponent
+class ItrLostDocument extends CBitrixComponent
 {
     private $arLost;
     private $lostId;
@@ -198,7 +198,6 @@ class ItrLost extends CBitrixComponent
         foreach ($arRequests as $key => &$arRequest) {
             $arRequest['USER_FIO'] = $arUsers[$arRequest['PROPERTIES']['REQUEST_AUTHOR']['VALUE']];
             $arRequest['STATUS_NAME'] = $arStatuses[$arRequest['PROPERTIES']['STATUS']['VALUE']]['UF_NAME'];
-            $arRequest['DETAIL_PAGE_URL'] = $this->arParams['PATH_TO']['lost'] . 'lost-document-' . $arRequest['ID'] . '/';
             //Documents Statuses
             $this->arResult['DOCS_STATUSES'][$arStatuses[$arRequest['PROPERTIES']['STATUS']['VALUE']]['ID']]['DOCS'][] = $arRequest["ID"];
         }
