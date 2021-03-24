@@ -1,5 +1,72 @@
 $(document).ready(function() {
 
+    // клиент и его кураторы
+    var clientid = $( "#kur_client_search_ins").attr('data-id')
+    BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+        data: {
+            company: clientid
+        }
+    }).then(function (response) {
+        $( "#kur_client_search_ins").autocomplete({
+            source: response.data,
+            focus: function( event, ui ) {
+                return false;
+            },
+            select: function( event, ui ) {
+                var form = BX.findParent(this, {"tag" : "form"});
+                //console.log(form);
+                var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+                var foundkur = false
+                kurids.forEach(function(element){
+                    if(element.getAttribute("value") == ui.item.value) {
+                        foundkur = true
+                    }
+                })
+                if(foundkur==false) {
+                    $( "#kur_client_search_ins").val(ui.item.label);
+                    kuratoradd($( "#ins_kur_card" ), ui.item)
+                }
+                return false;
+            }
+        });
+    }, function (error) {
+        //сюда будут приходить все ответы, у которых status !== 'success'
+        console.log(error);
+    });
+
+    // брокер и его кураторы
+    var brokerid = $( "#kur_broker_search_ins" ).attr('data-id');
+    BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+        data: {
+            company: brokerid
+        }
+    }).then(function (response) {
+        $( "#kur_broker_search_ins").autocomplete({
+            source: response.data,
+            focus: function( event, ui ) {
+                return false;
+            },
+            select: function( event, ui ) {
+                var form = BX.findParent(this, {"tag" : "form"});
+                //console.log(form);
+                var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+                var foundkur = false
+                kurids.forEach(function(element){
+                    if(element.getAttribute("value") == ui.item.value) {
+                        foundkur = true
+                    }
+                })
+                if(foundkur==false) {
+                    $( "#kur_broker_search_ins").val(ui.item.label);
+                    kuratoradd($( "#brok_kur_card" ), ui.item)
+                }
+                return false;
+            }
+        });
+    }, function (error) {
+        //сюда будут приходить все ответы, у которых status !== 'success'
+        console.log(error);
+    });
 
     // аджастер и его кураторы
     var adjcompanies = []

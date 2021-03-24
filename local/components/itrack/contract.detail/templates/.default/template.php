@@ -68,6 +68,13 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
+                <div class="form_row client_comp">
+                    <div class="input_container without_small">
+                        <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
+                    </div>
+                </div><!-- END input_container -->
+                <div id="ins_kur_card" class="company_card_container">
+                </div>
                 <h4 class="big_label">Страховой брокер</h4>
                 <div class="gray_block">
                     <div class="input_container">
@@ -75,6 +82,13 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
+                <div class="form_row brok_comp">
+                    <div class="input_container without_small">
+                        <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
+                    </div>
+                </div>
+                <div id="brok_kur_card" class="company_card_container">
+                </div>
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="gray_blocks" id="ins_insuers">
                     <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
