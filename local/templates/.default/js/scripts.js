@@ -71,6 +71,10 @@ $(function(){
     $(document).on('click', '.js_delete', function(e){
         BX.remove(e.target.parentElement)
     });
+	$(document).on('click', '.js_delete1', function(e){
+		console.log(e)
+		BX.remove(e.target.parentElement.parentElement)
+	});
 	/* Radio */
 	$('.js_radio').click(function(){
 		$(this).closest('.radio_container').find('.js_radio').removeClass('active');

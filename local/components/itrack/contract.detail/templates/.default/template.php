@@ -92,13 +92,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="gray_blocks" id="ins_insuers">
                     <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
-                        <div class="gray_block">
-                            <div class="input_container with_flag">
-                                <label class="big_label"><?=$insco['NAME']?></label>
-                                <input class="inserted_co_id" type="hidden" value="<?=$insco['ID'] ?>"/>
-                                <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
-                            </div><!-- END input_container -->
-                        </div><!-- END gray_block -->
+                        <div class="ins_insuer">
+                            <div class="gray_block delete_left">
+                                <span class="delete js_delete1"></span>
+                                <div class="input_container with_flag">
+                                    <label class="big_label"><?=$insco['NAME']?></label>
+                                    <input class="inserted_co_id" type="hidden" value="<?=$insco['ID'] ?>"/>
+                                    <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                                </div><!-- END input_container -->
+                            </div><!-- END gray_block -->
+                        </div>
                     <? } ?>
                 </div>
                 <h4 class="big_label">Аджастер</h4>
