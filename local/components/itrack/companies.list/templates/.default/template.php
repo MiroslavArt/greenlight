@@ -8,6 +8,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 <?php if ($arResult['IS_AJAX'] == 'Y') {
     $APPLICATION->RestartBuffer();
     ob_start();
+
 }
 ?>
     <div id="clients-wrapper" class="wrapper">
@@ -71,7 +72,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <input type="submit" class="btn" value="Добавить компанию" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
-        <?php if (!empty($arResult['ITEMS'])) : ?>
+        <?php if (!empty($arResult['ITEMS'])) :
+            $alllosts = 0;
+            ?>
             <div id="clients-list">
                 <ul class="data_table">
                     <li class="row table_head">
@@ -82,7 +85,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <div class="table_block stat_column item2"><p>Открыто</p></div>
                         <div class="table_block links_column item8"><p>Ссылки</p></div>
                     </li>
-                    <?php foreach ($arResult['ITEMS'] as $arItem) : ?>
+                    <?php foreach ($arResult['ITEMS'] as $arItem) :
+                        $alllosts += $arItem['ALL_LOST'];
+                        ?>
                         <li class="row">
                             <div class="table_block clients_column item6 no_header" data-name="Клиент">
                                 <?php if (!empty($arItem['LOGO_SRC'])) : ?>
@@ -91,11 +96,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <?php endif; ?>
                                 <span><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?= $arItem['NAME'] ?></a></span>
                             </div><!-- END table_block -->
-                            <div class="table_block stat_column item2" data-name="Убытки, шт">3</div>
-                            <div class="table_block stat_column green item2" data-name="Закрыто">1</div>
-                            <div class="table_block stat_column yellow item2" data-name="Документы предоставлены">1
+                            <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arItem['ALL_LOST'] ?></div>
+                            <div class="table_block stat_column green item2" data-name="Закрыто">н.д.</div>
+                            <div class="table_block stat_column yellow item2" data-name="Документы предоставлены">н.д.
                             </div>
-                            <div class="table_block stat_column red item2" data-name="Открыто">1</div>
+                            <div class="table_block stat_column red item2" data-name="Открыто">н.д.</div>
                             <div class="table_block links_column item8" data-name="Ссылки">
                                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link ico_doc"><span>Список договоров страхования</span></a>
                             </div>
@@ -105,10 +110,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <ul class="data_table no_bg">
                     <li class="row">
                         <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
-                        <div class="table_block stat_column item2" data-name="Убытки, шт">18</div>
-                        <div class="table_block stat_column item2" data-name="Закрыто">6</div>
-                        <div class="table_block stat_column item2" data-name="Документы предоставлены">6</div>
-                        <div class="table_block stat_column item2" data-name="Открыто">6</div>
+                        <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
+                        <div class="table_block stat_column item2" data-name="Закрыто">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Документы предоставлены">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Открыто">н.д.</div>
                         <div class="table_block links_column"></div>
                     </li>
                 </ul><!-- END data_table -->

@@ -28,24 +28,20 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
     }
 }
 
-//$fidids = [];
-\Bitrix\Main\Diag\Debug::writeToFile($_FILES, "files", "__miros.log");
-//foreach ($_FILES['logo'] as $file) {
-    $arr_file=Array(
-        "name" =>  $_FILES['logo']['name'],
-        "size" => $_FILES['logo']['size'],
-        "tmp_name" => $_FILES['logo']['tmp_name'],
-        "type" => $_FILES['logo']['type'],
-        "old_file" => "",
-        "del" => "Y",
-        "MODULE_ID" => "iblock");
-    $fid = CFile::SaveFile($arr_file, "lossdocs");
-//    array_push($fidids, $fid);
-//}
+$arr_file=Array(
+    "name" =>  $_FILES['logo']['name'],
+    "size" => $_FILES['logo']['size'],
+    "tmp_name" => $_FILES['logo']['tmp_name'],
+    "type" => $_FILES['logo']['type'],
+    "old_file" => "",
+    "del" => "Y",
+    "MODULE_ID" => "iblock");
+$fid = CFile::SaveFile($arr_file, "lossdocs");
+
 Loader::includeModule('iblock');
 $add = new \CIBlockElement();
 
-\Bitrix\Main\Diag\Debug::writeToFile($fid, "fid", "__miros.log");
+//\Bitrix\Main\Diag\Debug::writeToFile($fid, "fid", "__miros.log");
 
 $data = [
     'IBLOCK_ID' => 1,

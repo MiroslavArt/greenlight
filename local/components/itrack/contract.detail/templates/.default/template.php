@@ -112,46 +112,46 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div> <!-- END form_row -->
                 <div class="gray_blocks" id="ins_adjusters">
                 </div>
-                <div class="form_row">
+                <!--<div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
+                        </div>
+                    </div>
                     <div class="switches_container">
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
-                </div><!-- END form_row -->
+                        </div>
+                    </div>
+                </div> -->
                 <div class="form_row">
                     <div class="input_container column_100">
                         <input type="text" class="text_input" id="req_doc" placeholder="Запрашиваемые документы" />
