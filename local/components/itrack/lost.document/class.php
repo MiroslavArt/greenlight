@@ -19,10 +19,11 @@ use Itrack\Custom\InfoBlocks\LostDocuments;
 
 class ItrLostDocument extends CBitrixComponent
 {
-    private $arLost;
+    private $arDocument;
     private $lostId;
     private $companyId;
     private $contractId;
+    private $documentId;
     private $errors;
 
     public function onPrepareComponentParams($arParams)
@@ -30,6 +31,7 @@ class ItrLostDocument extends CBitrixComponent
         $this->companyId = $arParams['CLIENT_ID'];
         $this->contractId = $arParams['CONTRACT_ID'];
         $this->lostId = $arParams['LOST_ID'];
+        $this->documentId = $arParams['LOST_DOCUMENT_ID'];
 
         return $arParams;
     }
@@ -40,192 +42,79 @@ class ItrLostDocument extends CBitrixComponent
 
         $arResult =& $this->arResult;
 
-        if ($this->getLost()) {
-            $arResult['LOST'] = $this->arLost;
+        if ($this->getDocument()) {
+            $arResult['DOCUMENT'] = $this->arDocument;
         }
 
-        //Contract
-        $this->getContract();
-        //get company
-        $arResult['COMPANY'] = $this->getCompany($this->companyId);
-        //get insurance company
-        if (!empty($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'])) {
-            $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
+        if(!empty($arResult['DOCUMENT']['PROPERTIES']['REQUEST_AUTHOR']['VALUE'])) {
+            $rsUser = CUser::GetByID($arResult['DOCUMENT']['PROPERTIES']['REQUEST_AUTHOR']['VALUE']);
+            $arUser = $rsUser->Fetch();
+            if($arUser) {
+                $arResult['REQUEST_USER'] = $arUser;
+                $arResult['REQUEST_USER_FIO'] = \CUser::formatName('#LAST_NAME#&nbsp;#NAME_SHORT#&nbsp;#SECOND_NAME_SHORT# ', $arUser, false, false);
+            }
         }
-        //curators
-        $arCurators = $this->getCurators();
-        if (!empty($arCurators)) {
-            $arResult['CURATORS'] = $arCurators;
-            unset($arCurators);
-        }
-        //Lost Requests
-        $arResult['REQUESTS'] = $this->getRequests();
+        //Document Files
+        $arResult['DOCUMENTS'] = $this->getDocuments();
 
         if (isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
         }
 
-        $arResult['CONTRACT_PAGE_URL'] = $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $this->arParams['CONTRACT_ID'] . '/';
-        $APPLICATION->SetTitle(GetMessage('LOST_CARD') . ' - ' . $arResult['LOST']['NAME']);
+        $APPLICATION->SetTitle(GetMessage('LOST_DOCUMENT') . ' - ' . $arResult['DOCUMENT']['NAME']);
 
         $this->includeComponentTemplate();
     }
 
-    private function getLost()
+    private function getDocument()
     {
-        $arLost = Lost::getElementByID($this->lostId);
-        if (empty($arLost)) {
+        $arDocument = LostDocuments::getElementByID($this->documentId);
+        if (empty($arDocument)) {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
 
         //Статус
-        $tableName = $arLost['PROPERTIES']['STATUS']['USER_TYPE_SETTINGS']['TABLE_NAME'];
-        $arLostStatus = [];
+        $tableName = $arDocument['PROPERTIES']['STATUS']['USER_TYPE_SETTINGS']['TABLE_NAME'];
+        $arDocumentStatus = [];
         if ($tableName) {
-            $objLostStatus = new \Itrack\Custom\Highloadblock\HLBWrap($tableName);
-            $rsStatus = $objLostStatus->getList([
-                "filter" => array('UF_XML_ID' => $arLost['PROPERTIES']['STATUS']['VALUE']),
+            $objDocumentStatus = new \Itrack\Custom\Highloadblock\HLBWrap($tableName);
+            $rsStatus = $objDocumentStatus->getList([
+                "filter" => array('UF_XML_ID' => $arDocument['PROPERTIES']['STATUS']['VALUE']),
                 "select" => array("*"),
                 "order" => array("ID" => "ASC")
             ]);
 
             while ($arStatus = $rsStatus->fetch()) {
-                $arLost['PROPERTIES']['STATUS']['VALUE'] = $arStatus;
+                $arDocument['PROPERTIES']['STATUS']['VALUE'] = $arStatus;
             }
         }
 
-        $this->arLost = $arLost;
-        unset($arLost);
+        $this->arDocument = $arDocument;
+        unset($arDocument);
 
         return true;
     }
 
-    private function getCurators()
+
+    private function getDocuments()
     {
-        $arCurators = \Itrack\Custom\InfoBlocks\LostUsers::getElementsByConditions(['PROPERTY_LOST' => [$this->arLost['ID']]]);
-        if (empty($arCurators)) {
-            return false;
-        }
+        //ToDo переделать выборку файлов
+        $arDocuments = [];
+        $objDocuments = new \Itrack\Custom\Highloadblock\HLBWrap('uploaded_docs');
+        $rsDocuments = $objDocuments->getList([
+            "filter" => array('UF_LOST_ID' => $this->documentId, 'UF_DOC_TYPE' => 2),
+            "select" => array("*"),
+            "order" => array("UF_DATE_CREATED" => "DESC")
+        ]);
 
-        $arCuratorsIds = [];
-        foreach ($arCurators as $arCurator) {
-            $arCuratorsIds[] = $arCurator['PROPERTIES']['CURATOR']['VALUE'];
-        }
-
-        $query = UserGroupTable::query()
-            ->setSelect([
-                'ID' => 'USER.ID',
-                'LOGIN' => 'USER.LOGIN',
-                'GROUP_CODE' => 'GROUP.STRING_ID',
-                'NAME' => 'USER.NAME',
-                'LAST_NAME' => 'USER.LAST_NAME',
-                'SECOND_NAME' => 'USER.SECOND_NAME',
-                'LAST_LOGIN' => 'USER.LAST_LOGIN',
-                'POSITION' => 'USER.WORK_POSITION',
-                'PHONE' => 'USER.WORK_PHONE',
-                'COMPANY_ID' => 'IB_COMPANY.ID',
-                'COMPANY_NAME' => 'IB_COMPANY.NAME',
-                'COMPANY_TYPE' => 'IB_COMPANY.TYPE.ITEM.VALUE'
-            ])
-            ->registerRuntimeField(new ReferenceField(
-                'UF_VAL',
-                UserFieldValueTable::class,
-                Join::on('this.USER_ID', 'ref.VALUE_ID')
-            ))
-            ->registerRuntimeField((new ReferenceField(
-                'IB_COMPANY',
-                ElementCompanyTable::class,
-                Join::on('this.UF_VAL.UF_COMPANY', 'ref.ID')
-            ))->configureJoinType(Join::TYPE_INNER))
-            ->whereIn('ID', $arCuratorsIds);
-
-
-        $result = $query->exec();
-        $items = [];
-
-        while ($row = $result->fetch()) {
-
-            $userId = $row['ID'];
-            $group = $row['GROUP_CODE'];
-
-            $isSuper = in_array($group, CUserRole::getSuperGroups()) || $items[$userId]['IS_SUPER'];
-
-            $groups = $items[$userId]['GROUPS'] ?: [];
-            $groups[] = $group;
-
-            unset($row['GROUP_CODE']);
-            $items[$userId] = $row;
-            $items[$userId]['GROUPS'] = $groups;
-            $items[$userId]['IS_SUPER'] = $isSuper;
-        }
-
-        return $items;
-    }
-
-    private function getRequests()
-    {
-        $arRequests = [];
-
-        $arRequests = LostDocuments::getElementsByConditions(['PROPERTY_LOST' => [$this->arLost['ID']]]);
-
-        foreach ($arRequests as $arRequest) {
-            $arUserIDs[] = $arRequest['PROPERTIES']['REQUEST_AUTHOR']['VALUE'];
-        }
-
-        if (!empty($arUserIDs)) {
-            $filter = ["ID" => implode("|", $arUserIDs)];
-            $rsUsers = \CUser::GetList(($by = "NAME"), ($order = "desc"), $filter);
-            while ($arUser = $rsUsers->Fetch()) {
-                $arUsers[$arUser['ID']] = \CUser::formatName('#NAME# #SECOND_NAME# #LAST_NAME#', $arUser, false, false);
+        while ($arDocument = $rsDocuments->fetch()) {
+            if(intval($arDocument['UF_FILE']) > 0) {
+                $arDocument['FILE'] =  \CFile::GetFileArray($arDocument['UF_FILE']);
             }
+            $arDocuments[] = $arDocument;
         }
 
-        //Статус
-        $tableName = $arRequests[0]['PROPERTIES']['STATUS']['USER_TYPE_SETTINGS']['TABLE_NAME'];
-        $arStatus = [];
-        if ($tableName) {
-            $objStatus = new \Itrack\Custom\Highloadblock\HLBWrap($tableName);
-            $rsStatus = $objStatus->getList([
-                "select" => array("*"),
-                "order" => array("ID" => "ASC")
-            ]);
-
-            while ($arStatus = $rsStatus->fetch()) {
-                $arStatuses[$arStatus['UF_XML_ID']] = $arStatus;
-            }
-        }
-
-        foreach ($arRequests as $key => &$arRequest) {
-            $arRequest['USER_FIO'] = $arUsers[$arRequest['PROPERTIES']['REQUEST_AUTHOR']['VALUE']];
-            $arRequest['STATUS_NAME'] = $arStatuses[$arRequest['PROPERTIES']['STATUS']['VALUE']]['UF_NAME'];
-            //Documents Statuses
-            $this->arResult['DOCS_STATUSES'][$arStatuses[$arRequest['PROPERTIES']['STATUS']['VALUE']]['ID']]['DOCS'][] = $arRequest["ID"];
-        }
-        if(!empty($arStatuses)) {
-            $this->arResult['STATUSES'] = $arStatuses;
-            unset($arStatuses);
-        }
-        return $arRequests;
-    }
-
-    private function getCompany(int $companyId)
-    {
-        $arCompany = Company::getElementByID($companyId);
-        if (!empty($arCompany)) {
-            return $arCompany;
-        } else {
-            \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
-        }
-    }
-
-    private function getContract()
-    {
-        $arContract = Contract::getElementByID($this->contractId);
-        if (!empty($arContract)) {
-            $this->arResult['CONTRACT'] = $arContract;
-        } else {
-            \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
-        }
+        return $arDocuments;
     }
 
 }

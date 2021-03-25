@@ -1,2 +1,2 @@
 <?php
-$MESS['LOST_CARD'] = 'Карточка убытка';
+$MESS['LOST_DOCUMENT'] = 'Документ убытка';
