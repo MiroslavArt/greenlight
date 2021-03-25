@@ -52,7 +52,7 @@ $(function(){
             $(this).parent().toggleClass('active')
         }
 		if(BX.hasClass(e.target.parentElement, 'flag') && !BX.hasClass(e.target.parentElement, 'active')) {
-			var cardcont = BX.findParent(e.target.parentElement, {"tag" : "form"})
+			var cardcont = BX.findParent(e.target.parentElement, {"class" : "gray_blocks"})
 			var leaders = BX.findChild(cardcont, {"class" : "flag"}, true, true)
 			leaders.forEach(function(element){
 				if(element != e.target.parentElement && BX.hasClass(element, 'active')) {
@@ -71,6 +71,10 @@ $(function(){
     $(document).on('click', '.js_delete', function(e){
         BX.remove(e.target.parentElement)
     });
+	$(document).on('click', '.js_delete1', function(e){
+		console.log(e)
+		BX.remove(e.target.parentElement.parentElement)
+	});
 	/* Radio */
 	$('.js_radio').click(function(){
 		$(this).closest('.radio_container').find('.js_radio').removeClass('active');

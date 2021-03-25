@@ -2,9 +2,6 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 use Bitrix\Main\Page\Asset;
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-//Asset::getInstance()->addJs(SITE_TEMPLATE_PATH ."/js/jquery.js");
-Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH ."/css/jquery-ui.css");
-Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
 ?>
 <?php if ($arResult['IS_AJAX'] == 'Y') {
     $APPLICATION->RestartBuffer();
@@ -28,7 +25,9 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                            placeholder="Поиск по списку договоров"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
-                <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
+                    <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <? } ?>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_contract">
@@ -82,18 +81,6 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 <div class="form_row attached_container">
                     <label class="big_label">Документы</label>
                     <ul class="docs_list">
-                        <!-- <li>
-                            <a href="#" class="link">dogovor_ob_avariia_na_zav....doc</a>
-                            <span class="delete"></span>
-                        </li>
-                        <li>
-                            <a href="#" class="link">Договор от 28 декабря 20....doc</a>
-                            <span class="delete"></span>
-                        </li>
-                        <li>
-                            <a href="#" class="link">Документ №98712.doc</a>
-                            <span class="delete"></span>
-                        </li> -->
                     </ul><!-- END docs_list -->
                 </div><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
@@ -107,8 +94,6 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 <div class="form_row client_comp">
                     <div class="input_container without_small">
                         <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
-                        <!-- <input type="hidden" class="inserted_co_label" />
-                        <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
                 </div>
                 <div id="ins_kur_card" class="company_card_container">
@@ -131,19 +116,12 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 </div>
                 <h4 class="big_label">Страховая компания</h4>
                 <div class="form_row ins_comp">
-                    <!--<select data-placeholder="Введите часть имени..." class="chosen-select" name='responsibleIds[]'>
-                        <option value="Bubnova">Bubnova</option>
-                        <option value="Gorodetsky">Gorodetsky</option>
-                        <option value="Gorsky">Gorsky</option>
-                    </select> -->
                     <div class="input_container without_small">
                         <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
-                        <!-- <input type="hidden" class="inserted_co_label" />
-                        <input type="hidden" class="inserted_co_id" /> -->
                     </div><!-- END input_container -->
-                   <!-- <label class="flag js_checkbox"><input type="checkbox"></label> -->
-                    <!-- <a href="#" class="link ico_add ins_add"><span>Добавить страховую компанию</span></a> -->
                 </div> <!-- END form_row -->
+                <div class="gray_blocks" id="ins_insuers">
+                </div>
                 <div class="gray_block originals_required">
                     <div class="switch_container">
                         <label id="provideoriginal" class="switch js_checkbox"><input type="checkbox"></label>
@@ -151,52 +129,53 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                     </div><!-- END switch_container -->
                     <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
                 </div><!-- END originals_required -->
-                <div class="form_row">
+                <!--<div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
                             <label id="clientaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="brokeraccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="insaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="adjaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
+                        </div>
+                    </div>
                     <div class="switches_container">
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
                             <label id="clientnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="brokernot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="insnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
-                </div><!-- END form_row -->
+                        </div>
+                    </div><
+                </div> --><!-- END form_row -->
                 <!-- <div class="btn senddoc">Добавить договор</div> -->
                 <input type="submit" class="btn" value="Добавить договор" />
             </form><!-- END form_edit_profile -->
-
         </div><!-- END popup -->
-        <?php if (!empty($arResult['CONTRACTS'])) : ?>
+        <?php if (!empty($arResult['CONTRACTS'])) :
+            $alllosts = 0;
+            ?>
             <div id="contracts-list">
                 <ul class="data_table">
                     <li class="row table_head">
@@ -210,15 +189,17 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                         <div class="table_block item3"><p>СК (Лидер)</p></div>
                         <div class="table_block item6 links_column"><p>Ссылки</p></div>
                     </li>
-                    <?php foreach ($arResult['CONTRACTS'] as $arItem) : ?>
+                    <?php foreach ($arResult['CONTRACTS'] as $arItem) :
+                        $alllosts += $arItem['ALL_LOST'];
+                        ?>
                         <li class="row">
                             <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                             <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
-                            <div class="table_block stat_column" data-name="Убытки, шт">3</div>
-                            <div class="table_block stat_column green">1</div>
-                            <div class="table_block stat_column yellow item2">1</div>
-                            <div class="table_block stat_column red">1</div>
+                            <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem['ALL_LOST']?></div>
+                            <div class="table_block stat_column green">н.д.</div>
+                            <div class="table_block stat_column yellow item2">н.д.</div>
+                            <div class="table_block stat_column red">н.д.</div>
                             <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
                             <div class="table_block item6 links_column">
                                 <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
@@ -230,10 +211,10 @@ Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH ."/js/jquery-ui.js");
                 <ul class="data_table no_bg">
                     <li class="row">
                         <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
-                        <div class="table_block stat_column item2" data-name="Убытки, шт">18</div>
-                        <div class="table_block stat_column item2" data-name="Закрыто">6</div>
-                        <div class="table_block stat_column item2" data-name="Документы предоставлены">6</div>
-                        <div class="table_block stat_column item2" data-name="Открыто">6</div>
+                        <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
+                        <div class="table_block stat_column item2" data-name="Закрыто">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Документы предоставлены">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Открыто">н.д.</div>
                         <div class="table_block links_column"></div>
                     </li>
                 </ul><!-- END data_table -->

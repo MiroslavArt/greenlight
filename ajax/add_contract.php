@@ -11,7 +11,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_befo
 
 global $USER, $APPLICATION;
 
-
 if(!function_exists('__CrmPropductRowListEndResponse'))
 {
     function __CrmPropductRowListEndResponse($result)
@@ -28,10 +27,6 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
         die();
     }
 }
-
-//$request = Context::getCurrent()->getRequest();
-//\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
-//\Bitrix\Main\Diag\Debug::writeToFile($_FILES, "files", "__miros.log");
 
 $fidids = [];
 
