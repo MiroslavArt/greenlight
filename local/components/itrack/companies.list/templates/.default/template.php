@@ -26,14 +26,56 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                            placeholder="Поиск по списку клиентов"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
-                <a href="/html/stats.html" class="btn">Добавить клиента</a>
+                <!-- <a href="/html/stats.html" class="btn">Добавить компанию</a> -->
+                <a href="#add_company" data-fancybox class="btn">Добавить <?=$arResult['addtxt']?></a>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
+        <div class="popup" id="add_company">
+            <h3 class="block_title">Добавить <?=$arResult['addtxt']?></h3>
+            <form class="form_popup">
+                <input type="hidden" id="company_type" value="<?=$arParams['TYPE_ID']?>"/>
+                <div class="form_row">
+                    <div class="input_container column_50">
+                        <input type="text" class="text_input" id="company_name" placeholder="Название компании" />
+                    </div><!-- END input_container -->
+                    <div class="input_container column_50">
+                        <input type="text" class="text_input" id="company_full_name" placeholder="Полное наименование (юридическое наименование)" />
+                    </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row">
+                    <div class="input_container column_50">
+                        <input type="text" class="text_input" id="company_adress" placeholder="Юридический адрес" />
+                    </div><!-- END input_container -->
+                    <div class="input_container column_50">
+                        <input type="text" class="text_input" id="company_legal_adress" placeholder="Почтовый адрес" />
+                    </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row">
+                    <div class="input_container column_25">
+                        <input type="text" class="text_input" id="company_inn" placeholder="ИНН" />
+                    </div><!-- END input_container -->
+                    <div class="input_container column_25">
+                        <input type="text" class="text_input" id="company_kpp" placeholder="КПП" />
+                    </div><!-- END input_container -->
+                </div><!-- END form_row -->
+                <div class="form_row">
+                    <div class="logo_upload_container column_3 margin">
+                        <img id="company_logo_view" src="#" width="40" height="40" alt="Лого" />
+                        <div class="logo_upload">
+                            <input id="company_logo_input" type="file" />
+                            <span class="upload"><span>Загрузить лого</span></span>
+                        </div><!-- END logo_upload -->
+                    </div><!-- END logo_upload_container -->
+                </div><!-- END form_row -->
+                <p class="link" id="mistake"></p>
+                <input type="submit" class="btn" value="Добавить компанию" />
+            </form><!-- END form_edit_profile -->
+        </div><!-- END popup -->
         <?php if (!empty($arResult['ITEMS'])) : ?>
             <div id="clients-list">
                 <ul class="data_table">
                     <li class="row table_head">
-                        <div class="table_block clients_column item6"><p>Клиент</p></div>
+                        <div class="table_block clients_column item6"><p>Название компании</p></div>
                         <div class="table_block stat_column item2"><p>Убытки, <br/>шт</p></div>
                         <div class="table_block stat_column item2"><p>Закрыто</p></div>
                         <div class="table_block stat_column item2"><p>Документы <br/>предоставлены</p></div>
