@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    // текущая дата по умолчанию
+    var options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timezone: 'UTC'
+    };
+
+    $("#doc_date").val(new Date().toLocaleString("ru", options))
+
     // подтянуть кураторов из договора
     var contractnum = $(".contract_number").attr("data-id")
     $("#kurtransfer").click(function(e){
@@ -115,8 +125,10 @@ $(document).ready(function() {
         var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
             .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
         kursearch.append(kursearchinp)
-        $(el).parent().parent().after(cardblock)
-        $(el).parent().parent().after(kursearch)
+        //$(el).parent().parent().after(cardblock)
+        //$(el).parent().parent().after(kursearch)
+        $(el).parent().parent().parent().append(kursearch)
+        $(el).parent().parent().parent().append(cardblock)
         BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
             data: {
                 company: compid
@@ -180,8 +192,9 @@ $(document).ready(function() {
                     }
                 });
                 if(foundcomp==false) {
-                    //var allblocks = $("<div></div>").attr("class", "gray_blocks")
-                    var coblock = $("<div></div>").attr("class", "gray_block")
+                    var allblocks = $("<div></div>").attr("class", "ins_adjuster")
+                    var coblock = $("<div></div>").attr("class", "gray_block delete_left")
+                    var delblock = $("<span></span>").attr("class", "delete js_delete1")
                     var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
                     var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_adj_id").val(ui.item.value)
@@ -196,10 +209,15 @@ $(document).ready(function() {
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
+                    coblock.append(delblock)
                     coblock.append(inplock)
-                    $("#ins_adjusters").append(coblock)
-                    $("#ins_adjusters").append(kursearch)
-                    $("#ins_adjusters").append(cardblock)
+                    allblocks.append(coblock)
+                    allblocks.append(kursearch)
+                    allblocks.append(cardblock)
+                    $("#ins_adjusters").append(allblocks)
+                    //$("#ins_adjusters").append(coblock)
+                    //$("#ins_adjusters").append(kursearch)
+                    //$("#ins_adjusters").append(cardblock)
 
                     //$(".ins_comp").after(allblocks)
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {

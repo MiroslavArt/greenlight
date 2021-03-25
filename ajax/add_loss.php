@@ -43,8 +43,6 @@ foreach ($_FILES as $file) {
     $fid = CFile::SaveFile($arr_file, "lossdocs");
     array_push($fidids, $fid);
 }
-\Bitrix\Main\Diag\Debug::writeToFile($fidids, "filesids", "__miros.log");
-
 
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);

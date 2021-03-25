@@ -6,6 +6,7 @@ use Bitrix\Main\Entity;
 use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
+use Itrack\Custom\InfoBlocks\Lost;
 
 class ItrCompany extends CBitrixComponent
 {
@@ -68,6 +69,15 @@ class ItrCompany extends CBitrixComponent
         $elements = Contract::getElementsByConditions($arFilter, [], []);
 
         foreach ($elements as $element) {
+
+
+            $arFilter2 = [
+                "ACTIVE" => 'Y',
+                "PROPERTY_CONTRACT" => $element['ID'],
+            ];
+
+            $elements2 = Lost::getElementsByConditions($arFilter2, [], []);
+
             $arItem = [
                 'ID' => $element['ID'],
                 'NAME' => $element['NAME'],
@@ -76,10 +86,11 @@ class ItrCompany extends CBitrixComponent
                 'INSURANCE_COMPANY_LEADER' => $element['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'],
                 'INSURANCE_COMPANY_LEADER_NAME' => $element['PROPERTY_INSURANCE_COMPANY_LEADER_NAME'],
                 'DETAIL_PAGE_URL' => $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $element['ID'] . '/',
+                'ALL_LOST' => count($elements2)
             ];
+
             $arResult['CONTRACTS'][$element['ID']] = $arItem;
         }
-
         unset($elements);
     }
 

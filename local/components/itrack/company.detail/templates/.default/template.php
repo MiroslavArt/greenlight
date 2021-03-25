@@ -25,7 +25,9 @@ use Bitrix\Main\Page\Asset;
                            placeholder="Поиск по списку договоров"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
-                <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
+                    <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <? } ?>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_contract">
@@ -127,52 +129,53 @@ use Bitrix\Main\Page\Asset;
                     </div><!-- END switch_container -->
                     <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
                 </div><!-- END originals_required -->
-                <div class="form_row">
+                <!--<div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
                             <label id="clientaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="brokeraccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="insaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="adjaccept" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
+                        </div>
+                    </div>
                     <div class="switches_container">
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
                             <label id="clientnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Клиент</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="brokernot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховой Брокер</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="insnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Страховая Компания</span>
-                        </div><!-- END switch_container -->
+                        </div>
                         <div class="switch_container">
                             <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
                             <span>Аджастер</span>
-                        </div><!-- END switch_container -->
-                    </div><!-- END switches_container -->
-                </div><!-- END form_row -->
+                        </div>
+                    </div><
+                </div> --><!-- END form_row -->
                 <!-- <div class="btn senddoc">Добавить договор</div> -->
                 <input type="submit" class="btn" value="Добавить договор" />
             </form><!-- END form_edit_profile -->
-
         </div><!-- END popup -->
-        <?php if (!empty($arResult['CONTRACTS'])) : ?>
+        <?php if (!empty($arResult['CONTRACTS'])) :
+            $alllosts = 0;
+            ?>
             <div id="contracts-list">
                 <ul class="data_table">
                     <li class="row table_head">
@@ -186,15 +189,17 @@ use Bitrix\Main\Page\Asset;
                         <div class="table_block item3"><p>СК (Лидер)</p></div>
                         <div class="table_block item6 links_column"><p>Ссылки</p></div>
                     </li>
-                    <?php foreach ($arResult['CONTRACTS'] as $arItem) : ?>
+                    <?php foreach ($arResult['CONTRACTS'] as $arItem) :
+                        $alllosts += $arItem['ALL_LOST'];
+                        ?>
                         <li class="row">
                             <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                             <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
-                            <div class="table_block stat_column" data-name="Убытки, шт">3</div>
-                            <div class="table_block stat_column green">1</div>
-                            <div class="table_block stat_column yellow item2">1</div>
-                            <div class="table_block stat_column red">1</div>
+                            <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem['ALL_LOST']?></div>
+                            <div class="table_block stat_column green">н.д.</div>
+                            <div class="table_block stat_column yellow item2">н.д.</div>
+                            <div class="table_block stat_column red">н.д.</div>
                             <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
                             <div class="table_block item6 links_column">
                                 <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
@@ -206,10 +211,10 @@ use Bitrix\Main\Page\Asset;
                 <ul class="data_table no_bg">
                     <li class="row">
                         <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
-                        <div class="table_block stat_column item2" data-name="Убытки, шт">18</div>
-                        <div class="table_block stat_column item2" data-name="Закрыто">6</div>
-                        <div class="table_block stat_column item2" data-name="Документы предоставлены">6</div>
-                        <div class="table_block stat_column item2" data-name="Открыто">6</div>
+                        <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
+                        <div class="table_block stat_column item2" data-name="Закрыто">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Документы предоставлены">н.д.</div>
+                        <div class="table_block stat_column item2" data-name="Открыто">н.д.</div>
                         <div class="table_block links_column"></div>
                     </li>
                 </ul><!-- END data_table -->

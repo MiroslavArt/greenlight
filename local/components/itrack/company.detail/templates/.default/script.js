@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    // дата договора
+    var options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timezone: 'UTC'
+    };
+
+    $("#docdate").val(new Date().toLocaleString("ru", options))
+
     // добавление файлов
     var inputFile1 = $('.cont_file1');
     var inputFile2 = $('.cont_file2');
@@ -186,7 +196,9 @@ $(document).ready(function() {
                     }
                 });
                 if(foundcomp==false) {
+                    var allblocks = $("<div></div>").attr("class", "ins_insuer")
                     var coblock = $("<div></div>").attr("class", "gray_block")
+                    var delblock = $("<span></span>").attr("class", "delete js_delete1")
                     var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
                     var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id").val(ui.item.value)
@@ -201,12 +213,17 @@ $(document).ready(function() {
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
+                    coblock.append(delblock)
                     coblock.append(inplock)
                     //coblock.append(labelleader)
+                    allblocks.append(coblock)
+                    allblocks.append(kursearch)
+                    allblocks.append(cardblock)
+                    $("#ins_insuers").append(allblocks)
                     //$(".ins_comp").append(labelleader)
-                    $("#ins_insuers").append(coblock)
-                    $("#ins_insuers").append(kursearch)
-                    $("#ins_insuers").append(cardblock)
+                    //$("#ins_insuers").append(coblock)
+                    //$("#ins_insuers").append(kursearch)
+                    //$("#ins_insuers").append(cardblock)
                     //$(".ins_comp").after(cardblock)
                     //$(".ins_comp").after(kursearch)
                     //$(".ins_comp").after(coblock)
