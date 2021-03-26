@@ -102,7 +102,7 @@ class Signal extends Controller
 
     public function getContkuratorsAction($contract)
     {
-        $participation = new CParticipation(new CContract(78));
+        $participation = new CParticipation(new CContract($contract));
 
         $partips = $participation->getParticipants();
 

@@ -12,6 +12,8 @@ use \Bitrix\Main\Entity\Query;
 use \Bitrix\Main\Entity\ReferenceField;
 use \Bitrix\Main\ORM\Query\Join;
 use \Bitrix\Main\UserGroupTable;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CParticipation;
 use \Itrack\Custom\UserFieldValueTable;
 use \Itrack\Custom\CUserRole;
 use Itrack\Custom\InfoBlocks\LostDocuments;
@@ -102,16 +104,20 @@ class ItrLost extends CBitrixComponent
 
     private function getCurators()
     {
-        $arCurators = \Itrack\Custom\InfoBlocks\LostUsers::getElementsByConditions(['PROPERTY_LOST' => [$this->arLost['ID']]]);
+        //$arCurators = \Itrack\Custom\InfoBlocks\LostUsers::getElementsByConditions(['PROPERTY_LOST' => [$this->arLost['ID']]]);
+        $participation = new CParticipation(new CLost($this->arLost['ID']));
+
+        $arCurators  = $participation->getParticipants();
         if (empty($arCurators)) {
             return false;
         }
 
         $arCuratorsIds = [];
         foreach ($arCurators as $arCurator) {
-            $arCuratorsIds[] = $arCurator['PROPERTIES']['CURATOR']['VALUE'];
-        }
+            //$arCuratorsIds[] = $arCurator['PROPERTIES']['CURATORS']['VALUE'];
+            $arCuratorsIds = array_merge($arCuratorsIds, $arCurator['PROPERTIES']['CURATORS']['VALUE']);
 
+        }
         $query = UserGroupTable::query()
             ->setSelect([
                 'ID' => 'USER.ID',
