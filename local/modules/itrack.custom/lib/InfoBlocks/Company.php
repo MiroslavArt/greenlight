@@ -63,4 +63,18 @@ class Company extends BaseClass
 
     	return $arCompany['PROPERTIES']['TYPE']['VALUE_XML_ID'];
 	}
+
+	public static function getParties(array $companyIds) {
+		$arCompanies = self::getElementsByConditions(["ID" => $companyIds]);
+
+		$arParties = [];
+
+		foreach ($arCompanies as $arCompany) {
+			$companyId = $arCompany['ID'];
+			$party = $arCompany['PROPERTIES']['TYPE']['VALUE_XML_ID'];
+			$arParties[$companyId] = $party;
+		}
+
+		return $arParties;
+	}
 }
