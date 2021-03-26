@@ -58,4 +58,21 @@ class CUserEx
 
 		return $result->fetch()["UF_COMPANY"];
 	}
+
+	public static function getUsersCompanies(array $users) {
+		$res = \Bitrix\Main\UserTable::query()
+			->setSelect(["ID", "UF_COMPANY"])
+			->whereIn("ID", $users)
+			->exec();
+
+		$userCompanies = [];
+
+		while ($row = $res->fetch()) {
+			$userId = $row["ID"];
+			$companyId = $row["UF_COMPANY"];
+			$userCompanies[$userId] = $companyId;
+		}
+
+		return $userCompanies;
+	}
 }
