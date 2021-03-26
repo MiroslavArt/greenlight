@@ -2,15 +2,15 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-//\Itrack\Custom\Helpers\Utils::varDump($arParams);
+//\Itrack\Custom\Helpers\Utils::varDump($arResult['HISTORY']);
 ?>
 
 
 <div class="wrapper">
-    <a href="<?=$arParams['PATH_TO']['lost']?>" class="back">К убытку</a>
+    <a href="<?=$arParams['PATH_TO']['lost-document']?>" class="back">К документу</a>
     <div class="title_container">
         <div class="title_block table_big">
-            <span class="type_page">Карточка документа</span>
+            <span class="type_page">Статусы документа</span>
             <h2 class="block_title"><?=$arResult['DOCUMENT']['NAME']?></h2>
             <div class="card_status_container">
                 <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']?>">
@@ -51,31 +51,23 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <p><a href="#" class="link"><span>Запрос</span></a></p>
             </li>
         </ul><!-- END doc_info -->
-        <a href="#add_contract" class="btn" data-fancybox>Акцептовать</a>
-        <a href="#all_sk" class="btn" data-fancybox>Отклонить</a>
-        <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
-        <a href="#add_user" class="btn" data-fancybox>Добавить</a>
     </div><!-- END desc_container -->
-    <?php if(!empty($arResult['DOCUMENTS'])) :?>
+    <?php if(!empty($arResult['HISTORY'])) :?>
     <ul class="data_table">
         <li class="row table_head">
+            <div class="table_block align_left item4"><p>Дата присвоения статуса</p></div>
+            <div class="table_block align_left item4"><p>Статус развернуто</p></div>
+            <div class="table_block align_left item4"><p>Кем установлен статус</p></div>
             <div class="table_block align_left"></div>
-            <div class="table_block align_left item8"><p>Название файла</p></div>
-            <div class="table_block align_left item3"><p>Срок предоставления</p></div>
-            <div class="table_block align_left item3"><p>Дата предоставления</p></div>
-            <div class="table_block align_left"></div>
-            <div class="table_block align_left item6"><p>Комментарий</p></div>
+            <div class="table_block align_left item8"><p>Комментарий</p></div>
         </li>
-        <?php foreach ($arResult['DOCUMENTS'] as $arDocument) :?>
+        <?php foreach ($arResult['HISTORY'] as $arStatus) :?>
             <li class="row">
-                <div class="table_block align_left align_top" data-name="Открепить"><a href="#" class="delete"></a></div>
-                <div class="table_block align_left align_top item8" data-name="Название файла"><?=(!empty($arDocument['FILE']['SRC'])) ? '<a href="' . $arDocument['FILE']['SRC'] . '" download>' . $arDocument['UF_NAME'] . '</a>' : $arDocument['UF_NAME']?></div>
-                <div class="table_block align_left align_top item3" data-name="Срок предоставления">
-                    <?=$arResult['DOCUMENT']['PROPERTIES']['REQUEST_DEADLINE']['VALUE']?>
-                </div>
-                <div class="table_block align_left align_top item3" data-name="Дата предоставления"><?=$arDocument['UF_DATE_CREATED']->format('d.m.Y')?></div>
+                <div class="table_block align_left align_top item4" data-name="Дата присвоения статуса"><?=$arStatus['UF_DATE']->format('d.m.Y')?></div>
+                <div class="table_block align_left align_top item4" data-name="Статус развернуто"><?=$arStatus['STATUS']['UF_NAME']?></div>
+                <div class="table_block align_left align_top item4" data-name="Кем установлен статус"><?=$arStatus['USER_FIO']?></div>
                 <div class="table_block align_left align_top mob_hihe"><a href="#" class="remarks"></a></div>
-                <div class="table_block align_left align_top item6" data-name="Комментарий"><a href="#" class="remarks mob"></a><p><?=$arDocument['UF_COMMENT']?></p></div>
+                <div class="table_block align_left align_top item8" data-name="Комментарий"><a href="#" class="remarks mob"></a><p><?=$arStatus['UF_COMMENT']?></p></div>
             </li>
         <?php endforeach; ?>
     </ul><!-- END data_table -->

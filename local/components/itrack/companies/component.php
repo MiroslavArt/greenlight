@@ -27,6 +27,7 @@ $arDefaultUrlTemplates404 = array(
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
     "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
     "lost-document" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/",
+    "lost-document-history" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/status/",
 );
 
 $arDefaultVariableAliases404 = array();
