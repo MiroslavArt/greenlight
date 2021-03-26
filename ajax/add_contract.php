@@ -6,6 +6,8 @@ define('DisableEventsCheck', true);
 define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CContract;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -29,6 +31,8 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
 }
 
 $fidids = [];
+$companies = [$_POST['clientid'], $_POST['brokerid']];
+$companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader']];
 
 foreach ($_FILES as $file) {
     $arr_file=Array(
@@ -54,13 +58,15 @@ if($_POST['kurleaders']) {
     $kurleaders = explode(",", $_POST['kurleaders']);
 }
 
+$companies = array_merge($companies, $insarray);
+
 Loader::includeModule('iblock');
 $add = new \CIBlockElement();
 
 $data = [
     'IBLOCK_ID' => 2,
     'ACTIVE' => 'Y',
-    'NAME' => 'Договор №'.$_POST['docnum'],
+    'NAME' => 'Договор №:'.$_POST['docnum'],
     'PROPERTY_VALUES' => [
         'DATE'=> $_POST['docdate'],
         'TYPE'=> $_POST['instype'],
@@ -70,18 +76,25 @@ $data = [
         'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
         'INSURANCE_COMPANY' => $insarray,
         'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
-        'KURATORS' => $kurators,
-        'KURATORS_LEADERS' => $kurleaders,
+        //'KURATORS' => $kurators,
+        //'KURATORS_LEADERS' => $kurleaders,
         'ORIGIN_REQUIRED' => $_POST['original'],
         'DOCS' => $fidids
     ]
 ];
 $id = $add->Add($data);
 
-if($id) {
+if(intval($id) > 0) {
+    $participation = new CParticipation(new CContract($id));
+    $participation->createFromArrays(
+        $companies,			// Компании
+        $companiesleaders, 				// Компании-лидеры
+        $kurators, 	// Кураторы
+        $kurleaders			// Кураторы-лидеры
+    );
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>'Y'));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
 }
 
 

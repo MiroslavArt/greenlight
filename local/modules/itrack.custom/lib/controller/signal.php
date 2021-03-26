@@ -7,6 +7,9 @@ use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Request;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\InfoBlocks\Company;
 
 class Signal extends Controller
 {
@@ -89,6 +92,7 @@ class Signal extends Controller
             $item['position'] = $ob['WORK_POSITION'];
             $item['wphone'] = $ob['WORK_PHONE'];
             $item['mphone'] = $ob['PERSONAL_MOBILE'];
+            $item['companyid'] = $ob['UF_COMPANY'];
             $item['isleader'] = false;
 
             array_push($result, $item);
@@ -98,15 +102,55 @@ class Signal extends Controller
 
     public function getContkuratorsAction($contract)
     {
-        Loader::includeModule('iblock');
+        $participation = new CParticipation(new CContract($contract));
+
+        $partips = $participation->getParticipants();
+
+        $result = [];
+
+        foreach($partips as $partip) {
+            $leader = $partip['PROPERTIES']['CURATOR_LEADER']['VALUE'];
+            $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+            $companyid = $partip['PROPERTIES']['PARTICIPANT_ID']['VALUE'];
+            foreach($curators as $user) {
+                $rsUser = \CUser::GetByID($user);
+                $arUser = $rsUser->Fetch();
+                $item = [];
+                $item['value'] = $arUser['ID'];
+                $item['label'] = $arUser['NAME'].' '.$arUser['LAST_NAME'];
+                $item['email'] = $arUser['EMAIL'];
+                $item['position'] = $arUser['WORK_POSITION'];
+                $item['wphone'] = $arUser['WORK_PHONE'];
+                $item['mphone'] = $arUser['PERSONAL_MOBILE'];
+                $item['companyid'] = $companyid;
+                if($user == $leader) {
+                    $item['isleader'] = true;
+                } else {
+                    $item['isleader'] = false;
+                }
+
+                $elements = Company::getElementsByConditions(['ID'=>$companyid], [], []);
+
+                $type = $elements[0]['PROPERTIES']['TYPE']['VALUE_ENUM_ID'];
+                $item['typeid'] = $type;
+                if ($type == 1) {
+                    $item['type'] = 'broker';
+                } elseif ($type == 2) {
+                    $item['type'] = 'insuer';
+                } elseif ($type == 4) {
+                    $item['type'] = 'client';
+                }
+                array_push($result, $item);
+
+            }
+        }
+
+        /*Loader::includeModule('iblock');
         $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_28", "PROPERTY_29");
         $arFilter = Array("IBLOCK_ID"=>2, "ID"=>26, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
         $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
 
         $result = [
-            //'broker' => [],
-            //'insuer' => [],
-            //'client' => []
         ];
 
         $leaders = $res['PROPERTY_29_VALUE'];
@@ -146,7 +190,7 @@ class Signal extends Controller
                 //array_push($result['client'], $item);
             }
             array_push($result, $item);
-        }
+        }*/
 
         return $result;
     }

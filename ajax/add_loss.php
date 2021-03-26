@@ -6,6 +6,8 @@ define('DisableEventsCheck', true);
 define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CLost;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -30,6 +32,8 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
 }
 
 $fidids = [];
+$companies = [$_POST['clientid'], $_POST['brokerid']];
+$companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
 
 foreach ($_FILES as $file) {
     $arr_file=Array(
@@ -59,6 +63,9 @@ if($_POST['kurators']) {
 if($_POST['kurleaders']) {
     $kurleaders = explode(",", $_POST['kurleaders']);
 }
+
+$companies = array_merge($companies, $insarray);
+$companies = array_merge($companies, $adjarray);
 
 Loader::includeModule('iblock');
 $add = new \CIBlockElement();
@@ -91,8 +98,8 @@ $data = [
 ];
 $id = $add->Add($data);
 
-if($id) {
-    foreach($kurators as $kurator) {
+if(intval($id) > 0) {
+    /*foreach($kurators as $kurator) {
         $rsUser = \CUser::GetByID($kurator);
         $arUser = $rsUser->Fetch();
         $companyid = $arUser['UF_COMPANY'];
@@ -113,10 +120,14 @@ if($id) {
             ]
         ];
         $id2 = $add->Add($data);
-    }
-}
-
-if($id) {
+    }*/
+    $participation = new CParticipation(new CLost($id));
+    $participation->createFromArrays(
+        $companies,			// Компании
+        $companiesleaders, 				// Компании-лидеры
+        $kurators, 	// Кураторы
+        $kurleaders	// Кураторы-лидеры
+    );
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>$add->LAST_ERROR));
