@@ -1,7 +1,5 @@
-var addedkurcl = 0
-var addedkurbr = 0
 var addedins = 0
-var addedkurins = 0
+var addedcompany = {}
 
 $(document).ready(function() {
 
@@ -106,6 +104,7 @@ $(document).ready(function() {
 
     // клиент и его кураторы
     var clientid = $( "#kur_client_search_ins").attr('data-id')
+    addedcompany[clientid] = 0
     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
         data: {
             company: clientid
@@ -128,7 +127,7 @@ $(document).ready(function() {
                 })
                 if(foundkur==false) {
                     $( "#kur_client_search_ins").val(ui.item.label);
-                    kuratoradd($( "#ins_kur_card" ), ui.item, 4)
+                    kuratoradd($( "#ins_kur_card" ), ui.item, 4, clientid)
                 }
                 return false;
             }
@@ -140,6 +139,7 @@ $(document).ready(function() {
 
     // брокер и его кураторы
     var brokerid = $( "#kur_broker_search_ins" ).attr('data-id');
+    addedcompany[brokerid] = 0
     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
         data: {
             company: brokerid
@@ -162,7 +162,7 @@ $(document).ready(function() {
                 })
                 if(foundkur==false) {
                     $( "#kur_broker_search_ins").val(ui.item.label);
-                    kuratoradd($( "#brok_kur_card" ), ui.item, 1)
+                    kuratoradd($( "#brok_kur_card" ), ui.item, 1, brokerid)
                 }
                 return false;
             }
@@ -237,7 +237,7 @@ $(document).ready(function() {
                     //$(".ins_comp").after(kursearch)
                     //$(".ins_comp").after(coblock)
                     addedins++
-
+                    addedcompany[ui.item.value] = 0
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
                         data: {
                             company: ui.item.value
@@ -261,7 +261,7 @@ $(document).ready(function() {
                                 })
                                 if(foundkur==false) {
                                     kursearchinp.val(ui.item.label);
-                                    kuratoradd(cardblock, ui.item, 2)
+                                    kuratoradd(cardblock, ui.item, 2, ui.item.companyid)
                                 }
                                 return false;
                             }
@@ -384,7 +384,9 @@ $(document).ready(function() {
     });
 })
 
-function kuratoradd(cardblock, item, type) {
+function kuratoradd(cardblock, item, type, company) {
+    //console.log(company)
+    //console.log(addedcompany)
     var cardblockinc = $("<div></div>").attr("class", "company_card")
     var inpkur =  $("<input>").attr("type", "hidden").attr("class", "inserted_kur_co_id").val(item.value)
     var delblock = $("<span></span>").attr("class", "delete js_delete")
@@ -411,27 +413,25 @@ function kuratoradd(cardblock, item, type) {
     uls.append(liwphone)
     var lileader = $("<li></li>")
     if(type == 1) {
-        if(addedkurbr==0) {
+        if(addedcompany[company]==0) {
             var lileaderlabel = $("<label></label>").attr("class", "leader broker js_checkbox active").text("Назначен лидером")
         } else {
             var lileaderlabel = $("<label></label>").attr("class", "leader broker js_checkbox").text("Назначен лидером")
         }
-        addedkurbr++
     } else if (type == 2) {
-        if(addedkurins==0) {
+        if(addedcompany[company]==0) {
             var lileaderlabel = $("<label></label>").attr("class", "leader insco js_checkbox active").text("Назначен лидером")
         } else {
             var lileaderlabel = $("<label></label>").attr("class", "leader insco js_checkbox").text("Назначен лидером")
         }
-        addedkurins++
     } else {
-        if(addedkurcl==0) {
+        if(addedcompany[company]==0) {
             var lileaderlabel = $("<label></label>").attr("class", "leader client js_checkbox active").text("Назначен лидером")
         } else {
             var lileaderlabel = $("<label></label>").attr("class", "leader client js_checkbox").text("Назначен лидером")
         }
-        addedkurcl++
     }
+    addedcompany[company]++
     var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", item.value)
     lileaderlabel.append(lileaderinput)
     lileader.append(inpkur)

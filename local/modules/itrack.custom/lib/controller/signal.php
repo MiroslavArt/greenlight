@@ -92,6 +92,7 @@ class Signal extends Controller
             $item['position'] = $ob['WORK_POSITION'];
             $item['wphone'] = $ob['WORK_PHONE'];
             $item['mphone'] = $ob['PERSONAL_MOBILE'];
+            $item['companyid'] = $ob['UF_COMPANY'];
             $item['isleader'] = false;
 
             array_push($result, $item);
@@ -131,6 +132,7 @@ class Signal extends Controller
                 $elements = Company::getElementsByConditions(['ID'=>$companyid], [], []);
 
                 $type = $elements[0]['PROPERTIES']['TYPE']['VALUE_ENUM_ID'];
+                $item['typeid'] = $type;
                 if ($type == 1) {
                     $item['type'] = 'broker';
                 } elseif ($type == 2) {

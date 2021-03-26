@@ -84,15 +84,14 @@ $data = [
 ];
 $id = $add->Add($data);
 
-$participation = new CParticipation(new CContract($id));
-$participation->createFromArrays(
-    $companies,			// Компании
-    $companiesleaders, 				// Компании-лидеры
-    $kurators, 	// Кураторы
-    $kurleaders			// Кураторы-лидеры
-);
-
-if($id) {
+if(intval($id) > 0) {
+    $participation = new CParticipation(new CContract($id));
+    $participation->createFromArrays(
+        $companies,			// Компании
+        $companiesleaders, 				// Компании-лидеры
+        $kurators, 	// Кураторы
+        $kurleaders			// Кураторы-лидеры
+    );
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
