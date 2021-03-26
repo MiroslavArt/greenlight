@@ -192,7 +192,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <ul class="docs_list">
                     </ul><!-- END docs_list -->
                 </div><!-- END form_row -->
-                <input type="submit" class="btn" value="Добавить договор" />
+                <p class="link" id="mistake"></p>
+                <input type="submit" class="btn" value="Добавить убыток" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
         <?php if (!empty($arResult['LOSTS'])) : ?>

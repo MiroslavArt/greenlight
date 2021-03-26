@@ -1,3 +1,8 @@
+var addedkurcl = 0
+var addedkurbr = 0
+var addedins = 0
+var addedkurins = 0
+
 $(document).ready(function() {
 
     // текущая дата по умолчанию
