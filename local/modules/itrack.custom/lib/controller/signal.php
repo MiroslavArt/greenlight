@@ -10,6 +10,10 @@ use Bitrix\Main\Request;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\InfoBlocks\Company;
+use Itrack\Custom\Participation\CContractParticipant;
+use Itrack\Custom\Participation\CLostParticipant;
+use Itrack\Custom\InfoBlocks\Contract;
+use Itrack\Custom\InfoBlocks\Lost;
 
 class Signal extends Controller
 {
@@ -194,6 +198,34 @@ class Signal extends Controller
 
         return $result;
     }
+
+    public function getParticipantstargetsAction($type, $participant)
+    {
+        $result = [];
+        if($type == 'contract') {
+            $items = CContractParticipant::getElementsByConditions(["PROPERTY_PARTICIPANT_ID" => $participant]);
+            foreach($items as $item) {
+                $resval = [];
+                $tid = $item['PROPERTIES']['TARGET_ID']['VALUE'];
+                $resval['ID'] = $tid;
+                $cnt = current(Contract::getElementsByConditions(["ID" => $tid]));
+                $resval['NAME'] = $cnt['NAME'];
+                array_push($result, $resval);
+            }
+        } elseif($type == 'lost') {
+            $items = CLostParticipant::getElementsByConditions(["PROPERTY_PARTICIPANT_ID" => $participant]);
+            foreach($items as $item) {
+                $resval = [];
+                $tid = $item['PROPERTIES']['TARGET_ID']['VALUE'];
+                $resval['ID'] = $tid;
+                $cnt = current(Lost::getElementsByConditions(["ID" => $tid]));
+                $resval['NAME'] = $cnt['NAME'];
+                array_push($result, $resval);
+            }
+        }
+        return $result;
+    }
+
 
 
     public function addUserAction($userdata)

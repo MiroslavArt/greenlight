@@ -1,5 +1,39 @@
 $(document).ready(function() {
-    //console.log("script")
+
+    // изменение компании
+    $("#company").change(function(e) {
+        var selcompany = $(this).val();
+        $("#contract").empty()
+        $("#loss").empty()
+        BX.ajax.runAction('itrack:custom.api.signal.getParticipantstargets', {
+            data: {
+                type: 'contract',
+                participant: selcompany
+            }
+        }).then(function (response) {
+            $.each(response.data,function(index,value){
+                $("#contract").append($("<option></option>").attr("value", value.ID).text(value.NAME));
+            });
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+        });
+        BX.ajax.runAction('itrack:custom.api.signal.getParticipantstargets', {
+            data: {
+                type: 'lost',
+                participant: selcompany
+            }
+        }).then(function (response) {
+            $.each(response.data,function(index,value){
+                $("#loss").append($("<option></option>").attr("value", value.ID).text(value.NAME));
+            });
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+        });
+    })
+
+    //сохранение пользователя
     $( ".form_popup" ).submit(function( event ){
         event.preventDefault();
         var userdata = {}
