@@ -4,7 +4,7 @@ namespace Itrack\Custom\Participation;
 
 class CContract extends ATarget
 {
-	protected static $ibBlockCode = "company";
+	protected static $ibBlockCode = "contract";
 
 	public function checkAddArray(array $arAdd)
 	{

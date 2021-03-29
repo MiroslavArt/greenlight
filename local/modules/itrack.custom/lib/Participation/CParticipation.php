@@ -82,7 +82,7 @@ class CParticipation
 			[
 				[
 					"LOGIC" => "OR",
-					"PROPERTY_CURATOR" => $userId,
+					"PROPERTY_CURATORS" => $userId,
 					"PROPERTY_CURATOR_LEADER" => $userId
 				]
 			],
@@ -104,21 +104,32 @@ class CParticipation
 		$participantClass = $targetClass::getParticipantClass();
 
 		/** @var AParticipant $participantClass */
-		$arTargets = $participantClass::getElementsByConditions(
+		$arParticipants = $participantClass::getElementsByConditions(
 			$filter,
 			[],
-			[ "ID", "PROPERTY_TARGET_ID" ]
+			[ "ID", "IBLOCK_ID", "PROPERTY_TARGET_ID", "PROPERTY_CURATORS", "PROPERTY_CURATOR_LEADER" ]
 		);
 
-		$targetIds = [];
-		foreach ($arTargets as $arTarget) {
-			$targetIds[] = $arTarget["PROPERTY_TARGET_ID_VALUE"];
+
+		$participants = [];
+		foreach ($arParticipants as $arParticipant) {
+			$targetId = $arParticipant["PROPERTY_TARGET_ID_VALUE"];
+			$participants[$targetId] = $arParticipant;
 		}
 
-		$targetIds = array_unique($targetIds);
+		$targetIds = array_keys($participants);
+
+		$filter = count($targetIds)
+			? ["ID" => $targetIds]
+			: ["ID" => false]
+		;
+
 
 		/** @var ATarget $targetClass */
-		return $targetClass::getElementsByConditions(["ID" => $targetIds]);
+		return [
+			"PARTICIPANTS" => $participants,
+			"TARGETS" => $targetClass::getElementsByConditions($filter)
+		];
 	}
 
 

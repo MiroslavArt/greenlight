@@ -80,9 +80,7 @@ if (!function_exists("printInputProfile")) {
 						<label for="is_super_checkbox">
 					</label>
 				</div><!-- END flexbox -->
-				<?if ($arResult["EDITOR_IS_SUPER_BROKER"]):?>
-					<a href="<?=$arResult["ACCESS_URL"]?>" class="btn white">Права доступа</a>
-				<?endif?>
+				<a href="<?=$arParams["ACCESS_URL"]?>" class="btn white">Права доступа</a>
 			</div><!-- END input_container -->
 		</div><!-- END form_row -->
 		<div class="form_row">
