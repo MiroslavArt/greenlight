@@ -29,4 +29,54 @@ abstract class AParticipant extends BaseInfoBlockClass implements IParticipant
 
 		return new static($res[0]["ID"]);
 	}
+
+	public function bindCurator(int $userId, bool $isLeader = false) {
+		$participation = $this->fetchParticipation();
+
+		$propValues = [];
+
+		$curators = $participation["PROPERTIES"]["CURATORS"]["VALUE"];
+		$curators[] = $userId;
+		$propValues["CURATORS"] = array_unique($curators);
+
+		if ($isLeader) {
+			$propValues["CURATOR_LEADER"] = $userId;
+		}
+
+		\CIBlockElement::SetPropertyValuesEx($participation["ID"], false, $propValues);
+	}
+
+	public function unbindCurator(int $userId) {
+		$participation = $this->fetchParticipation();
+
+		$curators = $participation["PROPERTIES"]["CURATORS"]["VALUE"];
+		$curators = array_unique(array_diff($curators, [$userId]));
+
+		if (count($curators) <= 0) {
+			$curators = false;
+		}
+
+		$leader = $participation["PROPERTIES"]["CURATOR_LEADER"]["VALUE"];
+
+		if ($leader == $userId) {
+			$leader = false;
+		}
+
+		$propValues = [
+			"CURATORS" => $curators,
+			"CURATOR_LEADER" => $leader
+		];
+
+		\CIBlockElement::SetPropertyValuesEx($participation["ID"], false, $propValues);
+	}
+
+	private function fetchParticipation(): ?array {
+		$res = static::getElementsByConditions(
+			["ID" => $this->participantId],
+			[],
+			["ID", "IBLOCK_ID", "PROPERTY_CURATORS", "PROPERTY_CURATOR_LEADER"]
+		);
+
+		return $res ? $res[0] : null;
+	}
 }
