@@ -68,7 +68,8 @@
 				</div><!-- END card_status_container -->
 			</div><!-- END title_block -->
 			<div class="title_right_block">
-				<a href="#add_loss" data-fancybox class="btn">Добавить убыток</a>
+				<a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
+				<a href="#add_loss" data-fancybox class="btn">Редактировать убыток</a>
 			</div><!-- END title_right_block -->
 		</div><!-- END title_container -->
 		<div class="desc_container">
@@ -625,6 +626,30 @@
 		</div><!-- END form_row -->
 		<input type="submit" class="btn" value="Добавить договор" />
 	</form><!-- END form_edit_profile -->
+</div><!-- END popup -->
+<div class="popup add_doc2" id="add_doc2">
+	<h3 class="block_title">Добавление документа</h3>
+	<form class="form_popup">
+		<div class="form_row">
+			<div class="input_container column_100">
+				<input type="text" class="text_input" placeholder="Название документа" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			<div class="input_container column_50">
+				<input type="text" class="text_input ico_date js_datapicker" placeholder="Дата запроса" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row margin">
+			<div class="input_container column_50">
+				<input type="text" class="text_input ico_date js_datapicker" placeholder="Срок предоставления" />
+			</div><!-- END input_container -->
+			<div class="input_container column_50">
+				<input type="text" class="text_input" placeholder="Автор добавления документа" />
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<input type="submit" class="btn" value="Добавить документ">
+	</form><!-- END form_popup -->
 </div><!-- END popup -->
 </body>
 </html>

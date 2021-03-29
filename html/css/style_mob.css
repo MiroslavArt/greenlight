@@ -82,7 +82,7 @@
 	text-align: center;
 }
 .checkbox_type2{font-size: 10px;}
-.popup{
+.popup,.popup.add_doc2{
 	padding-left: 30px;
 	padding-right: 30px;
 }
@@ -498,6 +498,7 @@
 	}
 	.upload_doc_container .logo_upload,.upload_doc_container .btn{margin-bottom: 20px;}
 .popup .block_title{margin-bottom: 40px;}
+.form_row.margin{margin-top: 0;}
 }/* END 768px */
 @media only screen and (max-width: 480px){
 .authorization_form .btn{width: 100%;}
