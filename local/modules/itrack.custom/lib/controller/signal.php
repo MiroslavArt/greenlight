@@ -9,6 +9,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\Request;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CLostParticipant;
@@ -282,7 +283,19 @@ class Signal extends Controller
         $ID = $user->Add($arFields);
         if(intval($ID) > 0) {
             // обновляем карточку договора
-            $el = new \CIBlockElement;
+            if($userdata['contract']) {
+                $participantClass = CContract::getParticipantClass();
+                $participant = $participantClass::initByTargetAndCompany($userdata['contract'], $userdata['company']);
+                $participant->bindCurator($ID);
+            }
+
+            if($userdata['loss']) {
+                $participantClass = CLost::getParticipantClass();
+                $participant = $participantClass::initByTargetAndCompany($userdata['loss'], $userdata['company']);
+                $participant->bindCurator($ID);
+            }
+
+            /*$el = new \CIBlockElement;
             if($userdata['contract']) {
                 $arSelect = Array("ID", "NAME", "PROPERTY_*");
                 $arFilter = Array("IBLOCK_ID" => 2, "ID" => $userdata['contract'], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
@@ -310,9 +323,9 @@ class Signal extends Controller
                     "PROPERTY_VALUES"=> $PROP
                 );
                 $res1 = $el->Update($res['ID'], $arLoadContractArray);
-            }
+            }*/
             // добавляем участника урегулирования убытка
-            if($userdata['loss']) {
+            /*if($userdata['loss']) {
                 $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");
                 $arFilter = Array("IBLOCK_ID"=>3, "ID"=>$userdata['loss'], "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
                 $res2 = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
@@ -328,7 +341,7 @@ class Signal extends Controller
                     ]
                 ];
                 $res3 = $el->Add($data);
-            }
+            }*/
             $result = 'added';
         } else {
             $result = strip_tags($user->LAST_ERROR);
