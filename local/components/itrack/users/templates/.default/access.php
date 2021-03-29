@@ -1,5 +1,19 @@
 <?php
+global $USER;
+$userId = $arResult["VARIABLES"]["USER_ID"];
+
+$profileUrl = $arResult["FOLDER"] . str_replace(
+		"#USER_ID#",
+		$arResult["VARIABLES"]["USER_ID"],
+		$arResult["URL_TEMPLATES"]["profile"]
+	);
 ?>
-<div class="wrapper">
-	<h1>user access</h1>
-</div>
+
+<?$APPLICATION->IncludeComponent(
+	"itrack:user.access",
+	"",
+	[
+		"USER_ID" => $userId == "my" ? $USER->GetID() : $userId,
+		"PROFILE_URL" => $profileUrl
+	]
+);?>

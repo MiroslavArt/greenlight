@@ -1,0 +1,7 @@
+.btn.ico_minus_short, .btn.ico_plus_short {
+	padding: 0 15px !important;
+}
+
+.btn.hidden {
+	display: none;
+}
