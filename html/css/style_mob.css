@@ -499,6 +499,7 @@
 	.upload_doc_container .logo_upload,.upload_doc_container .btn{margin-bottom: 20px;}
 .popup .block_title{margin-bottom: 40px;}
 .form_row.margin{margin-top: 0;}
+.not_found_column{width: 100%;}
 }/* END 768px */
 @media only screen and (max-width: 480px){
 .authorization_form .btn{width: 100%;}
@@ -528,6 +529,11 @@
 	margin-right: 0;
 	width: 100%;
 }
+.not_found_title{
+	font-size: 46px;
+	line-height: 52px;
+}
+.not_found_column p:first-child{margin-bottom: 50px;}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 
