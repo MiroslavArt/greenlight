@@ -15,6 +15,7 @@ use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CLostParticipant;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
+use Itrack\Custom\InfoBlocks\LostDocuments;
 
 class Signal extends Controller
 {
@@ -345,6 +346,40 @@ class Signal extends Controller
             $result = 'added';
         } else {
             $result = strip_tags($user->LAST_ERROR);
+        }
+
+        return $result;
+    }
+
+    public function addLostdocAction($formdata)
+    {
+        $result = 'error';
+
+        $data = [];
+
+        if($formdata) {
+            foreach ($formdata as $item) {
+                \Bitrix\Main\Diag\Debug::writeToFile($item, "item", "__miros.log");
+                if($item['name']=='lostid') {
+                    $data['PROPERTY_VALUES']['LOST'] = $item['value'];
+                } else if($item['name']=='docname') {
+                    $data['NAME'] = $item['value'];
+                } else if($item['name']=='docdate') {
+                    $data['DATE_ACTIVE_FROM'] = $item['value'];
+                } else if($item['name']=='docterm') {
+                    $data['PROPERTY_VALUES']['REQUEST_DEADLINE'] = $item['value'];
+                } else if($item['name']=='author') {
+                    $data['PROPERTY_VALUES']['REQUEST_AUTHOR'] = $item['value'];
+                }
+            }
+            $data['PROPERTY_VALUES']['STATUS'] = '1';
+
+            $ID = LostDocuments::createElement($data, []);
+            if(intval($ID) > 0) {
+                $result = 'added';
+            } else {
+                $result = $ID;
+            }
         }
 
         return $result;
