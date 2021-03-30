@@ -47,12 +47,17 @@ class ItrLost extends CBitrixComponent
         }
 
         //Contract
-        $this->getContract();
+        if(!empty($this->arParams['CONTRACT_ID'])) {
+            $this->getContract();
+        }
+
         //get company
-        $arResult['COMPANY'] = $this->getCompany($this->companyId);
-        //get insurance company
-        if (!empty($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'])) {
-            $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
+        if(!empty($this->arParams['CLIENT_ID'])) {
+            $arResult['COMPANY'] = $this->getCompany($this->companyId);
+            //get insurance company
+            if (!empty($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'])) {
+                $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
+            }
         }
         //curators
         $arCurators = $this->getCurators();
