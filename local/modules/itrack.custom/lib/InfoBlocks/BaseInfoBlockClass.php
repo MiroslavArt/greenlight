@@ -321,7 +321,8 @@ class BaseInfoBlockClass extends AbstractInfoBlock
      * @return int|null
      * @throws \Bitrix\Main\LoaderException
      */
-    public static function createElement(array $fields, array $properties):?int
+    public static function createElement(array $fields, array $properties):?string
+    //public static function createElement(array $fields, array $properties)
     {
         $el = new CIBlockElement();
 
@@ -340,8 +341,8 @@ class BaseInfoBlockClass extends AbstractInfoBlock
         }
 
         AddMessage2Log([$el->LAST_ERROR, $fields], 'ERROR.CREATE_ELEMENT');
-
-        return null;
+        return strip_tags($el->LAST_ERROR);
+        //return null;
     }
 
     /**

@@ -123,7 +123,8 @@ abstract class AbstractInfoBlock implements InfoBlocks
      * @param array $properties
      * @return int|null
      */
-    public static function createElement(array $fields, array $properties):?int
+    public static function createElement(array $fields, array $properties):?string
+    //public static function createElement(array $fields, array $properties)
     {
         //
     }

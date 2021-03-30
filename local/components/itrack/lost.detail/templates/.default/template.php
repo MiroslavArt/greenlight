@@ -18,9 +18,39 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <a href="#" class="btn">Добавить документ</a>
+            <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
+    <div class="popup add_doc2" id="add_doc2">
+        <h3 class="block_title">Добавление документа</h3>
+        <form class="form_popup">
+            <div class="form_row">
+                <div class="input_container column_100">
+                    <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
+                    <input type="text" class="text_input" name="docname" placeholder="Название документа" />
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container column_50">
+                    <input type="text" class="text_input ico_date js_datapicker" name="docdate" placeholder="Дата запроса" />
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row margin">
+                <div class="input_container column_50">
+                    <input type="text" class="text_input ico_date js_datapicker" name="docterm" placeholder="Срок предоставления" />
+                </div><!-- END input_container -->
+                <div class="input_container column_50">
+                    <select class="select js_select" id="author" name="author">
+                        <? foreach ($arResult['CURATORS'] as $user) { ?>
+                            <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
+                        <? } ?>
+                    </select><!-- END select -->
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <p class="link" id="mistake"></p>
+            <input type="submit" class="btn" value="Добавить документ">
+        </form><!-- END form_popup -->
+    </div><!-- END popup -->
     <div class="desc_container">
         <div class="desc">
             <span class="desc_title">Описание страхового случая</span>

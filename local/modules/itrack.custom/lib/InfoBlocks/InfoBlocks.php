@@ -82,7 +82,7 @@ interface InfoBlocks
      * @param array $properties
      * @return int|null
      */
-    public static function createElement(array $fields, array $properties):?int;
+    public static function createElement(array $fields, array $properties):?string;
 
     /**
      * Update product
