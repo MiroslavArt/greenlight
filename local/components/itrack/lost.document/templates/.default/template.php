@@ -54,8 +54,40 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <a href="#add_contract" class="btn" data-fancybox>Акцептовать</a>
         <a href="#all_sk" class="btn" data-fancybox>Отклонить</a>
         <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
-        <a href="#add_user" class="btn" data-fancybox>Добавить</a>
+        <a href="#add_doc2" class="btn" data-fancybox>Добавить</a>
     </div><!-- END desc_container -->
+    <div class="popup add_doc2" id="add_doc2">
+        <h3 class="block_title">Добавление документа</h3>
+        <form class="form_popup">
+            <div class="form_row upload_btn_container">
+                <div class="input_container">
+                    <input type="hidden" id="lost_id" value="<?=$arResult['DOCUMENT']['ID'] ?>"/>
+                    <input type="text" class="text_input" id="doc_name" placeholder="Название документа" />
+                </div><!-- END input_container -->
+                <div class="input_container with_text">
+                    <div class="logo_upload">
+                        <input type="file" id="loss_file">
+                        <span class="upload">
+						<span>Файл</span>
+						<span class="upload_btn_text">Загрузите <br>пожалуйста файл</span>
+					</span><!-- END upload -->
+                    </div><!-- END logo_upload -->
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container column_50">
+                    <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата предоставления" />
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <div class="form_row">
+                <div class="input_container column_100">
+                    <textarea class="textarea" id="comment" placeholder="Комментарий"></textarea>
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <p class="link" id="mistake"></p>
+            <input type="submit" class="btn" value="Добавить документ">
+        </form><!-- END form_popup -->
+    </div><!-- END popup -->
     <?php if(!empty($arResult['DOCUMENTS'])) :?>
     <ul class="data_table">
         <li class="row table_head">

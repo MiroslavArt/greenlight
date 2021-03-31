@@ -6,6 +6,7 @@ define('DisableEventsCheck', true);
 define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use \Itrack\Custom\Highloadblock\HLBWrap;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -29,38 +30,33 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
 }
 
 $arr_file=Array(
-    "name" =>  $_FILES['logo']['name'],
-    "size" => $_FILES['logo']['size'],
-    "tmp_name" => $_FILES['logo']['tmp_name'],
-    "type" => $_FILES['logo']['type'],
+    "name" =>  $_FILES['loss_file']['name'],
+    "size" => $_FILES['loss_file']['size'],
+    "tmp_name" => $_FILES['loss_file']['tmp_name'],
+    "type" => $_FILES['loss_file']['type'],
     "old_file" => "",
     "del" => "Y",
-    "MODULE_ID" => "iblock");
-$fid = CFile::SaveFile($arr_file, "companylogo");
+    "MODULE_ID" => '');
+$fid = CFile::SaveFile($arr_file, "lossdocs");
 
-Loader::includeModule('iblock');
-$add = new \CIBlockElement();
+$data = array(
+    "UF_LOST_ID" => $_POST['lost_id'],
+    "UF_NAME"=>$_POST['doc_name'],
+    "UF_FILE_INT"=> $fid,
+    "UF_COMMENT"=>$_POST['comment'],
+    "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
+    "UF_USER_ID" => $USER->GetID(),
+    "UF_DOC_TYPE"=> 2
+);
 
-//\Bitrix\Main\Diag\Debug::writeToFile($fid, "fid", "__miros.log");
+$objDocument = new HLBWrap('uploaded_docs');
 
-$data = [
-    'IBLOCK_ID' => 1,
-    'ACTIVE' => 'Y',
-    'NAME' => $_POST['name'],
-    'PROPERTY_VALUES' => [
-        'TYPE'=> $_POST['type'],
-        'LOGO'=> $fid,
-        'FULL_NAME' => $_POST['full_name'],
-        'LEGAL_ADDRESS' => $_POST['legal_adress'],
-        'ACTUAL_ADDRESS' => $_POST['adress'],
-        'INN' => $_POST['inn'],
-        'KPP' => $_POST['kpp']
-    ]
-];
-$id = $add->Add($data);
+$id = $objDocument->add($data);
 
-if($id) {
+if(intval($id->getId())>0) {
     __CrmPropductRowListEndResponse(array('sucsess' => 'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($id)));
 }
+
+

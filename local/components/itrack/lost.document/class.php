@@ -108,8 +108,8 @@ class ItrLostDocument extends CBitrixComponent
         ]);
 
         while ($arDocument = $rsDocuments->fetch()) {
-            if(intval($arDocument['UF_FILE']) > 0) {
-                $arDocument['FILE'] =  \CFile::GetFileArray($arDocument['UF_FILE']);
+            if(intval($arDocument['UF_FILE_INT']) > 0) {
+                $arDocument['FILE'] =  \CFile::GetFileArray($arDocument['UF_FILE_INT']);
             }
             $arDocuments[] = $arDocument;
         }
