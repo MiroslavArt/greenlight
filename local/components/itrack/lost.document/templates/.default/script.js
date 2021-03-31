@@ -39,4 +39,25 @@ $(document).ready(function() {
         })
 
     })
+
+    $(".js_deletefile").click(function (event) {
+        var fileid = $(this).parent().attr("data-id")
+        BX.ajax.runAction('itrack:custom.api.signal.delLostfile', {
+            data: {
+                fileid: fileid
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='success') {
+                location.reload();
+            } else {
+                alert('response.data')
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            //console.log(error)
+            alert(error)
+        });
+
+    })
 })
