@@ -386,6 +386,21 @@ class Signal extends Controller
         return $result;
     }
 
+    public function updateLostfilecommentAction($fileid, $newcomment)
+    {
+        $objDocument = new HLBWrap('uploaded_docs');
+
+        $data = ['UF_COMMENT'=>$newcomment];
+
+        $id = $objDocument->update($fileid, $data);
+
+        //if($id->isSuccess()) {
+        return 'success';
+        //} else {
+        //    return $id->getErrorMessages();
+        //}
+    }
+
     public function delLostfileAction($fileid)
     {
         $objDocument = new HLBWrap('uploaded_docs');

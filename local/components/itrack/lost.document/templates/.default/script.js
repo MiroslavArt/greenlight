@@ -51,13 +51,45 @@ $(document).ready(function() {
             if(response.data=='success') {
                 location.reload();
             } else {
-                alert('response.data')
+                alert(response.data)
             }
         }, function (error) {
             //сюда будут приходить все ответы, у которых status !== 'success'
             //console.log(error)
             alert(error)
         });
+
+    })
+
+    $(".form_popup2").submit(function (event) {
+        event.preventDefault()
+        //console.log(event)
+        var lossdocid = $(this).attr("data-id")
+        var newcomment = BX.findChild(event.target, {"class" : "textarea"}, true, true)
+        var newcommenttxt = ''
+        //var commentxt = $(this).children(".textarea")
+        console.log(newcomment)
+        newcomment.forEach(function(element){
+            newcommenttxt = $(element).val()
+        })
+        BX.ajax.runAction('itrack:custom.api.signal.updateLostfilecomment', {
+            data: {
+                fileid: lossdocid,
+                newcomment: newcommenttxt
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='success') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            //console.log(error)
+            alert(error)
+        });
+
 
     })
 })

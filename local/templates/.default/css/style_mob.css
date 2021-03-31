@@ -500,6 +500,8 @@
 	.popup .block_title{margin-bottom: 40px;}
 	.form_row.margin{margin-top: 0;}
 	.not_found_column{width: 100%;}
+	.small_title{margin-bottom: 30px;}
+	.text{margin-bottom: 40px;}
 }/* END 768px */
 @media only screen and (max-width: 480px){
 	.authorization_form .btn{width: 100%;}

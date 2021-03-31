@@ -106,7 +106,18 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <?=$arResult['DOCUMENT']['PROPERTIES']['REQUEST_DEADLINE']['VALUE']?>
                 </div>
                 <div class="table_block align_left align_top item3" data-name="Дата предоставления"><?=$arDocument['UF_DATE_CREATED']->format('d.m.Y')?></div>
-                <div class="table_block align_left align_top mob_hihe"><a href="#" class="remarks"></a></div>
+                <div class="table_block align_left align_top mob_hihe"><a href="#edit_comment<?=$arDocument['ID']?>" data-fancybox class="remarks"></a></div>
+                <div class="popup add_comment" id="edit_comment<?=$arDocument['ID']?>">
+                    <h3 class="block_title">Исправить комментарий</h3>
+                    <form class="form_popup2" data-id="<?=$arDocument['ID']?>">
+                        <div class="form_row">
+                            <div class="input_container column_100">
+                                <textarea class="textarea" placeholder="Комментарий"><?=$arDocument['UF_COMMENT']?></textarea>
+                            </div><!-- END input_container -->
+                        </div><!-- END form_row -->
+                        <input type="submit" class="btn" value="Исправить">
+                    </form><!-- END form_popup -->
+                </div><!-- END popup -->
                 <div class="table_block align_left align_top item6" data-name="Комментарий"><a href="#" class="remarks mob"></a><p><?=$arDocument['UF_COMMENT']?></p></div>
             </li>
         <?php endforeach; ?>

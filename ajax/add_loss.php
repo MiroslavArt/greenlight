@@ -130,5 +130,5 @@ if(intval($id) > 0) {
     );
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>$add->LAST_ERROR));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
 }
