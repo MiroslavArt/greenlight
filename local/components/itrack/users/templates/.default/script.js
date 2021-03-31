@@ -62,7 +62,7 @@ $(document).ready(function() {
                 }
             }).then(function (response) {
                 console.log(response)
-                if(response.data = 'added') {
+                if(response.data=='added') {
                     location.reload();
                 } else {
                     $("#mistake").text(response.data)

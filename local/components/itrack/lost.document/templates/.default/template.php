@@ -100,7 +100,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </li>
         <?php foreach ($arResult['DOCUMENTS'] as $arDocument) :?>
             <li class="row">
-                <div class="table_block align_left align_top" data-name="Открепить"><a href="#" class="delete"></a></div>
+                <div class="table_block align_left align_top" data-name="Открепить" data-id="<?=$arDocument['ID']?>"><a href="#" class="delete js_deletefile"></a></div>
                 <div class="table_block align_left align_top item8" data-name="Название файла"><?=(!empty($arDocument['FILE']['SRC'])) ? '<a href="' . $arDocument['FILE']['SRC'] . '" download>' . $arDocument['UF_NAME'] . '</a>' : $arDocument['UF_NAME']?></div>
                 <div class="table_block align_left align_top item3" data-name="Срок предоставления">
                     <?=$arResult['DOCUMENT']['PROPERTIES']['REQUEST_DEADLINE']['VALUE']?>

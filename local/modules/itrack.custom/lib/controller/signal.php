@@ -7,6 +7,7 @@ use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Request;
+use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\Participation\CLost;
@@ -383,6 +384,19 @@ class Signal extends Controller
         }
 
         return $result;
+    }
+
+    public function delLostfileAction($fileid)
+    {
+        $objDocument = new HLBWrap('uploaded_docs');
+
+        $id = $objDocument->delete($fileid);
+
+        if($id->isSuccess()) {
+            return 'success';
+        } else {
+            return $id->getErrorMessages();
+        }
     }
 }
 

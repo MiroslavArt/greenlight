@@ -39,10 +39,13 @@ $arr_file=Array(
     "MODULE_ID" => '');
 $fid = CFile::SaveFile($arr_file, "lossdocs");
 
+$file = \CFile::MakeFileArray($fid);
+
 $data = array(
     "UF_LOST_ID" => $_POST['lost_id'],
     "UF_NAME"=>$_POST['doc_name'],
-    "UF_FILE_INT"=> $fid,
+    "UF_FILE"=> $file,
+    //"UF_FILE_INT"=> $fid,
     "UF_COMMENT"=>$_POST['comment'],
     "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
     "UF_USER_ID" => $USER->GetID(),
