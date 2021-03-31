@@ -57,7 +57,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <a href="#add_doc2" class="btn" data-fancybox>Добавить</a>
     </div><!-- END desc_container -->
     <div class="popup add_doc2" id="add_doc2">
-        <h3 class="block_title">Добавление документа</h3>
+        <h3 class="block_title">Добавление файла к документу убытка</h3>
         <form class="form_popup">
             <div class="form_row upload_btn_container">
                 <div class="input_container">
