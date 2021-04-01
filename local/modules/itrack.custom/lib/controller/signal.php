@@ -17,6 +17,7 @@ use Itrack\Custom\Participation\CLostParticipant;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
 use Itrack\Custom\InfoBlocks\LostDocuments;
+use Itrack\Custom\UserAccess\CUserAccess;
 
 class Signal extends Controller
 {
@@ -358,9 +359,11 @@ class Signal extends Controller
 
         $data = [];
 
+        global $USER;
+        $uid = $USER->GetID();
+
         if($formdata) {
             foreach ($formdata as $item) {
-                \Bitrix\Main\Diag\Debug::writeToFile($item, "item", "__miros.log");
                 if($item['name']=='lostid') {
                     $data['PROPERTY_VALUES']['LOST'] = $item['value'];
                 } else if($item['name']=='docname') {
@@ -377,6 +380,16 @@ class Signal extends Controller
 
             $ID = LostDocuments::createElement($data, []);
             if(intval($ID) > 0) {
+                $objHistory = new HLBWrap('e_history_lost_document_status');
+                $histdata = [
+                    'UF_CODE_ID' => 1,
+                    'UF_DATE' => date("d.m.Y. H:i:s"),
+                    'UF_LOST_ID' => $data['PROPERTY_VALUES']['LOST'],
+                    'UF_LOST_DOC_ID' => intval($ID),
+                    'UF_USER_ID' => $uid
+                ];
+
+                $id = $objHistory->add($histdata);
                 $result = 'added';
             } else {
                 $result = $ID;
@@ -411,6 +424,60 @@ class Signal extends Controller
             return 'success';
         } else {
             return $id->getErrorMessages();
+        }
+    }
+
+    public function acceptLostdocAction($lostid, $lostdocid, $status, $user)
+    {
+        $dateupdate = date("d.m.Y. H:i:s");
+
+        if($status==1) {
+            $superuserclient = 0;
+            $needacceptsupuclient = false;
+            $PROP = [];
+
+            $arGroups = \CUser::GetUserGroup($user);
+            if(!in_array(CL_SU_GROUP, $arGroups)) {
+                $participation = new CParticipation(new CLost($lostid));
+                $partips = $participation->getParticipants();
+                foreach ($partips as $partip) {
+                    $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                    foreach ($curators as $curator) {
+                        $arGroups2 = \CUser::GetUserGroup($curator);
+                        if (in_array(CL_SU_GROUP, $arGroups2)) {
+                            $superuserclient = $curator;
+                            break;
+                        }
+                    }
+                }
+            }
+            if($superuserclient) {
+                $needacceptsupuclient = (new CUserAccess($superuserclient))->hasAcceptanceForLost($lostid);
+            }
+            if($needacceptsupuclient) {
+                $newstatus = '2';
+            } else {
+                $newstatus = '4';
+            }
+            $PROP[27] = $newstatus;
+            $PROP[61] = $dateupdate;
+        }
+        LostDocuments::updateElement($lostdocid, [], $PROP);
+        $objHistory = new HLBWrap('e_history_lost_document_status');
+        $histdata = [
+            'UF_CODE_ID' => $newstatus,
+            'UF_DATE' => $dateupdate,
+            'UF_LOST_ID' => $lostid,
+            'UF_LOST_DOC_ID' => $lostdocid,
+            'UF_USER_ID' => $user
+        ];
+
+        $id = $objHistory->add($histdata);
+
+        if(intval($id->getId())>0) {
+            return "updated";
+        } else {
+            return "error";
         }
     }
 }
