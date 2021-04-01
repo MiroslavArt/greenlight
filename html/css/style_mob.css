@@ -82,7 +82,7 @@
 	text-align: center;
 }
 .checkbox_type2{font-size: 10px;}
-.popup,.popup.add_doc2{
+.popup,.popup.add_doc2,.popup.useful_doc{
 	padding-left: 30px;
 	padding-right: 30px;
 }
@@ -510,6 +510,7 @@
 		display: inline-block;
 		margin: -7px 0 31px;
 	}
+.btn_container{justify-content: space-between;}
 .btn.ico_plus,.btn.ico_minus{
 	margin: 0;
 	width: calc(50% - 5px);
@@ -536,6 +537,8 @@
 	line-height: 52px;
 }
 .not_found_column p:first-child{margin-bottom: 50px;}
+.useful_doc .logo_upload{max-width: none;}
+.useful_doc .upload span.upload_btn_text br{display: block;}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 

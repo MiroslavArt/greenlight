@@ -108,7 +108,7 @@
 			</li>
 		</ul><!-- END data_table -->
 		<div class="btn_container">
-			<a href="#" class="btn ico_plus">Добавить</a>
+			<a href="#useful_doc" data-fancybox class="btn ico_plus">Добавить</a>
 			<a href="#" class="btn ico_minus">Открепить</a>
 		</div><!-- END btn_container -->
 	</div><!-- END wrapper -->
@@ -116,5 +116,36 @@
 		<a href="#" class="logo"></a>
 		<p class="copy">Copyright &copyl; 2020 Willis Towers Watson. All rights reserved.</p>
 	</div><!-- END footer -->
+<div class="popup useful_doc" id="useful_doc">
+	<h2 class="block_title">Полезный документ 1</h2>
+	<form class="form_popup">
+		<div class="form_row">
+			<div class="input_container column_50">
+				<input type="text" class="text_input" placeholder="Описание / название документ" />
+			</div><!-- END input_container -->
+			<div class="input_container column_50">
+				<select class="js_select">
+					<option>Вид документа</option>
+					<option>1Вид документа</option>
+					<option>2Вид документа</option>
+					<option>3Вид документа</option>
+				</select>
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<div class="form_row">
+			
+			<div class="input_container with_text column_50">
+				<div class="logo_upload">
+					<input type="file">
+					<span class="upload">
+						<span>Файл</span>
+						<span class="upload_btn_text">Загрузите <br>пожалуйста файл</span>
+					</span><!-- END upload -->
+				</div><!-- END logo_upload -->
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<input type="submit" class="btn" value="Добавить документ">
+	</form><!-- END form_popup -->
+</div><!-- END popup  -->
 </body>
 </html>
