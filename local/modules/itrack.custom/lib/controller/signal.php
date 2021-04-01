@@ -459,9 +459,9 @@ class Signal extends Controller
             } else {
                 $newstatus = '4';
             }
-            $PROP[27] = $newstatus;
-            $PROP[61] = $dateupdate;
         }
+        $PROP[27] = $newstatus;
+        $PROP[61] = $dateupdate;
         LostDocuments::updateElement($lostdocid, [], $PROP);
         $objHistory = new HLBWrap('e_history_lost_document_status');
         $histdata = [
