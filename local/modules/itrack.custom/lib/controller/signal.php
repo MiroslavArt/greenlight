@@ -426,7 +426,7 @@ class Signal extends Controller
             return $id->getErrorMessages();
         }
     }
-
+    // workflow
     public function acceptLostdocAction($lostid, $lostdocid, $status, $user)
     {
         $dateupdate = date("d.m.Y. H:i:s");
@@ -459,23 +459,60 @@ class Signal extends Controller
             } else {
                 $newstatus = '4';
             }
+        } elseif ($status==3) {
+            $newstatus = '4';
         }
-        $PROP[27] = $newstatus;
-        $PROP[61] = $dateupdate;
-        LostDocuments::updateElement($lostdocid, [], $PROP);
-        $objHistory = new HLBWrap('e_history_lost_document_status');
-        $histdata = [
-            'UF_CODE_ID' => $newstatus,
-            'UF_DATE' => $dateupdate,
-            'UF_LOST_ID' => $lostid,
-            'UF_LOST_DOC_ID' => $lostdocid,
-            'UF_USER_ID' => $user
-        ];
+        if($newstatus) {
+            $PROP[27] = $newstatus;
+            $PROP[61] = $dateupdate;
+            LostDocuments::updateElement($lostdocid, [], $PROP);
+            $objHistory = new HLBWrap('e_history_lost_document_status');
+            $histdata = [
+                'UF_CODE_ID' => $newstatus,
+                'UF_DATE' => $dateupdate,
+                'UF_LOST_ID' => $lostid,
+                'UF_LOST_DOC_ID' => $lostdocid,
+                'UF_USER_ID' => $user
+            ];
 
-        $id = $objHistory->add($histdata);
+            $id = $objHistory->add($histdata);
 
-        if(intval($id->getId())>0) {
-            return "updated";
+            if(intval($id->getId())>0) {
+                return "updated";
+            } else {
+                return "error";
+            }
+        } else {
+            return "error";
+        }
+    }
+    // workflow
+    public function declineLostdocAction($lostid, $lostdocid, $status, $user)
+    {
+        $dateupdate = date("d.m.Y. H:i:s");
+        if($status==3) {
+            $newstatus = '1';
+        }
+        if($newstatus) {
+            $PROP[27] = $newstatus;
+            $PROP[61] = $dateupdate;
+            LostDocuments::updateElement($lostdocid, [], $PROP);
+            $objHistory = new HLBWrap('e_history_lost_document_status');
+            $histdata = [
+                'UF_CODE_ID' => $newstatus,
+                'UF_DATE' => $dateupdate,
+                'UF_LOST_ID' => $lostid,
+                'UF_LOST_DOC_ID' => $lostdocid,
+                'UF_USER_ID' => $user
+            ];
+
+            $id = $objHistory->add($histdata);
+
+            if(intval($id->getId())>0) {
+                return "updated";
+            } else {
+                return "error";
+            }
         } else {
             return "error";
         }

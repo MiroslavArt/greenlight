@@ -118,4 +118,26 @@ $(document).ready(function() {
             //alert(error)
         });
     })
+
+    $("#decline").click(function (event) {
+        BX.ajax.runAction('itrack:custom.api.signal.declineLostdoc', {
+            data: {
+                lostid: main_lost,
+                lostdocid: lost_id,
+                status: status,
+                user: curuser
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='updated') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+            //alert(error)
+        });
+    })
 })
