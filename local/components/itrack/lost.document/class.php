@@ -4,6 +4,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 use Itrack\Custom\Helpers\Utils;
+use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
@@ -15,6 +16,8 @@ use \Bitrix\Main\UserGroupTable;
 use \Itrack\Custom\UserFieldValueTable;
 use \Itrack\Custom\CUserRole;
 use Itrack\Custom\InfoBlocks\LostDocuments;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CParticipation;
 
 
 class ItrLostDocument extends CBitrixComponent
@@ -25,6 +28,11 @@ class ItrLostDocument extends CBitrixComponent
     private $contractId;
     private $documentId;
     private $errors;
+    private $statuschanged;
+    private $uid;
+    private $isclient;
+    private $showaccept;
+    private $showdecline;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -46,6 +54,19 @@ class ItrLostDocument extends CBitrixComponent
             $arResult['DOCUMENT'] = $this->arDocument;
         }
 
+        if($this->processforWf($arResult['DOCUMENT'])) {
+            $arResult['CURUSER'] = $this->uid;
+            $arResult['ISCLIENT'] = $this->isclient;
+            $arResult['SHOWACCEPT'] = $this->showaccept;
+            $arResult['SHOWDECLINE'] = $this->showdecline;
+        }
+
+        if($this->statuschanged) {
+            if ($this->getDocument()) {
+                $arResult['DOCUMENT'] = $this->arDocument;
+            }
+        }
+
         if(!empty($arResult['DOCUMENT']['PROPERTIES']['REQUEST_AUTHOR']['VALUE'])) {
             $rsUser = CUser::GetByID($arResult['DOCUMENT']['PROPERTIES']['REQUEST_AUTHOR']['VALUE']);
             $arUser = $rsUser->Fetch();
@@ -64,6 +85,80 @@ class ItrLostDocument extends CBitrixComponent
         $APPLICATION->SetTitle(GetMessage('LOST_DOCUMENT') . ' - ' . $arResult['DOCUMENT']['NAME']);
 
         $this->includeComponentTemplate();
+    }
+
+    private function processforWf($document)
+    {
+        global $USER;
+        $usid = $USER->getID();
+        $arGroups = \CUser::GetUserGroup($usid);
+        $dateupdate = date("d.m.Y. H:i:s");
+        $PROP = [];
+
+        $status = $document['PROPERTIES']['STATUS']['VALUE']['ID'];
+        $lostdocid = $document['ID'];
+        $lostid = $document['PROPERTY_23'];
+
+        $iskurator = false;
+        $issupusrcl = false;
+        $this->uid = $usid;
+        $this->statuschanged = false;
+        $this->isclient = false;
+        $this->showaccept = false;
+        $this->showdecline = false;
+
+        $participation = new CParticipation(new CLost($lostid));
+        $partips = $participation->getParticipants();
+
+        foreach($partips as $partip) {
+            $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+            if(in_array($usid, $curators)) {
+                $iskurator = true;
+                break;
+            }
+        }
+
+        if($iskurator==true) {
+            if(in_array(CL_GROUP, $arGroups)) {
+                $this->isclient = true;
+            }
+            if(in_array(CL_SU_GROUP, $arGroups)) {
+                $issupusrcl = true;
+            }
+        }
+
+        if($status==1 && $this->isclient) {
+            $this->showaccept = true;
+        }
+
+        if($status==2 && $issupusrcl) {
+            $newstatus = '3';
+            $this->statuschanged = true;
+            $this->showaccept = true;
+            $this->showdecline = true;
+        }
+
+        if($status==3 && $issupusrcl) {
+            $this->showaccept = true;
+            $this->showdecline = true;
+        }
+
+        if($this->statuschanged) {
+            $PROP[27] = $newstatus;
+            $PROP[61] = $dateupdate;
+            LostDocuments::updateElement($lostdocid, [], $PROP);
+            $objHistory = new HLBWrap('e_history_lost_document_status');
+            $histdata = [
+                'UF_CODE_ID' => $newstatus,
+                'UF_DATE' => $dateupdate,
+                'UF_LOST_ID' => $lostid,
+                'UF_LOST_DOC_ID' => $lostdocid,
+                'UF_USER_ID' =>$usid
+            ];
+            $id = $objHistory->add($histdata);
+        }
+
+        return true;
     }
 
     private function getDocument()

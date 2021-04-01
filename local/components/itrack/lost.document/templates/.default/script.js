@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    var main_lost =  $(".block_title").attr("data-lost")
+    var curuser = $(".block_title").attr("data-user")
+    var status = $(".block_title").attr("data-status")
+    var lost_id = $("#lost_id").val()
     var inputFile = $('#loss_file');
     var newFiles = [];
     inputFile.change(function() {
@@ -15,7 +19,7 @@ $(document).ready(function() {
     $(".form_popup").submit(function (event) {
         event.preventDefault()
         var formData = new FormData()
-        formData.append('lost_id', $("#lost_id").val())
+        formData.append('lost_id', lost_id)
         formData.append('doc_name', $("#doc_name").val())
         formData.append('loss_file', $("#loss_file").prop('files')[0])
         formData.append('doc_date', $("#doc_date").val())
@@ -51,7 +55,7 @@ $(document).ready(function() {
             if(response.data=='success') {
                 location.reload();
             } else {
-                alert('response.data')
+                alert(response.data)
             }
         }, function (error) {
             //сюда будут приходить все ответы, у которых status !== 'success'
@@ -59,5 +63,81 @@ $(document).ready(function() {
             alert(error)
         });
 
+    })
+
+    $(".form_popup2").submit(function (event) {
+        event.preventDefault()
+        //console.log(event)
+        var lossdocid = $(this).attr("data-id")
+        var newcomment = BX.findChild(event.target, {"class" : "textarea"}, true, true)
+        var newcommenttxt = ''
+        //var commentxt = $(this).children(".textarea")
+        console.log(newcomment)
+        newcomment.forEach(function(element){
+            newcommenttxt = $(element).val()
+        })
+        BX.ajax.runAction('itrack:custom.api.signal.updateLostfilecomment', {
+            data: {
+                fileid: lossdocid,
+                newcomment: newcommenttxt
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='success') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            //console.log(error)
+            alert(error)
+        });
+
+
+    })
+
+    $("#accept").click(function (event) {
+        BX.ajax.runAction('itrack:custom.api.signal.acceptLostdoc', {
+            data: {
+                lostid: main_lost,
+                lostdocid: lost_id,
+                status: status,
+                user: curuser
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='updated') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+            //alert(error)
+        });
+    })
+
+    $("#decline").click(function (event) {
+        BX.ajax.runAction('itrack:custom.api.signal.declineLostdoc', {
+            data: {
+                lostid: main_lost,
+                lostdocid: lost_id,
+                status: status,
+                user: curuser
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='updated') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+            //alert(error)
+        });
     })
 })

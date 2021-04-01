@@ -345,18 +345,20 @@ $(document).ready(function() {
             // Для каждого элемента сохраняем значение в personsIdsArray,
             // если значение есть.
             var v  = $(el).val();
-            if (v) kurators.push(v);
-            if($(el).next().hasClass('active')) {
-                kurleaders.push(v)
-            }
-            if($(el).next().hasClass('broker')) {
-                kuratorsbr++
-            } else if($(el).next().hasClass('insco')) {
-                kuratorsins++
-            } else if($(el).next().hasClass('client')) {
-                kuratorscl++
-            } else if($(el).next().hasClass('adjuster')) {
-                kuratorsadj++
+            if (v) {
+                kurators.push(v);
+                if($(el).next().hasClass('active')) {
+                    kurleaders.push(v)
+                }
+                if($(el).next().hasClass('broker')) {
+                    kuratorsbr++
+                } else if($(el).next().hasClass('insco')) {
+                    kuratorsins++
+                } else if($(el).next().hasClass('client')) {
+                    kuratorscl++
+                } else if($(el).next().hasClass('adjuster')) {
+                    kuratorsadj++
+                }
             }
         })
 
