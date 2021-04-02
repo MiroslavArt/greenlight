@@ -153,53 +153,6 @@ class Signal extends Controller
             }
         }
 
-        /*Loader::includeModule('iblock');
-        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_28", "PROPERTY_29");
-        $arFilter = Array("IBLOCK_ID"=>2, "ID"=>26, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
-        $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
-
-        $result = [
-        ];
-
-        $leaders = $res['PROPERTY_29_VALUE'];
-
-        foreach($res['PROPERTY_28_VALUE'] as $user) {
-            $rsUser = \CUser::GetByID($user);
-            $arUser = $rsUser->Fetch();
-            $companyid = $arUser['UF_COMPANY'];
-
-            $item = [];
-            $item['value'] = $arUser['ID'];
-            $item['label'] = $arUser['NAME'].' '.$arUser['LAST_NAME'];
-            $item['email'] = $arUser['EMAIL'];
-            $item['position'] = $arUser['WORK_POSITION'];
-            $item['wphone'] = $arUser['WORK_PHONE'];
-            $item['mphone'] = $arUser['PERSONAL_MOBILE'];
-            $item['companyid'] = $companyid;
-            if(in_array($user, $leaders)) {
-                $item['isleader'] = true;
-            } else {
-                $item['isleader'] = false;
-            }
-
-            $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_TYPE");
-            $arFilter = Array("IBLOCK_ID" => 1, "ID" => $companyid, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-            $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
-            $company = $res->fetch();
-
-            if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
-                $item['type'] = 'broker';
-                //array_push($result['broker'], $item);
-            } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
-                $item['type'] = 'insuer';
-                //array_push($result['insuer'], $item);
-            } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
-                $item['type'] = 'client';
-                //array_push($result['client'], $item);
-            }
-            array_push($result, $item);
-        }*/
-
         return $result;
     }
 
@@ -242,27 +195,27 @@ class Signal extends Controller
         $groups = array(5);
         if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
             $type = 'СБ';
-            array_push($groups, 7);
+            array_push($groups, SB_GROUP);
             if ($userdata['superuser']) {
-                array_push($groups, 8);
+                array_push($groups, SB_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
             $type = 'СК';
-            array_push($groups, 11);
+            array_push($groups, INS_GROUP);
             if ($userdata['superuser']) {
-                array_push($groups, 12);
+                array_push($groups, INS_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
             $type = 'Клиент';
-            array_push($groups, 9);
+            array_push($groups, CL_GROUP);
             if ($userdata['superuser']) {
-                array_push($groups, 10);
+                array_push($groups, CL_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
             $type = 'Аджастер';
-            array_push($groups, 13);
+            array_push($groups, AJ_GROUP);
             if ($userdata['superuser']) {
-                array_push($groups, 14);
+                array_push($groups, AJ_SU_GROUP);
             }
         }
 
@@ -297,54 +250,6 @@ class Signal extends Controller
                 $participant = $participantClass::initByTargetAndCompany($userdata['loss'], $userdata['company']);
                 $participant->bindCurator($ID);
             }
-
-            /*$el = new \CIBlockElement;
-            if($userdata['contract']) {
-                $arSelect = Array("ID", "NAME", "PROPERTY_*");
-                $arFilter = Array("IBLOCK_ID" => 2, "ID" => $userdata['contract'], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-                $res = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
-                $PROP = array();
-                $PROP[4] = $res['PROPERTY_4'];
-                $PROP[5] = $res['PROPERTY_5'];
-                $PROP[6] = $res['PROPERTY_6'];
-                $PROP[7] = $res['PROPERTY_7'];
-                $PROP[8] = $res['PROPERTY_8'];
-                $PROP[9] = $res['PROPERTY_9'];
-                $PROP[9] = $res['PROPERTY_9'];
-                $PROP[10] = $res['PROPERTY_10'];
-                $PROP[11] = $res['PROPERTY_11'];
-                $PROP[12] = $res['PROPERTY_12'];
-                $PROP[13] = $res['PROPERTY_13'];
-                $kontkurators = array();
-                if ($res['PROPERTY_28']) {
-                    $kontkurators = $res['PROPERTY_28'];
-                }
-                array_push($kontkurators, $ID);
-                $PROP[28] = $kontkurators;
-                $PROP[29] = $res['PROPERTY_29'];
-                $arLoadContractArray = Array(
-                    "PROPERTY_VALUES"=> $PROP
-                );
-                $res1 = $el->Update($res['ID'], $arLoadContractArray);
-            }*/
-            // добавляем участника урегулирования убытка
-            /*if($userdata['loss']) {
-                $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");
-                $arFilter = Array("IBLOCK_ID"=>3, "ID"=>$userdata['loss'], "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
-                $res2 = \CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect)->fetch();
-                $name = $res2['NAME'].'-'.$type;
-                $data = [
-                    'IBLOCK_ID' => 4,
-                    'ACTIVE' => 'Y',
-                    'NAME' => $name,
-                    'PROPERTY_VALUES' => [
-                        'LOST'=> $userdata['loss'],
-                        'COMPANY'=> $userdata['company'],
-                        'CURATOR'=> $ID
-                    ]
-                ];
-                $res3 = $el->Add($data);
-            }*/
             $result = 'added';
         } else {
             $result = strip_tags($user->LAST_ERROR);
@@ -459,8 +364,34 @@ class Signal extends Controller
             } else {
                 $newstatus = '4';
             }
-        } elseif ($status==3) {
-            $newstatus = '4';
+        } elseif ($status==6) {
+            $superuserbroker = 0;
+            $needacceptsupubroker = false;
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
+                    $arGroups2 = \CUser::GetUserGroup($curator);
+                    if (in_array(SB_SU_GROUP, $arGroups2)) {
+                        $superuserbroker = $curator;
+                        break;
+                    }
+                }
+            }
+            if($superuserbroker) {
+                $needacceptsupubroker = (new CUserAccess($superuserbroker))->hasAcceptanceForLost($lostid);
+            }
+            if($needacceptsupubroker) {
+                $newstatus = '7';
+            } else {
+                $newstatus = '10';
+            }
+        } elseif ($status==9) {
+            $arGroups = \CUser::GetUserGroup($user);
+            if(in_array(SB_SU_GROUP, $arGroups)) {
+                $newstatus = '10';
+            }
         }
         if($newstatus) {
             $PROP[27] = $newstatus;
@@ -490,9 +421,9 @@ class Signal extends Controller
     public function declineLostdocAction($lostid, $lostdocid, $status, $user, $comment)
     {
         $dateupdate = date("d.m.Y. H:i:s");
-        if($status==3) {
-            $newstatus = '1';
-        }
+        //if($status==3) {
+        $newstatus = '1';
+        //}
         if($newstatus) {
             $PROP[27] = $newstatus;
             $PROP[61] = $dateupdate;
