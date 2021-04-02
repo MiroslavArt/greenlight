@@ -160,6 +160,11 @@ abstract class AbstractInfoBlock implements InfoBlocks
         //
     }
 
+    public static function getPropertyList(string $property):array
+    {
+        //
+    }
+
     /**
      * Get IB_BLOCK_ID
      * @return int

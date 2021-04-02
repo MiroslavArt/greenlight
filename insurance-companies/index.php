@@ -36,7 +36,7 @@ $APPLICATION->SetTitle("Страховые компании");
 		"PROPERTY_CODES" => array(),
 		"PROPERTY_CODES_REQUIRED" => array(),
 		"RESIZE_IMAGES" => "N",
-		"SEF_FOLDER" => "/insurance-companies/index.php/",
+		"SEF_FOLDER" => "/insurance-companies/",
 		"SEF_MODE" => "Y",
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",

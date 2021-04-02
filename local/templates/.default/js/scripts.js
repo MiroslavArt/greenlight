@@ -165,6 +165,30 @@ $(function(){
 						});
 					}
 
+					if($(form).hasClass('js-submit-file')) {
+						var data = $(form).serializeArray();
+
+						var formData = new FormData();
+
+						$.each($(form).find('input[type="file"]'), function(i, tag) {
+							$.each($(tag)[0].files, function(i, file) {
+								formData.append(tag.name, file);
+							});
+						});
+
+						$.each(data, function(i, val) {
+							formData.append(val.name, val.value);
+						});
+
+						mySubmit({
+							'url': url,
+							'method': method,
+							'data': formData,
+							'processData': false,
+							'contentType': false,
+						});
+					}
+
 				},
 				rules: {
 				}
@@ -198,6 +222,8 @@ $(function(){
 				'method': method,
 				dataType: 'json',
 				'data': data,
+				processData: (typeof options.processData != 'undefined' && options.processData == false)?false:'application/x-www-form-urlencoded',
+				contentType: (typeof options.contentType != 'undefined' && options.contentType == false)?false:'application/x-www-form-urlencoded',
 				beforeSend: function () {
 					$('.b-preloader-radial').addClass('active');
 				},

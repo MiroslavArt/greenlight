@@ -1,12 +1,15 @@
 <?php
 
-use Bitrix\Main\Loader;
-use Bitrix\Highloadblock as HL;
-use Bitrix\Main\Entity;
+use \Bitrix\Main\Loader;
+use \Bitrix\Highloadblock as HL;
+use \Bitrix\Main\Entity;
 use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
+use \Bitrix\Main\Localization\Loc;
+use \Bitrix\Main\SystemException;
+
 
 class ItrCompany extends CBitrixComponent
 {
@@ -22,13 +25,22 @@ class ItrCompany extends CBitrixComponent
     {
         global $APPLICATION;
 
+        $arResult =& $this->arResult;
+
         //get company
         $this->getCompany();
+
+        if(!empty($arResult['COMPANY']['PROPERTIES']['TYPE']['VALUE_XML_ID'])) {
+            $arResult['COMPANY_TYPE'] = $arResult['COMPANY']['PROPERTIES']['TYPE']['VALUE_XML_ID'];
+        } else {
+            $arResult['ERRORS'][] = Loc::getMessage('COMPANY_TYPE_IS_EMPTY');
+        }
 
         $arFilter = [
             "ACTIVE" => 'Y',
             "PROPERTY_CLIENT.ID" => [$this->companyId],
             ];
+
         if(isset($this->request['q_name'])) {
             $arFilter = [
                 array("LOGIC" => "OR",

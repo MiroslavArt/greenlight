@@ -24,6 +24,8 @@ $arDefaultUrlTemplates404 = array(
     "search" => "search/",
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
+    'useful-documents' => "#ELEMENT_ID#/useful-documents/",
+    'useful-documents-add' => "#ELEMENT_ID#/useful-documents/add/",
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
     "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
     "lost-document" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/",
@@ -99,6 +101,11 @@ if($arParams["SEF_MODE"] == "Y")
 
     foreach ($arUrlTemplates as $url => $value) {
         $arResult["PATH_TO"][$url] = CComponentEngine::MakePathFromTemplate($arParams["SEF_FOLDER"] . $value, $arVariables);
+    }
+
+    if($componentPage == 'useful-documents-add') {
+        $componentPage = 'useful-documents';
+        $arResult['ACTION'] = 'add';
     }
 }
 else
