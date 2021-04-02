@@ -6,4 +6,4 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @global \CUser $USER */
 /** @global \CDatabase $DB */
 /** @var CBitrixComponentTemplate $this */
-
+//\Bitrix\Main\Diag\Debug::writeToFile($arResult, "resu", "__miros.log");
