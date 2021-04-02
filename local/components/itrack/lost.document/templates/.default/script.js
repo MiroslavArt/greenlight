@@ -145,26 +145,35 @@ $(document).ready(function() {
             //alert(error)
         });
     })
+    // workflow - предоставление оригинала
+    $(".form_popup4").submit(function (event) {
+        event.preventDefault()
+        var origdate = $("#origdate").val()
+        if(!origdate) {
+            $("#mistakeorig").text("Не указана дата")
+        } else {
+            //console.log(event)
+            BX.ajax.runAction('itrack:custom.api.signal.getOrig', {
+                data: {
+                    lostid: main_lost,
+                    lostdocid: lost_id,
+                    status: status,
+                    user: curuser,
+                    origdate: origdate
+                }
+            }).then(function (response) {
+                //console.log(response)
+                if(response.data=='updated') {
+                    location.reload();
+                } else {
+                    alert(response.data)
+                }
+            }, function (error) {
+                //сюда будут приходить все ответы, у которых status !== 'success'
+                console.log(error)
+                //alert(error)
+            });
+        }
+    })
 
-    /*$("#decline").click(function (event) {
-        BX.ajax.runAction('itrack:custom.api.signal.declineLostdoc', {
-            data: {
-                lostid: main_lost,
-                lostdocid: lost_id,
-                status: status,
-                user: curuser
-            }
-        }).then(function (response) {
-            //console.log(response)
-            if(response.data=='updated') {
-                location.reload();
-            } else {
-                alert(response.data)
-            }
-        }, function (error) {
-            //сюда будут приходить все ответы, у которых status !== 'success'
-            console.log(error)
-            //alert(error)
-        });
-    })*/
 })

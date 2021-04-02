@@ -279,9 +279,15 @@ class Signal extends Controller
                     $data['PROPERTY_VALUES']['REQUEST_DEADLINE'] = $item['value'];
                 } else if($item['name']=='author') {
                     $data['PROPERTY_VALUES']['REQUEST_AUTHOR'] = $item['value'];
+                } else if($item['name']=='origin') {
+                    if($item['value']=='Да') {
+                        $data['PROPERTY_VALUES']['GET_ORIGINAL'] = '6';
+                    }
                 }
             }
             $data['PROPERTY_VALUES']['STATUS'] = '1';
+
+            \Bitrix\Main\Diag\Debug::writeToFile($data, "datawsss", "__miros.log");
 
             $ID = LostDocuments::createElement($data, []);
             if(intval($ID) > 0) {
@@ -436,6 +442,36 @@ class Signal extends Controller
                 'UF_LOST_DOC_ID' => $lostdocid,
                 'UF_USER_ID' => $user,
                 'UF_COMMENT' => $comment
+            ];
+
+            $id = $objHistory->add($histdata);
+
+            if(intval($id->getId())>0) {
+                return "updated";
+            } else {
+                return "error";
+            }
+        } else {
+            return "error";
+        }
+    }
+    // workflow
+    public function getOrigAction($lostid, $lostdocid, $status, $user, $origdate)
+    {
+        $dateupdate = date("d.m.Y. H:i:s");
+        $newstatus = '14';
+        if($newstatus) {
+            $PROP[27] = $newstatus;
+            $PROP[61] = $dateupdate;
+            $PROP[69] = $origdate;
+            LostDocuments::updateElement($lostdocid, [], $PROP);
+            $objHistory = new HLBWrap('e_history_lost_document_status');
+            $histdata = [
+                'UF_CODE_ID' => $newstatus,
+                'UF_DATE' => $dateupdate,
+                'UF_LOST_ID' => $lostid,
+                'UF_LOST_DOC_ID' => $lostdocid,
+                'UF_USER_ID' => $user
             ];
 
             $id = $objHistory->add($histdata);

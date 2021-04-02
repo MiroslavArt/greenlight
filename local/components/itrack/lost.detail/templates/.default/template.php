@@ -26,6 +26,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <form class="form_popup">
             <div class="form_row">
                 <div class="input_container column_100">
+                    <input type="hidden" name="origin" value="<?=$arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE']?>"/>
                     <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
                     <input type="text" class="text_input" name="docname" placeholder="Название документа" />
                 </div><!-- END input_container -->
