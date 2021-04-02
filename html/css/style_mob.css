@@ -504,7 +504,7 @@
 .text{margin-bottom: 40px;}
 }/* END 768px */
 @media only screen and (max-width: 560px){
-.status_form fieldset{display: block;}
+.status_form .fieldset{display: block;}
 	.status_form .docs_container,.status_form .input_container{margin-bottom: 20px;}
 	.status_form .docs_container{height: 60px;}
 	.status_form .input_container.area_b{max-width: none;}
