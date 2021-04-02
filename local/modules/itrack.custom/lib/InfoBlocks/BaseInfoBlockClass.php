@@ -405,7 +405,26 @@ class BaseInfoBlockClass extends AbstractInfoBlock
     {
         $dbEnumList = CIBlockProperty::GetPropertyEnum($property, [], ['IBLOCK_ID' => Utils::getIDIblockByCode(static::$ibBlockCode, static::$ibBlockType)]);
 
+        while($enum_fields = $dbEnumList->GetNext())
+        {
+            $ar[] = $enum_fields;
+        }
+        Utils::varDump($ar);
         return $dbEnumList->GetNext();
+    }
+
+    public static function getPropertyList(string $property):array
+    {
+        $arPropertyList = [];
+
+        $dbEnumList = CIBlockProperty::GetPropertyEnum($property, ["VALUE"=>"ASC"], ['IBLOCK_ID' => Utils::getIDIblockByCode(static::$ibBlockCode, static::$ibBlockType)]);
+
+        while($arProperty = $dbEnumList->GetNext())
+        {
+            $arPropertyList[] = $arProperty;
+        }
+
+        return $arPropertyList;
     }
 
     /**

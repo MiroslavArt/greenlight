@@ -2,7 +2,7 @@
 $arUrlRewrite=array (
   3 => 
   array (
-    'CONDITION' => '#^/insurance-companies/index.php/#',
+    'CONDITION' => '#^/insurance-companies/#',
     'RULE' => '',
     'ID' => 'itrack:companies',
     'PATH' => '/insurance-companies/index.php',
