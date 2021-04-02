@@ -6,3 +6,5 @@ define('VUEJS_DEBUG', $vuejsDebug);
 define('MODULE_ID_ITRACK', 'itrack.custom');
 define('CL_GROUP', '9');
 define('CL_SU_GROUP', '10');
+define('SB_GROUP', '8');
+define('SB_SU_GROUP', '7');

@@ -487,7 +487,7 @@ class Signal extends Controller
         }
     }
     // workflow
-    public function declineLostdocAction($lostid, $lostdocid, $status, $user)
+    public function declineLostdocAction($lostid, $lostdocid, $status, $user, $comment)
     {
         $dateupdate = date("d.m.Y. H:i:s");
         if($status==3) {
@@ -503,7 +503,8 @@ class Signal extends Controller
                 'UF_DATE' => $dateupdate,
                 'UF_LOST_ID' => $lostid,
                 'UF_LOST_DOC_ID' => $lostdocid,
-                'UF_USER_ID' => $user
+                'UF_USER_ID' => $user,
+                'UF_COMMENT' => $comment
             ];
 
             $id = $objHistory->add($histdata);

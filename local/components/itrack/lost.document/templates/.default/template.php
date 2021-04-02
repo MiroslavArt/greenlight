@@ -25,7 +25,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?></span>
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
-        <?php if($arResult['DOCUMENT']['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Y') : ?>
+        <?php if($arResult['DOCUMENT']['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') : ?>
         <div class="title_right_block">
             <div class="docs_container desc_left">
                 <ul class="list_dosc">
@@ -65,11 +65,22 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?
             if($arResult['SHOWDECLINE']) {
         ?>
-            <a href="#" class="btn" id="decline">Отклонить</a>
+            <a href="#decline_comment" class="btn" data-fancybox>Отклонить</a>
         <? } ?>
         <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
         <? if($arResult['ISCLIENT']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
     </div><!-- END desc_container -->
+    <div class="popup add_comment" id="decline_comment">
+        <h3 class="block_title">Отклонить с коммментарием</h3>
+        <form class="form_popup3">
+            <div class="form_row">
+                <div class="input_container column_100">
+                    <textarea class="textarea" placeholder="Комментарий при отклонении"></textarea>
+                </div><!-- END input_container -->
+            </div><!-- END form_row -->
+            <input type="submit" class="btn" value="Отклонить">
+        </form><!-- END form_popup -->
+    </div><!-- END popup -->
     <div class="popup add_doc2" id="add_doc2">
         <h3 class="block_title">Добавление файла к документу убытка</h3>
         <form class="form_popup">

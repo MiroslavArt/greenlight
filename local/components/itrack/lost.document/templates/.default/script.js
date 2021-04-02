@@ -67,12 +67,9 @@ $(document).ready(function() {
 
     $(".form_popup2").submit(function (event) {
         event.preventDefault()
-        //console.log(event)
         var lossdocid = $(this).attr("data-id")
         var newcomment = BX.findChild(event.target, {"class" : "textarea"}, true, true)
         var newcommenttxt = ''
-        //var commentxt = $(this).children(".textarea")
-        console.log(newcomment)
         newcomment.forEach(function(element){
             newcommenttxt = $(element).val()
         })
@@ -96,7 +93,7 @@ $(document).ready(function() {
 
 
     })
-
+    // workflow - акцепт
     $("#accept").click(function (event) {
         BX.ajax.runAction('itrack:custom.api.signal.acceptLostdoc', {
             data: {
@@ -118,8 +115,38 @@ $(document).ready(function() {
             //alert(error)
         });
     })
+    // workflow - отклонение
+    $(".form_popup3").submit(function (event) {
+        event.preventDefault()
+        var newcomment = BX.findChild(event.target, {"class" : "textarea"}, true, true)
+        var newcommenttxt = ''
+        newcomment.forEach(function(element){
+            newcommenttxt = $(element).val()
+        })
+        //console.log(event)
+        BX.ajax.runAction('itrack:custom.api.signal.declineLostdoc', {
+            data: {
+                lostid: main_lost,
+                lostdocid: lost_id,
+                status: status,
+                user: curuser,
+                comment: newcommenttxt
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='updated') {
+                location.reload();
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+            //alert(error)
+        });
+    })
 
-    $("#decline").click(function (event) {
+    /*$("#decline").click(function (event) {
         BX.ajax.runAction('itrack:custom.api.signal.declineLostdoc', {
             data: {
                 lostid: main_lost,
@@ -139,5 +166,5 @@ $(document).ready(function() {
             console.log(error)
             //alert(error)
         });
-    })
+    })*/
 })
