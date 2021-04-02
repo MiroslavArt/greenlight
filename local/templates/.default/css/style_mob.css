@@ -82,7 +82,7 @@
 		text-align: center;
 	}
 	.checkbox_type2{font-size: 10px;}
-	.popup,.popup.add_doc2{
+	.popup,.popup.add_doc2,.popup.useful_doc,.popup.change_status{
 		padding-left: 30px;
 		padding-right: 30px;
 	}
@@ -503,6 +503,12 @@
 	.small_title{margin-bottom: 30px;}
 	.text{margin-bottom: 40px;}
 }/* END 768px */
+@media only screen and (max-width: 560px){
+	.status_form .fieldset{display: block;}
+	.status_form .docs_container,.status_form .input_container{margin-bottom: 20px;}
+	.status_form .docs_container{height: 60px;}
+	.status_form .input_container.area_b{max-width: none;}
+}/* END 560px */
 @media only screen and (max-width: 480px){
 	.authorization_form .btn{width: 100%;}
 	.authorization_form .link:not(.mob){display: none;}
@@ -510,6 +516,7 @@
 		display: inline-block;
 		margin: -7px 0 31px;
 	}
+	.btn_container{justify-content: space-between;}
 	.btn.ico_plus,.btn.ico_minus{
 		margin: 0;
 		width: calc(50% - 5px);
@@ -536,6 +543,8 @@
 		line-height: 52px;
 	}
 	.not_found_column p:first-child{margin-bottom: 50px;}
+	.useful_doc .logo_upload{max-width: none;}
+	.useful_doc .upload span.upload_btn_text br{display: block;}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 

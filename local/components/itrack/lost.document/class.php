@@ -101,6 +101,10 @@ class ItrLostDocument extends CBitrixComponent
 
         $iskurator = false;
         $issupusrcl = false;
+        $isbroker = false;
+        $issupbroker = false;
+        $isins = false;
+        $isadj = false;
         $this->uid = $usid;
         $this->statuschanged = false;
         $this->isclient = false;
@@ -125,6 +129,15 @@ class ItrLostDocument extends CBitrixComponent
             if(in_array(CL_SU_GROUP, $arGroups)) {
                 $issupusrcl = true;
             }
+            if(in_array(SB_GROUP, $arGroups)) {
+                $isbroker = true;
+            }
+            if(in_array(INS_GROUP, $arGroups)) {
+                $isins = true;
+            }
+            if(in_array(AJ_GROUP, $arGroups)) {
+                $isadj = true;
+            }
         }
 
         if($status==1 && $this->isclient) {
@@ -141,6 +154,37 @@ class ItrLostDocument extends CBitrixComponent
         if($status==3 && $issupusrcl) {
             $this->showaccept = true;
             $this->showdecline = true;
+        }
+
+        if($status==4) {
+            if($isbroker) {
+                $this->statuschanged = true;
+                $this->showaccept = true;
+                $this->showdecline = true;
+                if(!$issupbroker) {
+                    $newstatus = '6';
+                } else {
+                    $newstatus = '9';
+                }
+            }
+        }
+
+        if($status==7) {
+            if($issupbroker) {
+                $this->statuschanged = true;
+                $this->showaccept = true;
+                $this->showdecline = true;
+                $newstatus = '9';
+            }
+        }
+
+        if($status==10) {
+            if($isadj || $isins) {
+                $this->statuschanged = true;
+                $this->showaccept = true;
+                $this->showdecline = true;
+                $newstatus = '12';
+            }
         }
 
         if($this->statuschanged) {

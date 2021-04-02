@@ -28,6 +28,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?php if($arResult['DOCUMENT']['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') : ?>
         <div class="title_right_block">
             <div class="docs_container desc_left">
+                <a href="#change_status" data-fancybox class="ico_settings link"></a>
                 <ul class="list_dosc">
                     <li>
                         <p>Оригинал предоставлен</p>
@@ -40,6 +41,57 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div><!-- END title_right_block -->
         <?php endif;?>
     </div><!-- END title_container -->
+    <div class="popup change_status" id="change_status">
+        <h2 class="block_title">Внесение даты и отметка о статусе</h2>
+        <form class="status_form form_popup">
+            <div class="fieldset">
+                <div class="docs_container area_a">
+                    <ul class="list_dosc">
+                        <li class="red">
+                            <p>Документ запрошен</p>
+                        </li>
+                    </ul><!-- END list_docs -->
+                </div><!-- END docs_container -->
+                <div class="input_container area_b">
+                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
+                </div><!-- END input_container -->
+                <div class="input_container area_c">
+                    <input type="text" class="text_input" placeholder="Автор" />
+                </div><!-- END input_container -->
+            </div>
+            <div class="fieldset">
+                <div class="docs_container area_a">
+                    <ul class="list_dosc">
+                        <li class="yellow">
+                            <p>Переданные в эл.виде</p>
+                        </li>
+                    </ul><!-- END list_docs -->
+                </div><!-- END docs_container -->
+                <div class="input_container area_b">
+                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
+                </div><!-- END input_container -->
+                <div class="input_container area_c">
+                    <input type="text" class="text_input" placeholder="Автор" />
+                </div><!-- END input_container -->
+            </div>
+            <div class="fieldset">
+                <div class="docs_container area_a">
+                    <ul class="list_dosc">
+                        <li>
+                            <p>Оригинал предоставлен</p>
+                        </li>
+                    </ul><!-- END list_docs -->
+                </div><!-- END docs_container -->
+                <div class="input_container area_b">
+                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
+                </div><!-- END input_container -->
+                <div class="input_container area_c">
+                    <input type="text" class="text_input" placeholder="Автор" />
+                </div><!-- END input_container -->
+            </div>
+            <input type="submit" class="btn" value="Сохранить" />
+        </form><!-- END status_form -->
+    </div><!-- END popup -->
     <div class="desc_container">
         <ul class="doc_info">
             <li>

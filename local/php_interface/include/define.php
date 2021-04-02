@@ -8,3 +8,7 @@ define('CL_GROUP', '9');
 define('CL_SU_GROUP', '10');
 define('SB_GROUP', '8');
 define('SB_SU_GROUP', '7');
+define('AJ_GROUP', '13');
+define('AJ_SU_GROUP', '14');
+define('INS_GROUP', '11');
+define('INS_SU_GROUP', '12');
