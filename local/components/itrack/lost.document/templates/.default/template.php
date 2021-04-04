@@ -25,70 +25,39 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?></span>
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
-        <?php if($arResult['DOCUMENT']['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') : ?>
+        <?php if($arResult['SHOWORIGINAL']) : ?>
         <div class="title_right_block">
             <div class="docs_container desc_left">
-                <a href="#change_status" data-fancybox class="ico_settings link"></a>
-                <ul class="list_dosc">
-                    <li>
-                        <p>Оригинал предоставлен</p>
-                    </li>
-                </ul><!-- END list_docs -->
+                <?php if($arResult['ORIGINALSTATUSSET']) { ?>
+                    <a href="#change_status" data-fancybox class="ico_settings link"></a>
+                <? } ?>
+                <!--<ul class="list_dosc">
+                    <li> -->
+                        <?php if($arResult['ORIGINALGOT']) { ?>
+                            <p>Оригинал предоставлен</p>
+                        <? } else { ?>
+                            <p>Оригинал не предоставлен!</p>
+                        <? } ?>
+                   <!-- </li>
+                </ul>--><!-- END list_docs -->
                 <div class="docs_container_bottom">
-                    <span class="desc_title">от 01.07.2017</span>
+                    <?php if($arResult['ORIGINALGOT']) { ?>
+                        <span class="desc_title">от <?=$arResult['DOCUMENT']['PROPERTY_69']?></span>
+                    <? } ?>
                 </div><!-- END docs_container_bottom -->
             </div><!-- END docs_container -->
         </div><!-- END title_right_block -->
         <?php endif;?>
     </div><!-- END title_container -->
     <div class="popup change_status" id="change_status">
-        <h2 class="block_title">Внесение даты и отметка о статусе</h2>
-        <form class="status_form form_popup">
+        <h2 class="block_title">Зафиксировать предоставление оригинала</h2>
+        <form class="status_form form_popup4">
             <div class="fieldset">
-                <div class="docs_container area_a">
-                    <ul class="list_dosc">
-                        <li class="red">
-                            <p>Документ запрошен</p>
-                        </li>
-                    </ul><!-- END list_docs -->
-                </div><!-- END docs_container -->
-                <div class="input_container area_b">
-                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
-                </div><!-- END input_container -->
-                <div class="input_container area_c">
-                    <input type="text" class="text_input" placeholder="Автор" />
-                </div><!-- END input_container -->
+                <!-- <div class="input_container area_b"> -->
+                <input type="text" class="text_input ico_date js_datapicker" id="origdate" placeholder="Дата предоставления" />
+                <!-- </div> -->
             </div>
-            <div class="fieldset">
-                <div class="docs_container area_a">
-                    <ul class="list_dosc">
-                        <li class="yellow">
-                            <p>Переданные в эл.виде</p>
-                        </li>
-                    </ul><!-- END list_docs -->
-                </div><!-- END docs_container -->
-                <div class="input_container area_b">
-                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
-                </div><!-- END input_container -->
-                <div class="input_container area_c">
-                    <input type="text" class="text_input" placeholder="Автор" />
-                </div><!-- END input_container -->
-            </div>
-            <div class="fieldset">
-                <div class="docs_container area_a">
-                    <ul class="list_dosc">
-                        <li>
-                            <p>Оригинал предоставлен</p>
-                        </li>
-                    </ul><!-- END list_docs -->
-                </div><!-- END docs_container -->
-                <div class="input_container area_b">
-                    <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата предоставления" />
-                </div><!-- END input_container -->
-                <div class="input_container area_c">
-                    <input type="text" class="text_input" placeholder="Автор" />
-                </div><!-- END input_container -->
-            </div>
+            <p class="link" id="mistakeorig"></p>
             <input type="submit" class="btn" value="Сохранить" />
         </form><!-- END status_form -->
     </div><!-- END popup -->
@@ -120,7 +89,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <a href="#decline_comment" class="btn" data-fancybox>Отклонить</a>
         <? } ?>
         <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
-        <? if($arResult['ISCLIENT']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
+        <? if($arResult['SHOWADD']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
     </div><!-- END desc_container -->
     <div class="popup add_comment" id="decline_comment">
         <h3 class="block_title">Отклонить с коммментарием</h3>

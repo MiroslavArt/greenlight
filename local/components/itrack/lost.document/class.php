@@ -33,6 +33,10 @@ class ItrLostDocument extends CBitrixComponent
     private $isclient;
     private $showaccept;
     private $showdecline;
+    private $shpworiginalpanel;
+    private $originalstatuset;
+    private $originalgot;
+    private $showadd;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -59,6 +63,10 @@ class ItrLostDocument extends CBitrixComponent
             $arResult['ISCLIENT'] = $this->isclient;
             $arResult['SHOWACCEPT'] = $this->showaccept;
             $arResult['SHOWDECLINE'] = $this->showdecline;
+            $arResult['SHOWORIGINAL'] = $this->shpworiginalpanel;
+            $arResult['ORIGINALSTATUSSET'] = $this->originalstatuset;
+            $arResult['ORIGINALGOT'] =  $this->originalgot;
+            $arResult['SHOWADD'] =  $this->showadd;
         }
 
         if($this->statuschanged) {
@@ -110,6 +118,19 @@ class ItrLostDocument extends CBitrixComponent
         $this->isclient = false;
         $this->showaccept = false;
         $this->showdecline = false;
+        $this->shpworiginalpanel = false;
+        $this->originalstatuset = false;
+        $this->originalgot = false;
+        $this->showadd = false;
+
+        if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
+            $this->shpworiginalpanel = true;
+            if($status==12) {
+                $this->originalstatuset = true;
+            } elseif ($status==14) {
+                $this->originalgot = true;
+            }
+        }
 
         $participation = new CParticipation(new CLost($lostid));
         $partips = $participation->getParticipants();
@@ -142,6 +163,7 @@ class ItrLostDocument extends CBitrixComponent
 
         if($status==1 && $this->isclient) {
             $this->showaccept = true;
+            $this->showadd = true;
         }
 
         if($status==2 && $issupusrcl) {
@@ -234,7 +256,6 @@ class ItrLostDocument extends CBitrixComponent
         return true;
     }
 
-
     private function getDocuments()
     {
         //ToDo переделать выборку файлов
@@ -255,5 +276,4 @@ class ItrLostDocument extends CBitrixComponent
 
         return $arDocuments;
     }
-
 }
