@@ -29,6 +29,13 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
     }
 }
 
+if($_POST['type']) {
+    $type = $_POST['type'];
+} else {
+    $type = '2';
+}
+
+
 $arr_file=Array(
     "name" =>  $_FILES['loss_file']['name'],
     "size" => $_FILES['loss_file']['size'],
@@ -45,11 +52,10 @@ $data = array(
     "UF_LOST_ID" => $_POST['lost_id'],
     "UF_NAME"=>$_POST['doc_name'],
     "UF_FILE"=> $file,
-    //"UF_FILE_INT"=> $fid,
     "UF_COMMENT"=>$_POST['comment'],
     "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
     "UF_USER_ID" => $USER->GetID(),
-    "UF_DOC_TYPE"=> 2
+    "UF_DOC_TYPE"=> $type
 );
 
 $objDocument = new HLBWrap('uploaded_docs');
@@ -57,7 +63,8 @@ $objDocument = new HLBWrap('uploaded_docs');
 $id = $objDocument->add($data);
 
 if(intval($id->getId())>0) {
-    __CrmPropductRowListEndResponse(array('sucsess' => 'Y'));
+    $file['docid'] = intval($id->getId());
+    __CrmPropductRowListEndResponse(array('success' => $file));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>strip_tags($id)));
 }

@@ -125,7 +125,19 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <div class="table_block align_left align_top item3" data-name="Запрошенные документы"><?= $arItem['NAME'] ?></div>
                     <div class="table_block align_left align_top item2" data-name="Дата запроса"><?= (new \DateTime($arItem['DATE_CREATE']))->format('d.m.Y') ?></div>
                     <div class="table_block align_left align_top item3" data-name="Автор запроса"><?= $arItem['USER_FIO'] ?></div>
-                    <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#" class="link">Запрос</a></div>
+                    <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#add_doc<?= $arItem['ID'] ?>" data-fancybox class="link reqdoclink">Запрос</a></div>
+                    <div class="popup add_doc" id="add_doc<?= $arItem['ID'] ?>">
+                        <?php
+                        $APPLICATION->IncludeComponent(
+                            'itrack:lost.request.docs',
+                            '',
+                            array(
+                                "LOST_DOC" => $arItem['ID']
+                            ),
+                            null
+                        );
+                        ?>
+                    </div>
                     <div class="table_block align_left align_top item2" data-name="Информация предоставлена"></div>
                     <div class="table_block align_left align_top item2" data-name="Документы"><a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link">Документ</a></div>
                     <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">25.08.2020</div>
@@ -135,3 +147,4 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </ul><!-- END data_table -->
     <?php endif; ?>
 </div><!-- END wrapper -->
+
