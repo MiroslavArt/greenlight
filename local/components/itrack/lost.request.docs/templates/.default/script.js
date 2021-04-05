@@ -26,6 +26,29 @@ $(document).ready(function() {
         });
     })
 
+    $(".js_deletereqdoc").click(function (event) {
+        var fileid = $(this).attr("data-id")
+        BX.ajax.runAction('itrack:custom.api.signal.delLostfile', {
+            data: {
+                fileid: fileid
+            }
+        }).then(function (response) {
+            //console.log(response)
+            if(response.data=='success') {
+                //location.reload();
+                BX.remove(event.target.parentElement)
+            } else {
+                alert(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            //console.log(error)
+            alert(error)
+        });
+
+    })
+
+
     $(".upload_doc_container").submit(function (event) {
         event.preventDefault()
         var lost_id = $(event.target).attr('data-id')

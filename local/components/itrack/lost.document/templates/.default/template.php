@@ -75,7 +75,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <?php endif; ?>
             <li>
                 <span>Ссылка на запрос</span>
-                <p><a href="#" class="link"><span>Запрос</span></a></p>
+                <p><a href="#add_doc" data-fancybox class="link"><span>Запрос</span></a></p>
             </li>
         </ul><!-- END doc_info -->
         <?
@@ -91,6 +91,18 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
         <? if($arResult['SHOWADD']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
     </div><!-- END desc_container -->
+    <div class="popup add_doc" id="add_doc">
+        <?php
+        $APPLICATION->IncludeComponent(
+            'itrack:lost.request.docs',
+            '',
+            array(
+                "LOST_DOC" => $arResult['DOCUMENT']['ID']
+            ),
+            null
+        );
+        ?>
+    </div>
     <div class="popup add_comment" id="decline_comment">
         <h3 class="block_title">Отклонить с коммментарием</h3>
         <form class="form_popup3">
