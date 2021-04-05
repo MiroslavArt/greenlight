@@ -75,4 +75,20 @@ class CUserEx
 
 		return $userCompanies;
 	}
+
+	public static function getEmails(array $users) {
+		$res = \Bitrix\Main\UserTable::query()
+			->setSelect(["ID", "EMAIL"])
+			->whereIn("ID", $users)
+			->exec();
+
+		$userEmails = [];
+
+		while ($row = $res->fetch()) {
+			$userId = $row["ID"];
+			$userEmails[$userId] = $row["EMAIL"];
+		}
+
+		return $userEmails;
+	}
 }

@@ -12,12 +12,12 @@ class CParticipation
 		$this->target = $target;
 	}
 
-	public function getParticipants() {
+	public function getParticipants(array $select = []) {
 		/** @var AParticipant $participant */
 		$participant = $this->target::getParticipantClass();
 
 		// todo format data as you need
-		return $participant::getElementsByConditions(["PROPERTY_TARGET_ID" => $this->target->getId()]);
+		return $participant::getElementsByConditions(["PROPERTY_TARGET_ID" => $this->target->getId()], [], $select);
 	}
 
 	public function createFromArrays(array $companies, array $companiesLeaders, array $curators, array $curatorsLeaders) {

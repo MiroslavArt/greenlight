@@ -74,4 +74,20 @@ abstract class AbstractUserAccessTable extends DataManager
 
 		return $targets;
 	}
+
+	public static function getAllUsers(int $targetId): array
+	{
+		$result = self::getList([
+			"select" => [ self::USER_FIELD ],
+			"filter" => [ self::TARGET_FIELD => $targetId ]
+		]);
+
+
+		$users = [];
+		while ($row = $result->fetch()) {
+			$users[] = $row[self::USER_FIELD];
+		}
+
+		return $users;
+	}
 }
