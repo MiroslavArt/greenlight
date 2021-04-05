@@ -95,15 +95,22 @@ $(document).ready(function() {
     })
     // workflow - акцепт
     $("#accept").click(function (event) {
+        var orig = false
+
+        if($(this).attr('data-orig')==true) {
+            orig = true
+        }
+
         BX.ajax.runAction('itrack:custom.api.signal.acceptLostdoc', {
             data: {
                 lostid: main_lost,
                 lostdocid: lost_id,
                 status: status,
-                user: curuser
+                user: curuser,
+                orig: orig
             }
         }).then(function (response) {
-            //console.log(response)
+            console.log(response)
             if(response.data=='updated') {
                 location.reload();
             } else {

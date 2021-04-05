@@ -121,6 +121,10 @@ if(intval($id) > 0) {
         ];
         $id2 = $add->Add($data);
     }*/
+    \Bitrix\Main\Diag\Debug::writeToFile($companies, "comp", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($companiesleaders, "complead", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($kurators, "complead", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($kurleaders, "kurlead", "__miros.log");
     $participation = new CParticipation(new CLost($id));
     $participation->createFromArrays(
         $companies,			// Компании

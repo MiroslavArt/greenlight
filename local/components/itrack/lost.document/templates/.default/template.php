@@ -81,7 +81,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?
             if($arResult['SHOWACCEPT']) {
         ?>
-            <a href="#" class="btn" id="accept">Акцептовать</a>
+            <a href="#" class="btn" id="accept" data-orig="<?=$arResult['SHOWORIGINAL']?>">Акцептовать</a>
         <? } ?>
         <?
             if($arResult['SHOWDECLINE']) {

@@ -18,6 +18,7 @@ use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
 use Itrack\Custom\InfoBlocks\LostDocuments;
 use Itrack\Custom\UserAccess\CUserAccess;
+use Itrack\Custom\CNotification;
 
 class Signal extends Controller
 {
@@ -265,6 +266,7 @@ class Signal extends Controller
         $data = [];
 
         global $USER;
+        global $USER;
         $uid = $USER->GetID();
 
         if($formdata) {
@@ -287,7 +289,7 @@ class Signal extends Controller
             }
             $data['PROPERTY_VALUES']['STATUS'] = '1';
 
-            \Bitrix\Main\Diag\Debug::writeToFile($data, "datawsss", "__miros.log");
+
 
             $ID = LostDocuments::createElement($data, []);
             if(intval($ID) > 0) {
@@ -338,41 +340,69 @@ class Signal extends Controller
         }
     }
     // workflow
-    public function acceptLostdocAction($lostid, $lostdocid, $status, $user)
+    public function acceptLostdocAction($lostid, $lostdocid, $status, $user, $orig)
     {
         $dateupdate = date("d.m.Y. H:i:s");
+        $usernotify = [];
+        $PROP = [];
 
-        if($status==1) {
+        if ($status == 1) {
             $superuserclient = 0;
             $needacceptsupuclient = false;
-            $PROP = [];
+            $brokerscur = [];
 
             $arGroups = \CUser::GetUserGroup($user);
-            if(!in_array(CL_SU_GROUP, $arGroups)) {
-                $participation = new CParticipation(new CLost($lostid));
-                $partips = $participation->getParticipants();
-                foreach ($partips as $partip) {
-                    $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
-                    foreach ($curators as $curator) {
+            //if (!in_array(CL_SU_GROUP, $arGroups)) {
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
                         $arGroups2 = \CUser::GetUserGroup($curator);
                         if (in_array(CL_SU_GROUP, $arGroups2)) {
-                            $superuserclient = $curator;
-                            break;
-                        }
+                            if (!in_array(CL_SU_GROUP, $arGroups)) {
+                                $superuserclient = $curator;
+                            }
+                            //break;
+                        } elseif (in_array(SB_GROUP, $arGroups2)) {
+                            array_push($brokerscur, $curator);
                     }
                 }
             }
-            if($superuserclient) {
+            //}
+            if ($superuserclient) {
                 $needacceptsupuclient = (new CUserAccess($superuserclient))->hasAcceptanceForLost($lostid);
             }
-            if($needacceptsupuclient) {
+            if ($needacceptsupuclient) {
                 $newstatus = '2';
+                $usernotify = [$superuserclient];
+                $nottempl = 'suc_accept';
             } else {
                 $newstatus = '4';
+                $usernotify = $brokerscur;
+                $nottempl = 'sb_accept';
+
             }
+        } elseif ($status==3) {
+            $brokerscur = [];
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
+                    $arGroups2 = \CUser::GetUserGroup($curator);
+                    if (in_array(SB_GROUP, $arGroups2)) {
+                        array_push($brokerscur, $curator);
+                    }
+                }
+            }
+            $newstatus = '4';
+            $usernotify = $brokerscur;
+            $nottempl = 'sb_accept';
         } elseif ($status==6) {
             $superuserbroker = 0;
             $needacceptsupubroker = false;
+            $insadjcurators = [];
             $participation = new CParticipation(new CLost($lostid));
             $partips = $participation->getParticipants();
             foreach ($partips as $partip) {
@@ -381,7 +411,9 @@ class Signal extends Controller
                     $arGroups2 = \CUser::GetUserGroup($curator);
                     if (in_array(SB_SU_GROUP, $arGroups2)) {
                         $superuserbroker = $curator;
-                        break;
+                        //break;
+                    } elseif(in_array(AJ_GROUP, $arGroups2) || in_array(INS_GROUP, $arGroups2)) {
+                        array_push($insadjcurators, $curator);
                     }
                 }
             }
@@ -390,15 +422,45 @@ class Signal extends Controller
             }
             if($needacceptsupubroker) {
                 $newstatus = '7';
+                $usernotify = [$superuserbroker];
+                $nottempl = 'sb_accept';
             } else {
                 $newstatus = '10';
+                $usernotify = $insadjcurators;
+                if($orig) {
+                    $nottempl = 'doc_read_orig';
+                } else {
+                    $nottempl = 'doc_read';
+                }
             }
         } elseif ($status==9) {
             $arGroups = \CUser::GetUserGroup($user);
             if(in_array(SB_SU_GROUP, $arGroups)) {
                 $newstatus = '10';
             }
+            $insadjcurators = [];
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
+                    $arGroups2 = \CUser::GetUserGroup($curator);
+                    if (in_array(AJ_GROUP, $arGroups2) || in_array(INS_GROUP, $arGroups2)) {
+                        array_push($insadjcurators, $curator);
+                    }
+                }
+            }
+            $usernotify = $insadjcurators;
+            if($orig) {
+                $nottempl = 'doc_read_orig';
+            } else {
+                $nottempl = 'doc_read';
+            }
         }
+        if($usernotify && $nottempl) {
+            CNotification::send($nottempl, $usernotify, 'nocomment', $lostid, $lostdocid);
+        }
+
         if($newstatus) {
             $PROP[27] = $newstatus;
             $PROP[61] = $dateupdate;
@@ -427,9 +489,48 @@ class Signal extends Controller
     public function declineLostdocAction($lostid, $lostdocid, $status, $user, $comment)
     {
         $dateupdate = date("d.m.Y. H:i:s");
-        //if($status==3) {
         $newstatus = '1';
-        //}
+
+        if($status==3) {
+            $curclient = [];
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
+                    $arGroups2 = \CUser::GetUserGroup($curator);
+                    if (in_array(CL_GROUP, $arGroups2)) {
+                        if(!in_array(CL_SU_GROUP, $arGroups2)) {
+                            $curclient[] = $curator;
+                        }
+                    }
+                }
+            }
+            $nottempl = 'suc_decline';
+        } else if($status==6 || $status==9) {
+            $curclient = [];
+            $participation = new CParticipation(new CLost($lostid));
+            $partips = $participation->getParticipants();
+            foreach ($partips as $partip) {
+                $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                foreach ($curators as $curator) {
+                    $arGroups2 = \CUser::GetUserGroup($curator);
+                    if (in_array(CL_GROUP, $arGroups2)) {
+                        array_push($curclient, $curator);
+                    }
+                }
+            }
+            $nottempl = 'sb_decline';
+        }
+
+        if($curclient) {
+            $usernotify = $curclient;
+        }
+
+        if($usernotify && $nottempl) {
+            CNotification::send($nottempl, $usernotify, $comment, $lostid, $lostdocid);
+        }
+
         if($newstatus) {
             $PROP[27] = $newstatus;
             $PROP[61] = $dateupdate;
