@@ -217,6 +217,7 @@ class ItrLost extends CBitrixComponent
             $this->arResult['STATUSES'] = $arStatuses;
             unset($arStatuses);
         }
+
         return $arRequests;
     }
 

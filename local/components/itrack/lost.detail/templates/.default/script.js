@@ -1,4 +1,12 @@
 $(document).ready(function() {
+
+    $(".reqdoclink").fancybox({
+        afterClose: function(){
+            location.reload()
+        }
+    });
+
+
     $( ".form_popup" ).submit(function( event ) {
         event.preventDefault();
         var formData = $(this).serializeArray();  // создаем переменную, которая содержит закодированный набор элементов формы в виде строки
