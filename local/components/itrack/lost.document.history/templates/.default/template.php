@@ -58,7 +58,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <div class="table_block align_left item4"><p>Дата присвоения статуса</p></div>
             <div class="table_block align_left item4"><p>Статус развернуто</p></div>
             <div class="table_block align_left item4"><p>Кем установлен статус</p></div>
-            <div class="table_block align_left"></div>
+            <!-- <div class="table_block align_left"></div> -->
             <div class="table_block align_left item8"><p>Комментарий</p></div>
         </li>
         <?php foreach ($arResult['HISTORY'] as $arStatus) :?>
@@ -66,7 +66,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="table_block align_left align_top item4" data-name="Дата присвоения статуса"><?=$arStatus['UF_DATE']->format('d.m.Y')?></div>
                 <div class="table_block align_left align_top item4" data-name="Статус развернуто"><?=$arStatus['STATUS']['UF_NAME']?></div>
                 <div class="table_block align_left align_top item4" data-name="Кем установлен статус"><?=$arStatus['USER_FIO']?></div>
-                <div class="table_block align_left align_top mob_hihe"><a href="#" class="remarks"></a></div>
+                <!-- <div class="table_block align_left align_top mob_hihe"><a href="#" class="remarks"></a></div> -->
                 <div class="table_block align_left align_top item8" data-name="Комментарий"><a href="#" class="remarks mob"></a><p><?=$arStatus['UF_COMMENT']?></p></div>
             </li>
         <?php endforeach; ?>
