@@ -153,6 +153,9 @@ class ItrLostDocument extends CBitrixComponent
             if(in_array(SB_GROUP, $arGroups)) {
                 $isbroker = true;
             }
+            if(in_array(SB_SU_GROUP, $arGroups)) {
+                $issupbroker  = true;
+            }
             if(in_array(INS_GROUP, $arGroups)) {
                 $isins = true;
             }
