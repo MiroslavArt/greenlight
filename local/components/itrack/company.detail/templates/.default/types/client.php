@@ -107,8 +107,9 @@
             <div id="brok_kur_card" class="company_card_container">
             </div>
             <h4 class="big_label">Страховая компания</h4>
-            <div class="form_row ins_comp">
-                <div class="input_container without_small">
+            <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
+            <div class="form_row ins_comp hidden">
+                <div class="input_container column_100">
                     <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
                 </div><!-- END input_container -->
             </div> <!-- END form_row -->
