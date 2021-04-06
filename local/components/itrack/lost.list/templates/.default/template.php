@@ -26,7 +26,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                            placeholder="Поиск по списку убытков"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
-                <a href="#add_loss" class="btn" data-fancybox>Добавить убыток</a>
+                <!--<a href="#add_loss" class="btn" data-fancybox>Добавить убыток</a> -->
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_loss">

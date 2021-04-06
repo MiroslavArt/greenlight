@@ -81,9 +81,9 @@
                 <div class="input_container">
                     <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
                 </div><!-- END input_container -->
-                <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
             </div><!-- END gray_block -->
-            <div class="form_row client_comp">
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row client_comp hidden">
                 <div class="input_container without_small">
                     <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
                 </div><!-- END input_container -->
@@ -97,17 +97,16 @@
                 </div><!-- END input_container -->
                 <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
             </div><!-- END gray_block -->
-            <div class="form_row brok_comp">
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row brok_comp hidden">
                 <div class="input_container without_small">
                     <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
-                    <!-- <input type="hidden" class="inserted_co_label" />
-                    <input type="hidden" class="inserted_co_id" /> -->
                 </div><!-- END input_container -->
             </div>
             <div id="brok_kur_card" class="company_card_container">
             </div>
             <h4 class="big_label">Страховая компания</h4>
-            <a href="#" class="link ico_add"><span>Добавить страховую компанию</span></a>
+            <a href="#" class="link ico_add js_add"><span>Добавить страховую компанию</span></a>
             <div class="form_row ins_comp hidden">
                 <div class="input_container column_100">
                     <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
@@ -122,7 +121,7 @@
                 </div><!-- END switch_container -->
                 <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
             </div><!-- END originals_required -->
-            <!--<div class="form_row">
+            <div class="form_row">
                 <div class="switches_container">
                     <label class="big_label">Необходимость акцепта</label>
                     <div class="switch_container">
@@ -160,8 +159,8 @@
                         <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
                         <span>Аджастер</span>
                     </div>
-                </div><
-            </div> --><!-- END form_row -->
+                </div>
+            </div><!-- END form_row -->
             <!-- <div class="btn senddoc">Добавить договор</div> -->
             <p class="link" id="mistake"></p>
             <input type="submit" class="btn" value="Добавить договор" />

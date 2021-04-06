@@ -116,6 +116,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -151,6 +152,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -187,6 +189,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 $( "#search_ins" ).val( ui.item.label );
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
@@ -214,28 +217,26 @@ $(document).ready(function() {
                     }
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)
+                    var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+                    var addkurtext = $("<span></span>").text("Добавить куратора")
+                    addkur.append(addkurtext)
+                    var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
                     var kursearch = $("<div></div>").attr("class", "input_container without_small")
                     var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
                         .attr("placeholder", 'Выберите куратора(-ов) от страховой компании по вводу букв из ФИО')
                     var cardblock = $("<div></div>").attr("class", "company_card_container")
                     kursearch.append(kursearchinp)
+                    inplockdiv.append(kursearch)
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
                     coblock.append(delblock)
                     coblock.append(inplock)
-                    //coblock.append(labelleader)
                     allblocks.append(coblock)
-                    allblocks.append(kursearch)
+                    allblocks.append(addkur)
+                    allblocks.append(inplockdiv)
                     allblocks.append(cardblock)
                     $("#ins_insuers").append(allblocks)
-                    //$(".ins_comp").append(labelleader)
-                    //$("#ins_insuers").append(coblock)
-                    //$("#ins_insuers").append(kursearch)
-                    //$("#ins_insuers").append(cardblock)
-                    //$(".ins_comp").after(cardblock)
-                    //$(".ins_comp").after(kursearch)
-                    //$(".ins_comp").after(coblock)
                     addedins++
                     addedcompany[ui.item.value] = 0
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
@@ -250,8 +251,8 @@ $(document).ready(function() {
                                 return false;
                             },
                             select: function( event, ui ) {
+                                $(this).parent().parent().toggleClass('hidden');
                                 var form = BX.findParent(this, {"tag" : "form"});
-                                //console.log(form);
                                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
                                 var foundkur = false
                                 kurids.forEach(function(element){
@@ -289,17 +290,43 @@ $(document).ready(function() {
         //var instype = $("#instype").val()
         var instype = $('#instype option:selected').text()
         var original = 0
+        var needaccept = []
+        var neednotify = []
         if($("#provideoriginal").hasClass('active')) {
             original = 5
+        }
+        if($("#clientaccept").hasClass('active')) {
+            needaccept.push(17)
+        }
+        if($("#brokeraccept").hasClass('active')) {
+            needaccept.push(18)
+        }
+        if($("#insaccept").hasClass('active')) {
+            needaccept.push(19)
+        }
+        if($("#adjaccept").hasClass('active')) {
+            needaccept.push(20)
+        }
+        if($("#clientnot").hasClass('active')) {
+            neednotify.push(21)
+        }
+        if($("#brokernot").hasClass('active')) {
+            neednotify.push(22)
+        }
+        if($("#insnot").hasClass('active')) {
+            neednotify.push(23)
+        }
+        if($("#adjnot").hasClass('active')) {
+            neednotify.push(24)
         }
 
         var inscompanies = []
         var insleader = 0
         var kurators = []
         var kurleaders = []
-        var kuratorscl = 0
-        var kuratorsbr = 0
-        var kuratorsins = 0
+        var kuratorscl = []
+        var kuratorsbr = []
+        var kuratorsins = []
 
         $(".inserted_co_id").each(function (index, el){
             // Для каждого элемента сохраняем значение в personsIdsArray,
@@ -315,31 +342,36 @@ $(document).ready(function() {
             // Для каждого элемента сохраняем значение в personsIdsArray,
             // если значение есть.
             var v  = $(el).val();
-            if (v) kurators.push(v);
-            if($(el).next().hasClass('active')) {
-                kurleaders.push(v)
-            }
-            if($(el).next().hasClass('broker')) {
-                kuratorsbr++
-            } else if($(el).next().hasClass('insco')) {
-                kuratorsins++
-            } else if($(el).next().hasClass('client')) {
-                kuratorscl++
+            if (v) {
+                kurators.push(v);
+                if($(el).next().hasClass('active')) {
+                    kurleaders.push(v)
+                }
+                if($(el).next().hasClass('broker')) {
+                    kuratorsbr.push(v)
+                } else if($(el).next().hasClass('insco')) {
+                    kuratorsins.push(v)
+                } else if($(el).next().hasClass('client')) {
+                    kuratorscl.push(v)
+                }
             }
         })
 
         var mistake = ''
 
+        if(insleader==0) {
+            mistake += 'Не указана страховая компания - лидер.'
+        }
         if(inscompanies.length == 0) {
             mistake += 'Не выбрана страховая компания.'
         }
-        if(kuratorscl==0) {
+        if(kuratorscl.length == 0) {
             mistake += 'Не выбраны кураторы от клиента.'
         }
-        if(kuratorsbr==0) {
+        if(kuratorsbr.length == 0) {
             mistake += 'Не выбраны кураторы от страхового брокера.'
         }
-        if(kuratorsins==0) {
+        if(kuratorsins.length == 0) {
             mistake += 'Не выбраны кураторы от страховой компании.'
         }
 
@@ -358,6 +390,11 @@ $(document).ready(function() {
             form_data.append('insleader', insleader)
             form_data.append('kurators', kurators)
             form_data.append('kurleaders', kurleaders)
+            form_data.append('kuratorscl', kuratorscl)
+            form_data.append('kuratorsins', kuratorsins)
+            form_data.append('kuratorsbr', kuratorsbr)
+            form_data.append('needaccept', needaccept)
+            form_data.append('neednotify', neednotify)
 
             $.each(files,function(index,value){
                 //console.log(value)
