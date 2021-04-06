@@ -67,6 +67,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -102,6 +103,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -128,13 +130,17 @@ $(document).ready(function() {
         var compid = $(el).val()
         addedcompany[compid] = 0
         var cardblock = $("<div></div>").attr("class", "company_card_container ins_kurators").attr("data-id", compid)
+        var addkurtext = $("<span></span>").text("Добавить куратора")
+        var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+        addkur.append(addkurtext)
+        var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
         var kursearch = $("<div></div>").attr("class", "input_container without_small")
         var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
             .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
         kursearch.append(kursearchinp)
-        //$(el).parent().parent().after(cardblock)
-        //$(el).parent().parent().after(kursearch)
-        $(el).parent().parent().parent().append(kursearch)
+        inplockdiv.append(kursearch)
+        $(el).parent().parent().parent().append(addkur)
+        $(el).parent().parent().parent().append(inplockdiv)
         $(el).parent().parent().parent().append(cardblock)
         BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
             data: {
@@ -147,6 +153,7 @@ $(document).ready(function() {
                     return false;
                 },
                 select: function( event, ui ) {
+                    $(this).parent().parent().toggleClass('hidden');
                     var form = BX.findParent(this, {"tag" : "form"});
                     //console.log(form);
                     var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -185,6 +192,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 $( "#search_adj" ).val( ui.item.label );
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
@@ -212,26 +220,28 @@ $(document).ready(function() {
                     }
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)
+                    var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+                    var addkurtext = $("<span></span>").text("Добавить куратора")
+                    addkur.append(addkurtext)
+                    var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
                     var kursearch = $("<div></div>").attr("class", "input_container without_small")
                     var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
                         .attr("placeholder", 'Выберите куратора(-ов) от аджастера по вводу букв из ФИО')
                     var cardblock = $("<div></div>").attr("class", "company_card_container")
                     kursearch.append(kursearchinp)
+                    inplockdiv.append(kursearch)
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
                     coblock.append(delblock)
                     coblock.append(inplock)
                     allblocks.append(coblock)
-                    allblocks.append(kursearch)
+                    allblocks.append(addkur)
+                    allblocks.append(inplockdiv)
                     allblocks.append(cardblock)
                     $("#ins_adjusters").append(allblocks)
-                    //$("#ins_adjusters").append(coblock)
-                    //$("#ins_adjusters").append(kursearch)
-                    //$("#ins_adjusters").append(cardblock)
                     addedadj++
                     addedcompany[ui.item.value] = 0
-                    //$(".ins_comp").after(allblocks)
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
                         data: {
                             company: ui.item.value
@@ -244,6 +254,7 @@ $(document).ready(function() {
                                 return false;
                             },
                             select: function( event, ui ) {
+                                $(this).parent().parent().toggleClass('hidden');
                                 var form = BX.findParent(this, {"tag" : "form"});
                                 //console.log(form);
                                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
