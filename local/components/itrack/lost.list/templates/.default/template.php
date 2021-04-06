@@ -57,7 +57,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <div class="form_row client_comp">
+                <a href="#" class="link ico_add"><span>Добавить куратора</span></a>
+                <div class="form_row client_comp hidden">
                     <div class="input_container without_small">
                         <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
                     </div>
@@ -94,8 +95,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <? } ?>
                 </div>
                 <h4 class="big_label">Аджастер</h4>
-                <div class="form_row ins_comp">
-                    <div class="input_container without_small">
+                <a href="#" class="link ico_add"><span>Добавить аджастера</span></a>
+                <div class="form_row ins_comp hidden">
+                    <div class="input_container column_100">
                         <input type="text" class="text_input inserted_co_label" id="search_adj" placeholder="Выберите аджастера по вводу букв из названия" />
                     </div><!-- END input_container -->
                 </div> <!-- END form_row -->
