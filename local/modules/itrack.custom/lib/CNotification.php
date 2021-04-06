@@ -19,6 +19,8 @@ class CNotification
 		$usersWithEnabledNotification = UserLostNotificationTable::getAllUsers($lostId);
 		$users = array_intersect($users, $usersWithEnabledNotification);
 
+		if (count($users) <= 0) return;
+
 		$userEmails = CUserEx::getEmails($users);
 
 		foreach ($users as $userId) {
