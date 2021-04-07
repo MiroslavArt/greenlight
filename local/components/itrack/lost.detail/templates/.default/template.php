@@ -18,7 +18,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
+            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
+                <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
+            <? } ?>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
     <div class="popup add_doc2" id="add_doc2">
@@ -28,6 +30,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="input_container column_100">
                     <input type="hidden" name="origin" value="<?=$arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE']?>"/>
                     <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
+                    <input type="hidden" name="status" value="<?=$arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']?>"/>
                     <input type="text" class="text_input" name="docname" placeholder="Название документа" />
                 </div><!-- END input_container -->
             </div><!-- END form_row -->

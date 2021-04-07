@@ -33,7 +33,7 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
         die();
     }
 }
-\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
+
 $fidids = [];
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
