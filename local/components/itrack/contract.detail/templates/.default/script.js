@@ -67,6 +67,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -102,6 +103,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 var form = BX.findParent(this, {"tag" : "form"});
                 //console.log(form);
                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -128,13 +130,17 @@ $(document).ready(function() {
         var compid = $(el).val()
         addedcompany[compid] = 0
         var cardblock = $("<div></div>").attr("class", "company_card_container ins_kurators").attr("data-id", compid)
+        var addkurtext = $("<span></span>").text("Добавить куратора")
+        var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+        addkur.append(addkurtext)
+        var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
         var kursearch = $("<div></div>").attr("class", "input_container without_small")
         var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
             .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
         kursearch.append(kursearchinp)
-        //$(el).parent().parent().after(cardblock)
-        //$(el).parent().parent().after(kursearch)
-        $(el).parent().parent().parent().append(kursearch)
+        inplockdiv.append(kursearch)
+        $(el).parent().parent().parent().append(addkur)
+        $(el).parent().parent().parent().append(inplockdiv)
         $(el).parent().parent().parent().append(cardblock)
         BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
             data: {
@@ -147,6 +153,7 @@ $(document).ready(function() {
                     return false;
                 },
                 select: function( event, ui ) {
+                    $(this).parent().parent().toggleClass('hidden');
                     var form = BX.findParent(this, {"tag" : "form"});
                     //console.log(form);
                     var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -185,6 +192,7 @@ $(document).ready(function() {
                 return false;
             },
             select: function( event, ui ) {
+                $(this).parent().parent().toggleClass('hidden');
                 $( "#search_adj" ).val( ui.item.label );
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
@@ -212,26 +220,28 @@ $(document).ready(function() {
                     }
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)
+                    var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+                    var addkurtext = $("<span></span>").text("Добавить куратора")
+                    addkur.append(addkurtext)
+                    var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
                     var kursearch = $("<div></div>").attr("class", "input_container without_small")
                     var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
                         .attr("placeholder", 'Выберите куратора(-ов) от аджастера по вводу букв из ФИО')
                     var cardblock = $("<div></div>").attr("class", "company_card_container")
                     kursearch.append(kursearchinp)
+                    inplockdiv.append(kursearch)
                     inplock.append(labelcomp)
                     inplock.append(inpcomp)
                     inplock.append(labelleader)
                     coblock.append(delblock)
                     coblock.append(inplock)
                     allblocks.append(coblock)
-                    allblocks.append(kursearch)
+                    allblocks.append(addkur)
+                    allblocks.append(inplockdiv)
                     allblocks.append(cardblock)
                     $("#ins_adjusters").append(allblocks)
-                    //$("#ins_adjusters").append(coblock)
-                    //$("#ins_adjusters").append(kursearch)
-                    //$("#ins_adjusters").append(cardblock)
                     addedadj++
                     addedcompany[ui.item.value] = 0
-                    //$(".ins_comp").after(allblocks)
                     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
                         data: {
                             company: ui.item.value
@@ -244,6 +254,7 @@ $(document).ready(function() {
                                 return false;
                             },
                             select: function( event, ui ) {
+                                $(this).parent().parent().toggleClass('hidden');
                                 var form = BX.findParent(this, {"tag" : "form"});
                                 //console.log(form);
                                 var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
@@ -316,18 +327,47 @@ $(document).ready(function() {
         var adjleader = 0
         var kurators = []
         var kurleaders = []
-        var kuratorscl = 0
-        var kuratorsbr = 0
-        var kuratorsins = 0
-        var kuratorsadj = 0
+        var kuratorscl = []
+        var kuratorsbr = []
+        var kuratorsins = []
+        var kuratorsadj = []
+        var needaccept = []
+        var neednotify = []
+
+        if($("#clientaccept").hasClass('active')) {
+            needaccept.push(25)
+        }
+        if($("#brokeraccept").hasClass('active')) {
+            needaccept.push(26)
+        }
+        if($("#insaccept").hasClass('active')) {
+            needaccept.push(27)
+        }
+        if($("#adjaccept").hasClass('active')) {
+            needaccept.push(28)
+        }
+        if($("#clientnot").hasClass('active')) {
+            neednotify.push(29)
+        }
+        if($("#brokernot").hasClass('active')) {
+            neednotify.push(30)
+        }
+        if($("#insnot").hasClass('active')) {
+            neednotify.push(31)
+        }
+        if($("#adjnot").hasClass('active')) {
+            neednotify.push(32)
+        }
 
         $(".inserted_co_id").each(function (index, el){
             // Для каждого элемента сохраняем значение в personsIdsArray,
             // если значение есть.
             var v  = $(el).val();
-            if (v) inscompanies.push(v);
-            if($(el).next().hasClass('active')) {
-                insleader = v
+            if (v) {
+                inscompanies.push(v);
+                if($(el).next().hasClass('active')) {
+                    insleader = v
+                }
             }
         })
 
@@ -335,9 +375,11 @@ $(document).ready(function() {
             // Для каждого элемента сохраняем значение в personsIdsArray,
             // если значение есть.
             var v  = $(el).val();
-            if (v) adjusters.push(v);
-            if($(el).next().hasClass('active')) {
-                adjleader = v
+            if (v) {
+                adjusters.push(v);
+                if($(el).next().hasClass('active')) {
+                    adjleader = v
+                }
             }
         })
 
@@ -351,35 +393,44 @@ $(document).ready(function() {
                     kurleaders.push(v)
                 }
                 if($(el).next().hasClass('broker')) {
-                    kuratorsbr++
+                    kuratorsbr.push(v)
                 } else if($(el).next().hasClass('insco')) {
-                    kuratorsins++
+                    kuratorsins.push(v)
                 } else if($(el).next().hasClass('client')) {
-                    kuratorscl++
+                    kuratorscl.push(v)
                 } else if($(el).next().hasClass('adjuster')) {
-                    kuratorsadj++
+                    kuratorsadj.push(v)
                 }
             }
         })
 
         var mistake = ''
 
+        if(insleader==0) {
+            mistake += 'Не указана страховая компания-лидер.'
+        }
+        if(adjleader==0) {
+            mistake += 'Не указан аджастер-лидер.'
+        }
+        if(inscompanies.length == 0) {
+            mistake += 'Не выбрана страховая компания.'
+        }
         if(inscompanies.length == 0) {
             mistake += 'Не выбрана страховая компания.'
         }
         if(adjusters.length == 0) {
             mistake += 'Не выбран аджастер.'
         }
-        if(kuratorscl==0) {
+        if(kuratorscl.length == 0) {
             mistake += 'Не выбраны кураторы от клиента.'
         }
-        if(kuratorsbr==0) {
+        if(kuratorsbr.length == 0) {
             mistake += 'Не выбраны кураторы от страхового брокера.'
         }
-        if(kuratorsins==0) {
+        if(kuratorsins.length == 0) {
             mistake += 'Не выбраны кураторы от страховой компании.'
         }
-        if(kuratorsadj==0) {
+        if(kuratorsadj.length == 0) {
             mistake += 'Не выбраны кураторы от аджастера.'
         }
         if(mistake) {
@@ -404,6 +455,12 @@ $(document).ready(function() {
             form_data.append('adjleader', adjleader)
             form_data.append('kurators', kurators)
             form_data.append('kurleaders', kurleaders)
+            form_data.append('kuratorscl', kuratorscl)
+            form_data.append('kuratorsins', kuratorsins)
+            form_data.append('kuratorsbr', kuratorsbr)
+            form_data.append('kuratorsadj', kuratorsadj)
+            form_data.append('needaccept', needaccept)
+            form_data.append('neednotify', neednotify)
             $.each(files,function(index,value){
                 //console.log(value)
                 form_data.append('file'+index, value);

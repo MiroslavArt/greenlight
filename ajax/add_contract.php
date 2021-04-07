@@ -8,6 +8,8 @@ use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\InfoBlocks\Contract;
+use Itrack\Custom\UserAccess\CUserAccess;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -46,26 +48,35 @@ foreach ($_FILES as $file) {
     $fid = CFile::SaveFile($arr_file, "contractdocs");
     array_push($fidids, $fid);
 }
+
+//\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
 }
-
 if($_POST['kurators']) {
     $kurators = explode(",", $_POST['kurators']);
 }
-
 if($_POST['kurleaders']) {
     $kurleaders = explode(",", $_POST['kurleaders']);
 }
-
+if($_POST['kuratorscl']) {
+    $kuratorscl = explode(",", $_POST['kuratorscl']);
+}
+if($_POST['kuratorsins']) {
+    $kuratorsins = explode(",", $_POST['kuratorsins']);
+}
+if($_POST['kuratorsbr']) {
+    $kuratorsbr = explode(",", $_POST['kuratorsbr']);
+}
+if($_POST['needaccept']) {
+    $needaccept = explode(",", $_POST['needaccept']);
+}
+if($_POST['neednotify']) {
+    $neednotify = explode(",", $_POST['neednotify']);
+}
 $companies = array_merge($companies, $insarray);
 
-Loader::includeModule('iblock');
-$add = new \CIBlockElement();
-
 $data = [
-    'IBLOCK_ID' => 2,
-    'ACTIVE' => 'Y',
     'NAME' => 'Договор №:'.$_POST['docnum'],
     'PROPERTY_VALUES' => [
         'DATE'=> $_POST['docdate'],
@@ -76,15 +87,17 @@ $data = [
         'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
         'INSURANCE_COMPANY' => $insarray,
         'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
-        //'KURATORS' => $kurators,
-        //'KURATORS_LEADERS' => $kurleaders,
+        'NEED_ACCEPT' => $needaccept,
+        'NEED_NOTIFY' => $neednotify,
         'ORIGIN_REQUIRED' => $_POST['original'],
         'DOCS' => $fidids
     ]
 ];
-$id = $add->Add($data);
 
-if(intval($id) > 0) {
+$ID = Contract::createElement($data, []);
+
+if(intval($ID) > 0) {
+    $id = intval($ID);
     try {
         $participation = new CParticipation(new CContract($id));
         $participation->createFromArrays(
@@ -96,9 +109,49 @@ if(intval($id) > 0) {
     } catch (Exception $e) {
         __CrmPropductRowListEndResponse(array('error'=>$e->getMessage()));
     }
+    $kuracceptance = [];
+    $kurnotify = [];
+
+    if(in_array(17, $needaccept)) {
+        foreach ($kuratorscl as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(18, $needaccept)) {
+        foreach ($kuratorsbr as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(19, $needaccept)) {
+        foreach ($kuratorsins as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(21, $neednotify)) {
+        foreach ($kuratorscl as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+    if(in_array(22, $neednotify)) {
+        foreach ($kuratorsbr  as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+    if(in_array(23, $neednotify)) {
+        foreach ($kuratorsins as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+
+    foreach ($kuracceptance as $kurator) {
+        (new CUserAccess($kurator))->setAcceptanceForContract($id);
+    }
+    foreach ($kurnotify as $kurator) {
+        (new CUserAccess($kurator))->setNotificationForContract($id);
+    }
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($ID)));
 }
 
 
