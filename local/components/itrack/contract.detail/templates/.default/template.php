@@ -120,33 +120,33 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_71'][17]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="clientaccept"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="clientaccept"><input type="checkbox"></label>
                             <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_71'][18]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="brokeraccept"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="brokeraccept"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_71'][19]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="insaccept"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="insaccept"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_71'][20]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="adjaccept"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="adjaccept"><input type="checkbox"></label>
                             <? } ?>
                             <span>Аджастер</span>
                         </div>
@@ -155,33 +155,33 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_72'][21]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="clientnot"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="clientnot"><input type="checkbox"></label>
                             <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_72'][22]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="brokernot"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="brokernot"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_72'][23]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="insnot"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="insnot"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
                             <? if($arResult['CONTRACT']['PROPERTY_72'][24]) { ?>
-                                <label class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label class="switch js_checkbox active" id="adjnot"><input type="checkbox"></label>
                             <? } else {?>
-                                <label class="switch js_checkbox"><input type="checkbox"></label>
+                                <label class="switch js_checkbox" id="adjnot"><input type="checkbox"></label>
                             <? } ?>
                             <span>Аджастер</span>
                         </div>
@@ -212,12 +212,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
                 <div class="form_row">
-                    <label class="big_label">Прикрепить полезные документы</label>
+                    <!--<label class="big_label">Прикрепить полезные документы</label> -->
                     <div class="input_container column_3">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input class="loss_file" type="file" />
-                                <span class="upload"><span>Прикрепить запрос</span></span>
+                                <span class="upload"><span>Прикрепить документы к запросу</span></span>
                             </div><!-- END logo_upload -->
                         </div><!-- END logo_upload_container -->
                     </div><!-- END input_container -->
