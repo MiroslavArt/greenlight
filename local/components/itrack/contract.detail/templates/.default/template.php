@@ -187,46 +187,46 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         </div>
                     </div>
                 </div>
-                <div class="form_row">
+                <!--<div class="form_row">
                     <div class="input_container column_100">
                         <input type="text" class="text_input" id="req_doc" placeholder="Запрашиваемые документы" />
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row">
+                    </div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row">
                     <div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" id="req_date" placeholder="Дата запроса" />
-                    </div><!-- END input_container -->
-                    <div class="input_container">
-                        <select class="select js_select" id="users">
-                            <? foreach ($arResult['USERS'] as $user) { ?>
-                                <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
-                            <? } ?>
-                        </select><!-- END select -->
+                    </div>--><!-- END input_container -->
+                    <!--<div class="input_container">
+                        <select class="select js_select" id="users"> --?
+                            <? //foreach ($arResult['USERS'] as $user) { ?>
+                                <option value=""></option>
+                            <? //} ?>
+                        </select>-->
                         <!-- <input type="text" class="text_input" placeholder="Название компании" /> -->
-                    </div><!-- END input_container -->
+                    <!--</div>--><!-- END input_container -->
                     <!-- <div class="input_container column_50">
                         <input type="text" class="text_input" placeholder="Автор запроса" />
                     </div>--><!-- END input_container -->
-                    <div class="input_container column_25">
+                    <!--<div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" id="req_term" placeholder="Срок предоставления" />
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row">
+                    </div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row">-->
                     <!--<label class="big_label">Прикрепить полезные документы</label> -->
-                    <div class="input_container column_3">
+                    <!--<div class="input_container column_3">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input class="loss_file" type="file" />
                                 <span class="upload"><span>Прикрепить документы к запросу</span></span>
-                            </div><!-- END logo_upload -->
-                        </div><!-- END logo_upload_container -->
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row attached_container">
+                            </div>--><!-- END logo_upload -->
+                        <!--</div>--><!-- END logo_upload_container -->
+                    <!--</div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row attached_container">
                     <label class="big_label">Документы</label>
                     <ul class="docs_list">
-                    </ul><!-- END docs_list -->
-                </div><!-- END form_row -->
+                    </ul>--><!-- END docs_list -->
+                <!--</div>--><!-- END form_row -->
                 <p class="link" id="mistake"></p>
                 <input type="submit" class="btn" value="Добавить убыток" />
             </form><!-- END form_edit_profile -->

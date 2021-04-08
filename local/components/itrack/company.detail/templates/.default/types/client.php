@@ -168,6 +168,9 @@
     </div><!-- END popup -->
     <?php if (!empty($arResult['CONTRACTS'])) :
         $alllosts = 0;
+        $green = 0;
+        $yellow = 0;
+        $red = 0;
         ?>
         <div id="contracts-list">
             <ul class="data_table">
@@ -184,15 +187,18 @@
                 </li>
                 <?php foreach ($arResult['CONTRACTS'] as $arItem) :
                     $alllosts += $arItem['ALL_LOST'];
+                    $green += $arItem['G_LOST'];
+                    $yellow += $arItem['Y_LOST'];
+                    $red += $arItem['R_LOST'];
                     ?>
                     <li class="row">
                         <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                         <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                         <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
                         <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem['ALL_LOST']?></div>
-                        <div class="table_block stat_column green">н.д.</div>
-                        <div class="table_block stat_column yellow item2">н.д.</div>
-                        <div class="table_block stat_column red">н.д.</div>
+                        <div class="table_block stat_column green"><?=$arItem['G_LOST']?></div>
+                        <div class="table_block stat_column yellow item2"><?=$arItem['Y_LOST']?></div>
+                        <div class="table_block stat_column red"><?=$arItem['R_LOST']?></div>
                         <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
                         <div class="table_block item6 links_column">
                             <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
@@ -205,9 +211,9 @@
                 <li class="row">
                     <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
                     <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
-                    <div class="table_block stat_column item2" data-name="Закрыто">н.д.</div>
-                    <div class="table_block stat_column item2" data-name="Документы предоставлены">н.д.</div>
-                    <div class="table_block stat_column item2" data-name="Открыто">н.д.</div>
+                    <div class="table_block stat_column item2" data-name="Закрыто"><?= $green ?></div>
+                    <div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $yellow ?></div>
+                    <div class="table_block stat_column item2" data-name="Открыто"><?= $red ?></div>
                     <div class="table_block links_column"></div>
                 </li>
             </ul><!-- END data_table -->

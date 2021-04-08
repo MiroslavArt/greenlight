@@ -33,12 +33,12 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
         die();
     }
 }
-\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
+
 $fidids = [];
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
 
-foreach ($_FILES as $file) {
+/*foreach ($_FILES as $file) {
     $arr_file=Array(
         "name" =>  $file['name'],
         "size" => $file['size'],
@@ -49,7 +49,7 @@ foreach ($_FILES as $file) {
         "MODULE_ID" => "iblock");
     $fid = CFile::SaveFile($arr_file, "lossdocs");
     array_push($fidids, $fid);
-}
+}*/
 
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
@@ -97,12 +97,6 @@ $data = [
         'DESCRIPTION'=> $_POST['description'],
         'STATUS' => $_POST['status'],
         'CONTRACT' => $_POST['contract'],
-        //'LOSS_NUMBER' => $_POST['docnum'],
-        //'REQUEST_DOCS' => $_POST['reqdoc'],
-        //'REQUEST_DATE' => $_POST['reqdate'],
-        //'REQUEST_USER' => $_POST['user'],
-        //'REQUEST_TERM' => $_POST['req_term'],
-        //'VALUABLE_DOCS' => $fidids,
         'NEED_ACCEPT' => $needaccept,
         'NEED_NOTIFY' => $neednotify,
         'CLIENT'=> array($_POST['clientid']),
@@ -130,7 +124,7 @@ if(intval($ID) > 0) {
     ];
     $objHistory->add($histdata);
 
-    foreach ($fidids as $fid) {
+    /*foreach ($fidids as $fid) {
         $file = \CFile::MakeFileArray($fid);
         $data = array(
             "UF_MAINLOST_ID" => $id,
@@ -144,7 +138,7 @@ if(intval($ID) > 0) {
         );
         $objDocument = new HLBWrap('uploaded_docs');
         $objDocument->add($data);
-    }
+    }*/
 
     try {
         $participation = new CParticipation(new CLost($id));

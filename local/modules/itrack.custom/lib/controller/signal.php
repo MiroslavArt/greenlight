@@ -263,10 +263,12 @@ class Signal extends Controller
     {
         $result = 'error';
 
+        $reset = false;
+
         $data = [];
 
         global $USER;
-        global $USER;
+
         $uid = $USER->GetID();
 
         if($formdata) {
@@ -285,10 +287,13 @@ class Signal extends Controller
                     if($item['value']=='Да') {
                         $data['PROPERTY_VALUES']['GET_ORIGINAL'] = '6';
                     }
+                } else if($item['name']=='status') {
+                    if($item['value']=='yellow') {
+                        $reset = true;
+                    }
                 }
             }
             $data['PROPERTY_VALUES']['STATUS'] = '1';
-
 
 
             $ID = LostDocuments::createElement($data, []);
@@ -303,6 +308,19 @@ class Signal extends Controller
                 ];
 
                 $id = $objHistory->add($histdata);
+                if($reset) {
+                    $PROP[16] = 'red';
+                    Lost::updateElement($data['PROPERTY_VALUES']['LOST'], [], $PROP);
+
+                    $objHistory = new HLBWrap('e_history_lost_status');
+                    $histdata = [
+                        'UF_CODE_ID' => '1',
+                        'UF_DATE' => date("d.m.Y. H:i:s"),
+                        'UF_LOST_ID' => $data['PROPERTY_VALUES']['LOST'],
+                        'UF_USER_ID' => $USER->GetID()
+                    ];
+                    $objHistory->add($histdata);
+                }
                 $result = 'added';
             } else {
                 $result = $ID;
@@ -451,12 +469,13 @@ class Signal extends Controller
                 }
             }
             $usernotify = $insadjcurators;
-            if($orig) {
+            if($orig=='true') {
                 $nottempl = 'doc_read_orig';
             } else {
                 $nottempl = 'doc_read';
             }
         }
+
         if($usernotify && $nottempl) {
             CNotification::send($nottempl, $usernotify, 'nocomment', $lostid, $lostdocid);
         }
@@ -475,6 +494,11 @@ class Signal extends Controller
             ];
 
             $id = $objHistory->add($histdata);
+
+            if($newstatus=='10' && $orig=='false') {
+
+                $this->updateLossStatus($lostid, $orig);
+            }
 
             if(intval($id->getId())>0) {
                 return "updated";
@@ -557,6 +581,41 @@ class Signal extends Controller
         }
     }
     // workflow
+    private function updateLossStatus($lostid, $orig) {
+
+        if($orig=='false') {
+            $termstatus = 10;
+        } else {
+            $termstatus = 3;
+        }
+
+        $needupdate = true;
+
+        global $USER;
+
+        $arRequests = LostDocuments::getElementsByConditions(['PROPERTY_LOST' => $lostid]);
+        foreach ($arRequests as $reqitem) {
+            if(intval($reqitem['PROPERTY_27']<$termstatus)) {
+                $needupdate = false;
+                break;
+            }
+        }
+
+        if($needupdate) {
+            $PROP[16] = 'yellow';
+            Lost::updateElement($lostid, [], $PROP);
+            $objHistory = new HLBWrap('e_history_lost_status');
+            $histdata = [
+                'UF_CODE_ID' => '2',
+                'UF_DATE' => date("d.m.Y. H:i:s"),
+                'UF_LOST_ID' => $lostid,
+                'UF_USER_ID' => $USER->GetID()
+            ];
+            $objHistory->add($histdata);
+        }
+    }
+
+    // workflow
     public function getOrigAction($lostid, $lostdocid, $status, $user, $origdate)
     {
         $dateupdate = date("d.m.Y. H:i:s");
@@ -576,6 +635,8 @@ class Signal extends Controller
             ];
 
             $id = $objHistory->add($histdata);
+
+            $this->updateLossStatus($lostid, 'true');
 
             if(intval($id->getId())>0) {
                 return "updated";
