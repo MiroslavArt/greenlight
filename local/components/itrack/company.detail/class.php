@@ -94,6 +94,22 @@ class ItrCompany extends CBitrixComponent
 
             $elements2 = Lost::getElementsByConditions($arFilter2, [], []);
 
+            $all = 0;
+            $red = 0;
+            $yellow = 0;
+            $green = 0;
+
+            foreach ($elements2 as $elitem) {
+                $all++;
+                if($elitem['PROPERTIES']['STATUS']['VALUE']=='red') {
+                    $red++;
+                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='yellow') {
+                    $yellow++;
+                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='green') {
+                    $green++;
+                }
+            }
+
             $arItem = [
                 'ID' => $element['ID'],
                 'NAME' => $element['NAME'],
@@ -102,7 +118,10 @@ class ItrCompany extends CBitrixComponent
                 'INSURANCE_COMPANY_LEADER' => $element['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'],
                 'INSURANCE_COMPANY_LEADER_NAME' => $element['PROPERTY_INSURANCE_COMPANY_LEADER_NAME'],
                 'DETAIL_PAGE_URL' => $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $element['ID'] . '/',
-                'ALL_LOST' => count($elements2)
+                'ALL_LOST' => $all,
+                'R_LOST' => $red,
+                'Y_LOST' => $yellow,
+                'G_LOST' => $green
             ];
 
             $arResult['CONTRACTS'][$element['ID']] = $arItem;
