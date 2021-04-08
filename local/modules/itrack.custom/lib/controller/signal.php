@@ -582,13 +582,13 @@ class Signal extends Controller
     }
     // workflow
     private function updateLossStatus($lostid, $orig) {
-        \Bitrix\Main\Diag\Debug::writeToFile('hit', "fid", "__miros.log");
+
         if($orig=='false') {
             $termstatus = 10;
         } else {
             $termstatus = 3;
         }
-        \Bitrix\Main\Diag\Debug::writeToFile($termstatus, "term", "__miros.log");
+
         $needupdate = true;
 
         global $USER;
@@ -600,7 +600,7 @@ class Signal extends Controller
                 break;
             }
         }
-        \Bitrix\Main\Diag\Debug::writeToFile($needupdate, "needupd", "__miros.log");
+
         if($needupdate) {
             $PROP[16] = 'yellow';
             Lost::updateElement($lostid, [], $PROP);

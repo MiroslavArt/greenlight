@@ -286,12 +286,12 @@ $(document).ready(function() {
     });
 
     // добавление файлов
-    var inputFile = $('.loss_file')
+    /*var inputFile = $('.loss_file')
     var filesContainer= $('.docs_list')
-    var files = []
+    var files = []*/
 
     // обработчики добавления файлов
-    inputFile.change(function() {
+    /*inputFile.change(function() {
         let newFiles = [];
         for(let index = 0; index < inputFile[0].files.length; index++) {
             let file = inputFile[0].files[index];
@@ -316,7 +316,7 @@ $(document).ready(function() {
                 files.splice(indexToRemove, 1);
             });
         });
-    });
+    });*/
 
     // функция при отправке формы
     $( ".form_popup" ).submit(function( event ) { // задаем функцию при срабатывании события "submit" на элементе <form>
@@ -444,10 +444,10 @@ $(document).ready(function() {
             form_data.append('docnum',$("#doc_num").val())
             form_data.append('docdate',$("#doc_date").val())
             form_data.append('description',$("#loss_descr").val())
-            form_data.append('reqdoc',$("#req_doc").val())
-            form_data.append('reqdate',$("#req_date").val())
-            form_data.append('user',$("#users").val())
-            form_data.append('req_term',$("#req_term").val())
+            //form_data.append('reqdoc',$("#req_doc").val())
+            //form_data.append('reqdate',$("#req_date").val())
+            //form_data.append('user',$("#users").val())
+            //form_data.append('req_term',$("#req_term").val())
             form_data.append('status','red')
             form_data.append('inscompanies', inscompanies)
             form_data.append('insleader', insleader)
@@ -461,10 +461,10 @@ $(document).ready(function() {
             form_data.append('kuratorsadj', kuratorsadj)
             form_data.append('needaccept', needaccept)
             form_data.append('neednotify', neednotify)
-            $.each(files,function(index,value){
+            /*$.each(files,function(index,value){
                 //console.log(value)
                 form_data.append('file'+index, value);
-            });
+            });*/
             $.ajax({
                 url: '/ajax/add_loss.php',
                 dataType: 'json',
