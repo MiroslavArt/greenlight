@@ -6,6 +6,7 @@ define('DisableEventsCheck', true);
 define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Itrack\Custom\InfoBlocks\Company;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -38,13 +39,10 @@ $arr_file=Array(
     "MODULE_ID" => "iblock");
 $fid = CFile::SaveFile($arr_file, "companylogo");
 
-Loader::includeModule('iblock');
-$add = new \CIBlockElement();
-
 //\Bitrix\Main\Diag\Debug::writeToFile($fid, "fid", "__miros.log");
 
 $data = [
-    'IBLOCK_ID' => 1,
+    //'IBLOCK_ID' => 1,
     'ACTIVE' => 'Y',
     'NAME' => $_POST['name'],
     'PROPERTY_VALUES' => [
@@ -57,9 +55,10 @@ $data = [
         'KPP' => $_POST['kpp']
     ]
 ];
-$id = $add->Add($data);
 
-if($id) {
+$ID = Company::createElement($data, []);
+
+if(intval($ID) > 0) {
     __CrmPropductRowListEndResponse(array('sucsess' => 'Y'));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
