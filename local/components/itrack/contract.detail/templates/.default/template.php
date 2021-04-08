@@ -244,7 +244,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </li>
                     <?php foreach ($arResult['LOSTS'] as $arItem) : ?>
                         <li class="row">
-                            <div class="table_block align_left item2" data-name="Статус"><span class="status"></span></div>
+                            <div class="table_block align_left item2" data-name="Статус"><span class="status <?=$arItem['STATUS']['UF_COLOR']?>"></span></div>
                             <div class="table_block align_left item3" data-name="Статус развернуто"><p><?=$arItem['STATUS']['UF_NAME']?></p></div>
                             <div class="table_block align_left item3" data-name="Уникальный номер"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>

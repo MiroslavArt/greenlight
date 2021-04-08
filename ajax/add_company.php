@@ -61,5 +61,5 @@ $ID = Company::createElement($data, []);
 if(intval($ID) > 0) {
     __CrmPropductRowListEndResponse(array('sucsess' => 'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($ID)));
 }
