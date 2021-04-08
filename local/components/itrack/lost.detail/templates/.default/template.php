@@ -121,7 +121,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </li>
             <?php foreach ($arResult['REQUESTS'] as $arItem) : ?>
                 <li class="row">
-                    <div class="table_block align_left align_top" data-name="Статус"><span class="status <?= $arResult['STATUSES'][$arItem['PROPERTIES']['STATUS']['VALUE']]['UF_COLOR'] ?>"></span></div>
+                    <div class="table_block align_left align_top" data-name="Статус"><span class="status <?= $arResult['STATUSES'][$arItem['PROPERTIES']['STATUS']['VALUE']][$arResult['COLOR_FIELD']] ?>"></span></div>
                     <div class="table_block align_left align_top item2" data-name="Детали"><?= $arItem['STATUS_NAME'] ?></div>
                     <div class="table_block align_left align_top item3" data-name="Запрошенные документы"><?= $arItem['NAME'] ?></div>
                     <div class="table_block align_left align_top item2" data-name="Дата запроса"><?= (new \DateTime($arItem['DATE_CREATE']))->format('d.m.Y') ?></div>
