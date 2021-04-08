@@ -586,7 +586,7 @@ class Signal extends Controller
         if($orig=='false') {
             $termstatus = 10;
         } else {
-            $termstatus = 3;
+            $termstatus = 13;
         }
 
         $needupdate = true;
