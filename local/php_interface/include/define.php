@@ -12,3 +12,4 @@ define('AJ_GROUP', '13');
 define('AJ_SU_GROUP', '14');
 define('INS_GROUP', '11');
 define('INS_SU_GROUP', '12');
+define('INS_BROKER_ID', '1');

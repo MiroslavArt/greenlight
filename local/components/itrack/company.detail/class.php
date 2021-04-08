@@ -9,6 +9,7 @@ use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\SystemException;
+use \Itrack\Custom\Highloadblock\HLBWrap;
 
 
 class ItrCompany extends CBitrixComponent
@@ -58,6 +59,9 @@ class ItrCompany extends CBitrixComponent
 
         $this->getContractsList($arFilter);
 
+        $this->getInstypes();
+        $this->getBroker();
+
         $APPLICATION->SetTitle($this->arResult['COMPANY']['NAME']);
 
         $this->includeComponentTemplate();
@@ -104,6 +108,34 @@ class ItrCompany extends CBitrixComponent
             $arResult['CONTRACTS'][$element['ID']] = $arItem;
         }
         unset($elements);
+    }
+
+    private function getInstypes() {
+        $arResult =& $this->arResult;
+
+        $objDocument = new HLBWrap('e_ins_types');
+
+        $rsData = $objDocument->getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array()  // Задаем параметры фильтра выборки
+        ));
+
+        $arResult['INSTYPES'] = $rsData->fetchAll();
+
+
+    }
+
+    private function getBroker() {
+        $arResult =& $this->arResult;
+
+        $arCompany = Company::getElementByID(INS_BROKER_ID);
+        if(!empty($arCompany)) {
+            $arResult['BROKER'] = $arCompany;
+        } else {
+            \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
+        }
+
     }
 
 }
