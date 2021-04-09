@@ -75,7 +75,7 @@
 		<div class="desc_container">
 			<div class="desc">
 				<span class="desc_title">Описание страхового случая</span>
-				<p>В результате залива подтверждена отделка офиса, который расположен в полуподвальном помещении. Вздулась паркетная доска, отошел плинтус, повреждены обои, дверь в ванную не закрывается.</p>
+				<p data-fancybox data-src="#edit_comm" class="pointer">В результате залива подтверждена отделка офиса, который расположен в полуподвальном помещении. Вздулась паркетная доска, отошел плинтус, повреждены обои, дверь в ванную не закрывается.</p>
 			</div><!-- END desc -->
 			<div class="table_container">
 				<table class="table_curators">
@@ -130,7 +130,7 @@
 				</ul><!-- END list_docs -->
 				<div class="docs_container_bottom">
 					<span class="originals"><span>Предоставление оригиналов</span></span>
-					<span class="desc_title">всего 5 документов</span>
+					<a href="#dosc_list" data-fancybox class="desc_title">всего 5 документов</a>
 				</div><!-- END docs_container_bottom -->
 			</div><!-- END docs_container -->
 		</div><!-- END desc_container -->
@@ -649,6 +649,127 @@
 			</div><!-- END input_container -->
 		</div><!-- END form_row -->
 		<input type="submit" class="btn" value="Добавить документ">
+	</form><!-- END form_popup -->
+</div><!-- END popup -->
+	<div class="popup change_status" id="dosc_list">
+		<h2 class="block_title">Список документов и статусы</h2>
+		<form class="status_form form_popup">
+			<div class="fieldset">
+				<div class="docs_container area_a">
+					<ul class="list_dosc">
+						<li class="red">
+							<p>Документ запрошен</p>
+							<span>2 док.</span>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END docs_container -->
+				<div class="input_container area_b full_width">
+					<ul class="list_dosc">
+						<li class="red">
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END input_container -->
+				<div class="input_container area_c">
+					<ul class="list_dosc hidden js_list_docs">
+						<li class="red">
+							<p>Документ запрошен</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+						<li class="red">
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+					<a href="#" class="link js_open_list">Развернуть весь список</a>
+				</div><!-- END input_container -->
+			</div><!-- END fieldset -->
+			<div class="fieldset">
+				<div class="docs_container area_a">
+					<ul class="list_dosc">
+						<li class="yellow">
+							<p>Переданные в эл.виде</p>
+							<span>2 док.</span>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END docs_container -->
+				<div class="input_container area_b full_width">
+					<ul class="list_dosc">
+						<li class="yellow">
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END input_container -->
+				<div class="input_container area_c">
+					<ul class="list_dosc hidden js_list_docs">
+						<li class="yellow">
+							<p>Документ запрошен</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+						<li class="yellow">
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+					<a href="#" class="link js_open_list">Развернуть весь список</a>
+				</div><!-- END input_container -->
+			</div><!-- END fieldset -->
+			<div class="fieldset">
+				<div class="docs_container area_a">
+					<ul class="list_dosc">
+						<li>
+							<p>Оригинал предоставлен</p>
+							<span>5 док.</span>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END docs_container -->
+				<div class="input_container area_b full_width">
+					<ul class="list_dosc">
+						<li>
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+				</div><!-- END input_container -->
+				<div class="input_container area_c">
+					<ul class="list_dosc hidden js_list_docs">
+						<li>
+							<p>Документ запрошен</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+						<li>
+							<p>Документ акцептован Суперпользователем Клиента</p>
+							<span>Список документов</span>
+							<p>Акт расследования с описанием произошедшего события, его причин и установлением виновной стороны</p>
+						</li>
+					</ul><!-- END list_docs -->
+					<a href="#" class="link js_open_list">Развернуть весь список</a>
+				</div><!-- END input_container -->
+			</div><!-- END fieldset -->
+		</form><!-- END status_form -->
+	</div><!-- END popup -->
+<div class="popup add_comment" id="edit_comm">
+	<h6 class="small_title">Комментарий</h6>
+	<form class="form_popup">
+		<div class="form_row">
+			<div class="input_container column_100">
+				<textarea class="textarea">В результате залива подтверждена отделка офиса, который расположен в полуподвальном помещении. Вздулась паркетная доска, отошел плинтус, повреждены обои, дверь в ванную не закрывается.</textarea>
+			</div><!-- END input_container -->
+		</div><!-- END form_row -->
+		<input type="submit" class="btn" value="Обновить">
 	</form><!-- END form_popup -->
 </div><!-- END popup -->
 </body>

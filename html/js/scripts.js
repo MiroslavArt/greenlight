@@ -1,26 +1,36 @@
 $(function(){
+	$('.js_open_list').click(function(){
+		var $this = $(this);
+		$this.prev('.js_list_docs').slideToggle();
+		$this.toggleClass('active');
+		if($this.hasClass('active')){
+			$this.text('РЎРІРµСЂРЅСѓС‚СЊ РІРµСЃСЊ СЃРїРёСЃРѕРє');
+		} else {
+			$this.text('Р Р°Р·РІРµСЂРЅСѓС‚СЊ РІРµСЃСЊ СЃРїРёСЃРѕРє');
+		}
+	});
 	$('.js_open_dropdown').click(function(){
 		if ($(this).hasClass('active')) {
-			// если кликаем по кнопке с классом active (то есть блок уже открыт)
+			// РµСЃР»Рё РєР»РёРєР°РµРј РїРѕ РєРЅРѕРїРєРµ СЃ РєР»Р°СЃСЃРѕРј active (С‚Рѕ РµСЃС‚СЊ Р±Р»РѕРє СѓР¶Рµ РѕС‚РєСЂС‹С‚)
 			$('.company_card_dropdown').fadeOut();
         	$('.company_card_list li').removeClass('active');
 		}else{
-			//сначала прячем все открытые блоки
+			//СЃРЅР°С‡Р°Р»Р° РїСЂСЏС‡РµРј РІСЃРµ РѕС‚РєСЂС‹С‚С‹Рµ Р±Р»РѕРєРё
 			$('.company_card_dropdown').fadeOut();
 			$('.company_card_list li').removeClass('active');
-			//показываем нужный относительно родительского
+			//РїРѕРєР°Р·С‹РІР°РµРј РЅСѓР¶РЅС‹Р№ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ
 			$(this).closest('li').find('.company_card_dropdown').fadeToggle();
 			$(this).closest('li').toggleClass('active');
 		}
 	});
-	//закрываем всё при нажатии на любую свободную область
+	//Р·Р°РєСЂС‹РІР°РµРј РІСЃС‘ РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° Р»СЋР±СѓСЋ СЃРІРѕР±РѕРґРЅСѓСЋ РѕР±Р»Р°СЃС‚СЊ
 	$(document).click(function(event){
 		if (!$(event.target).closest('.company_card_dropdown,.js_open_dropdown').length){
 			$('body').find('.company_card_dropdown').fadeOut();
 			$('.company_card_list li').removeClass('active');
 		}
 	});
-	//закрываем всё при нажатии на esc
+	//Р·Р°РєСЂС‹РІР°РµРј РІСЃС‘ РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° esc
 	$(document).keyup(function(event){
 		if (event.keyCode == 27){
 			$('.company_card_dropdown').fadeOut();
