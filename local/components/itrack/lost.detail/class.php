@@ -4,6 +4,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 use Itrack\Custom\Helpers\Utils;
+use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
@@ -212,6 +213,29 @@ class ItrLost extends CBitrixComponent
             $arRequest['DETAIL_PAGE_URL'] = $this->arParams['PATH_TO']['lost'] . 'lost-document-' . $arRequest['ID'] . '/';
             //Documents Statuses
             $this->arResult['DOCS_STATUSES'][$arStatuses[$arRequest['PROPERTIES']['STATUS']['VALUE']]['ID']]['DOCS'][] = $arRequest["ID"];
+
+            $objDocuments = new HLBWrap('uploaded_docs');
+            $rsDocument = $objDocuments->getList([
+                "filter" => array('UF_LOST_ID' => $arRequest['ID'], 'UF_DOC_TYPE' => 2),
+                "select" => array("*"),
+                "order" => array("UF_DATE_CREATED" => "ASC")
+            ])->fetch();
+            if($rsDocument) {
+                $arRequest['INFO_PROVIDED'] = date("d.m.Y", strtotime($rsDocument['UF_DATE_CREATED']));
+            }
+
+            $objHistory = new HLBWrap('e_history_lost_document_status');
+            $rsHistory = $objHistory->getList([
+                "filter" => array('UF_LOST_DOC_ID' => $arRequest['ID']),
+                "select" => array("*"),
+                "order" => array("ID" => "DESC")
+            ]);
+            while ($arHistory = $rsHistory->fetch()) {
+                if($arHistory['UF_COMMENT']) {
+                    $arRequest['REJECTIONS'][] = 'Замечание от:'.date("d.m.Y", strtotime($arHistory['UF_DATE'])).
+                            '.Текст: '.$arHistory['UF_COMMENT'];
+                }
+            }
         }
         if(!empty($arStatuses)) {
             $this->arResult['STATUSES'] = $arStatuses;
@@ -240,5 +264,7 @@ class ItrLost extends CBitrixComponent
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
     }
+
+
 
 }

@@ -140,14 +140,30 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         );
                         ?>
                     </div>
-                    <div class="table_block align_left align_top item2" data-name="Информация предоставлена"></div>
+                    <div class="table_block align_left align_top item2" data-name="Информация предоставлена"><?=$arItem['INFO_PROVIDED']?></div>
                     <div class="table_block align_left align_top item2" data-name="Документы"><a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link">Документ</a></div>
                     <div class="table_block align_left align_top item2" data-name="Информация предоставлена в печатном виде">
                         <?
                         if($arItem['PROPERTIES']['STATUS']['VALUE']==14) {
-                            echo date("d.m.Y", strtotime($arItem['PROPERTIES']['STATUS_DATE']['VALUE']));
+                            if($arItem['PROPERTIES']['STATUS_DATE']['VALUE']) {
+                                echo date("d.m.Y", strtotime($arItem['PROPERTIES']['STATUS_DATE']['VALUE']));
+                            }
                         } ?></div>
-                    <div class="table_block align_left align_top item3" data-name="Комментарий"><a href="#" class="link ico_remarks">Замечаний нет</a></div>
+                    <div class="table_block align_left align_top item3" data-name="Комментарий">
+                        <? if($arItem['REJECTIONS']) { ?>
+                            <a class="link" href="#read_comment<?=$arItem['ID']?>" data-fancybox>Есть замечания</a></div>
+                            <div class="popup add_comment" id="read_comment<?=$arItem['ID']?>">
+                                <h6 class="small_title">Комментарий</h6>
+                                <div class="text">
+                                    <? foreach ($arItem['REJECTIONS'] as $reject) { ?>
+                                        <p><?=$reject?></p>
+                                    <? } ?>
+                                </div><!-- END text -->
+                                <span data-fancybox-close class="link close_modal">Закрыть описание</span>
+                            </div><!-- END popup -->
+                        <? } else { ?>
+                            <a href="#" class="link ico_remarks">Замечаний нет</a></div>
+                        <? } ?>
                 </li>
             <?php endforeach; ?>
         </ul><!-- END data_table -->
