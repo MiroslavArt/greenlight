@@ -1,4 +1,22 @@
 $(document).ready(function() {
+
+
+    // текущая дата по умолчанию
+    var options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timezone: 'UTC'
+    };
+
+    $(".ico_date").each(function (index, el){
+        // Для каждого элемента сохраняем значение в personsIdsArray,
+        // если значение есть.
+        $(el).val(new Date().toLocaleString("ru", options))
+    });
+
+
+
     var main_lost =  $(".block_title").attr("data-lost")
     var curuser = $(".block_title").attr("data-user")
     var status = $(".block_title").attr("data-status")
@@ -95,15 +113,22 @@ $(document).ready(function() {
     })
     // workflow - акцепт
     $("#accept").click(function (event) {
+        var orig = false
+
+        if($(this).attr('data-orig')==true) {
+            orig = true
+        }
+
         BX.ajax.runAction('itrack:custom.api.signal.acceptLostdoc', {
             data: {
                 lostid: main_lost,
                 lostdocid: lost_id,
                 status: status,
-                user: curuser
+                user: curuser,
+                orig: orig
             }
         }).then(function (response) {
-            //console.log(response)
+            console.log(response)
             if(response.data=='updated') {
                 location.reload();
             } else {

@@ -153,6 +153,9 @@ class ItrLostDocument extends CBitrixComponent
             if(in_array(SB_GROUP, $arGroups)) {
                 $isbroker = true;
             }
+            if(in_array(SB_SU_GROUP, $arGroups)) {
+                $issupbroker  = true;
+            }
             if(in_array(INS_GROUP, $arGroups)) {
                 $isins = true;
             }
@@ -191,7 +194,7 @@ class ItrLostDocument extends CBitrixComponent
             }
         }
 
-        if($status==7) {
+        if($status==7 || $status==9) {
             if($issupbroker) {
                 $this->statuschanged = true;
                 $this->showaccept = true;

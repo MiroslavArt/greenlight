@@ -74,13 +74,32 @@ class ItrCompaniesList extends CBitrixComponent
             }
             $elements2 = Lost::getElementsByConditions($arFilter2, [], []);
 
+            $all = 0;
+            $red = 0;
+            $yellow = 0;
+            $green = 0;
+
+            foreach ($elements2 as $elitem) {
+                $all++;
+                if($elitem['PROPERTIES']['STATUS']['VALUE']=='red') {
+                    $red++;
+                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='yellow') {
+                    $yellow++;
+                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='green') {
+                    $green++;
+                }
+            }
+
             //\Bitrix\Main\Diag\Debug::writeToFile($fid, "fid", "__miros.log");
             $arItem = [
                 'ID' => $element['ID'],
                 'NAME' => $element['NAME'],
                 'LOGO' => $element['PROPERTIES']['LOGO']['VALUE'],
                 'DETAIL_PAGE_URL' => $element['DETAIL_PAGE_URL'],
-                'ALL_LOST' => count($elements2)
+                'ALL_LOST' => $all,
+                'R_LOST' => $red,
+                'Y_LOST' => $yellow,
+                'G_LOST' => $green
             ];
             $arResult['ITEMS'][$element['ID']] = $arItem;
         }

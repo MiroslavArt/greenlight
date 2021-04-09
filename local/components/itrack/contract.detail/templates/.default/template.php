@@ -68,7 +68,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <div class="form_row client_comp">
+                <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+                <div class="form_row client_comp hidden">
                     <div class="input_container without_small">
                         <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
                     </div>
@@ -82,7 +83,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <div class="form_row brok_comp">
+                <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+                <div class="form_row brok_comp hidden">
                     <div class="input_container without_small">
                         <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
                     </div>
@@ -94,7 +96,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
                         <div class="ins_insuer">
                             <div class="gray_block delete_left">
-                                <span class="delete js_delete1"></span>
+                                <!-- <span class="delete js_delete1"></span> -->
                                 <div class="input_container with_flag">
                                     <label class="big_label"><?=$insco['NAME']?></label>
                                     <input class="inserted_co_id" type="hidden" value="<?=$insco['ID'] ?>"/>
@@ -105,93 +107,126 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <? } ?>
                 </div>
                 <h4 class="big_label">Аджастер</h4>
-                <div class="form_row ins_comp">
+                <a href="#" class="link ico_add js_add"><span>Добавить аджастера</span></a>
+                <div class="form_row ins_comp hidden">
                     <div class="input_container without_small">
                         <input type="text" class="text_input inserted_co_label" id="search_adj" placeholder="Выберите аджастера по вводу букв из названия" />
                     </div><!-- END input_container -->
                 </div> <!-- END form_row -->
                 <div class="gray_blocks" id="ins_adjusters">
                 </div>
-                <!--<div class="form_row">
+                <div class="form_row">
                     <div class="switches_container">
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_71'][17]) { ?>
+                                <label class="switch js_checkbox active" id="clientaccept"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="clientaccept"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_71'][18]) { ?>
+                                <label class="switch js_checkbox active" id="brokeraccept"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="brokeraccept"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_71'][19]) { ?>
+                                <label class="switch js_checkbox active" id="insaccept"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="insaccept"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_71'][20]) { ?>
+                                <label class="switch js_checkbox active" id="adjaccept"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="adjaccept"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Аджастер</span>
                         </div>
                     </div>
                     <div class="switches_container">
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_72'][21]) { ?>
+                                <label class="switch js_checkbox active" id="clientnot"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="clientnot"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_72'][22]) { ?>
+                                <label class="switch js_checkbox active" id="brokernot"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="brokernot"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_72'][23]) { ?>
+                                <label class="switch js_checkbox active" id="insnot"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="insnot"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
-                            <label class="switch js_checkbox"><input type="checkbox"></label>
+                            <? if($arResult['CONTRACT']['PROPERTY_72'][24]) { ?>
+                                <label class="switch js_checkbox active" id="adjnot"><input type="checkbox"></label>
+                            <? } else {?>
+                                <label class="switch js_checkbox" id="adjnot"><input type="checkbox"></label>
+                            <? } ?>
                             <span>Аджастер</span>
                         </div>
                     </div>
-                </div> -->
-                <div class="form_row">
+                </div>
+                <!--<div class="form_row">
                     <div class="input_container column_100">
                         <input type="text" class="text_input" id="req_doc" placeholder="Запрашиваемые документы" />
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row">
+                    </div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row">
                     <div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" id="req_date" placeholder="Дата запроса" />
-                    </div><!-- END input_container -->
-                    <div class="input_container">
-                        <select class="select js_select" id="users">
-                            <? foreach ($arResult['USERS'] as $user) { ?>
-                                <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
-                            <? } ?>
-                        </select><!-- END select -->
+                    </div>--><!-- END input_container -->
+                    <!--<div class="input_container">
+                        <select class="select js_select" id="users"> --?
+                            <? //foreach ($arResult['USERS'] as $user) { ?>
+                                <option value=""></option>
+                            <? //} ?>
+                        </select>-->
                         <!-- <input type="text" class="text_input" placeholder="Название компании" /> -->
-                    </div><!-- END input_container -->
+                    <!--</div>--><!-- END input_container -->
                     <!-- <div class="input_container column_50">
                         <input type="text" class="text_input" placeholder="Автор запроса" />
                     </div>--><!-- END input_container -->
-                    <div class="input_container column_25">
+                    <!--<div class="input_container column_25">
                         <input type="text" class="text_input ico_date js_datapicker" id="req_term" placeholder="Срок предоставления" />
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row">
-                    <label class="big_label">Прикрепить полезные документы</label>
-                    <div class="input_container column_3">
+                    </div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row">-->
+                    <!--<label class="big_label">Прикрепить полезные документы</label> -->
+                    <!--<div class="input_container column_3">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input class="loss_file" type="file" />
-                                <span class="upload"><span>Прикрепить запрос</span></span>
-                            </div><!-- END logo_upload -->
-                        </div><!-- END logo_upload_container -->
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
-                <div class="form_row attached_container">
+                                <span class="upload"><span>Прикрепить документы к запросу</span></span>
+                            </div>--><!-- END logo_upload -->
+                        <!--</div>--><!-- END logo_upload_container -->
+                    <!--</div>--><!-- END input_container -->
+                <!--</div>--><!-- END form_row -->
+                <!--<div class="form_row attached_container">
                     <label class="big_label">Документы</label>
                     <ul class="docs_list">
-                    </ul><!-- END docs_list -->
-                </div><!-- END form_row -->
+                    </ul>--><!-- END docs_list -->
+                <!--</div>--><!-- END form_row -->
                 <p class="link" id="mistake"></p>
                 <input type="submit" class="btn" value="Добавить убыток" />
             </form><!-- END form_edit_profile -->
@@ -209,7 +244,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </li>
                     <?php foreach ($arResult['LOSTS'] as $arItem) : ?>
                         <li class="row">
-                            <div class="table_block align_left item2" data-name="Статус"><span class="status"></span></div>
+                            <div class="table_block align_left item2" data-name="Статус"><span class="status <?=$arItem['STATUS']['UF_COLOR']?>"></span></div>
                             <div class="table_block align_left item3" data-name="Статус развернуто"><p><?=$arItem['STATUS']['UF_NAME']?></p></div>
                             <div class="table_block align_left item3" data-name="Уникальный номер"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>

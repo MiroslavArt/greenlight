@@ -7,7 +7,10 @@ define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
 use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\InfoBlocks\Lost;
 use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\UserAccess\CUserAccess;
+use Itrack\Custom\Highloadblock\HLBWrap;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -35,7 +38,7 @@ $fidids = [];
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
 
-foreach ($_FILES as $file) {
+/*foreach ($_FILES as $file) {
     $arr_file=Array(
         "name" =>  $file['name'],
         "size" => $file['size'],
@@ -46,7 +49,7 @@ foreach ($_FILES as $file) {
         "MODULE_ID" => "iblock");
     $fid = CFile::SaveFile($arr_file, "lossdocs");
     array_push($fidids, $fid);
-}
+}*/
 
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
@@ -64,14 +67,28 @@ if($_POST['kurleaders']) {
     $kurleaders = explode(",", $_POST['kurleaders']);
 }
 
-$companies = array_merge($companies, $insarray);
+if($_POST['kuratorscl']) {
+    $kuratorscl = explode(",", $_POST['kuratorscl']);
+}
+if($_POST['kuratorsins']) {
+    $kuratorsins = explode(",", $_POST['kuratorsins']);
+}
+if($_POST['kuratorsbr']) {
+    $kuratorsbr = explode(",", $_POST['kuratorsbr']);
+}
+if($_POST['kuratorsadj']) {
+    $kuratorsadj = explode(",", $_POST['kuratorsadj']);
+}
+if($_POST['needaccept']) {
+    $needaccept = explode(",", $_POST['needaccept']);
+}
+if($_POST['neednotify']) {
+    $neednotify = explode(",", $_POST['neednotify']);
+}
+
 $companies = array_merge($companies, $adjarray);
 
-Loader::includeModule('iblock');
-$add = new \CIBlockElement();
-
 $data = [
-    'IBLOCK_ID' => 3,
     'ACTIVE' => 'Y',
     'NAME' => 'Убыток №:'.$_POST['docnum'],
     'CODE' => $_POST['docnum'],
@@ -80,12 +97,8 @@ $data = [
         'DESCRIPTION'=> $_POST['description'],
         'STATUS' => $_POST['status'],
         'CONTRACT' => $_POST['contract'],
-        'LOSS_NUMBER' => $_POST['docnum'],
-        'REQUEST_DOCS' => $_POST['reqdoc'],
-        'REQUEST_DATE' => $_POST['reqdate'],
-        'REQUEST_USER' => $_POST['user'],
-        'REQUEST_TERM' => $_POST['req_term'],
-        'VALUABLE_DOCS' => $fidids,
+        'NEED_ACCEPT' => $needaccept,
+        'NEED_NOTIFY' => $neednotify,
         'CLIENT'=> array($_POST['clientid']),
         'CLIENT_LEADER'=> $_POST['clientid'],
         'INSURANCE_BROKER'=> array($_POST['brokerid']),
@@ -96,39 +109,99 @@ $data = [
         'ADJUSTER_LEADER' => $_POST['adjleader']
     ]
 ];
-$id = $add->Add($data);
 
-if(intval($id) > 0) {
-    /*foreach($kurators as $kurator) {
-        $rsUser = \CUser::GetByID($kurator);
-        $arUser = $rsUser->Fetch();
-        $companyid = $arUser['UF_COMPANY'];
-        if(in_array($kurator,$kurleaders )) {
-            $leader = 7;
-        } else {
-            $leader = 0;
-        }
-        $data = [
-            'IBLOCK_ID' => 4,
-            'ACTIVE' => 'Y',
-            'NAME' => $_POST['docnum'],
-            'PROPERTY_VALUES' => [
-                'LOST'=> $id,
-                'COMPANY' => $companyid,
-                'CURATOR' => $kurator,
-                'LEADER' => $leader
-            ]
-        ];
-        $id2 = $add->Add($data);
+$ID = Lost::createElement($data, []);
+
+if(intval($ID) > 0) {
+    $id = intval($ID);
+
+    $objHistory = new HLBWrap('e_history_lost_status');
+    $histdata = [
+        'UF_CODE_ID' => '1',
+        'UF_DATE' => date("d.m.Y. H:i:s"),
+        'UF_LOST_ID' => $id,
+        'UF_USER_ID' => $USER->GetID()
+    ];
+    $objHistory->add($histdata);
+
+    /*foreach ($fidids as $fid) {
+        $file = \CFile::MakeFileArray($fid);
+        $data = array(
+            "UF_MAINLOST_ID" => $id,
+            "UF_NAME"=>$_POST['reqdoc'],
+            "UF_FILE"=> $file,
+            "UF_COMMENT"=>$_POST['reqdoc'],
+            "UF_DATE_CREATED" => ConvertDateTime($_POST['reqdate'], "DD.MM.YYYY")." 23:59:59",
+            "UF_DATE_TERM" => ConvertDateTime($_POST['req_term'], "DD.MM.YYYY")." 23:59:59",
+            "UF_USER_ID" => $_POST['user'],
+            "UF_DOC_TYPE"=> '1'
+        );
+        $objDocument = new HLBWrap('uploaded_docs');
+        $objDocument->add($data);
     }*/
-    $participation = new CParticipation(new CLost($id));
-    $participation->createFromArrays(
-        $companies,			// Компании
-        $companiesleaders, 				// Компании-лидеры
-        $kurators, 	// Кураторы
-        $kurleaders	// Кураторы-лидеры
-    );
+
+    try {
+        $participation = new CParticipation(new CLost($id));
+        $participation->createFromArrays(
+            $companies,			// Компании
+            $companiesleaders, 				// Компании-лидеры
+            $kurators, 	// Кураторы
+            $kurleaders	// Кураторы-лидеры
+        );
+    } catch (Exception $e) {
+        __CrmPropductRowListEndResponse(array('error'=>$e->getMessage()));
+    }
+    $kuracceptance = [];
+    $kurnotify = [];
+
+    if(in_array(25, $needaccept)) {
+        foreach ($kuratorscl as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(26, $needaccept)) {
+        foreach ($kuratorsbr as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(27, $needaccept)) {
+        foreach ($kuratorsins as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(28, $needaccept)) {
+        foreach ($kuratorsadj as $kurator) {
+            $kuracceptance[] = $kurator;
+        }
+    }
+    if(in_array(29, $neednotify)) {
+        foreach ($kuratorscl as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+    if(in_array(30, $neednotify)) {
+        foreach ($kuratorsbr  as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+    if(in_array(31, $neednotify)) {
+        foreach ($kuratorsins as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+    if(in_array(32, $neednotify)) {
+        foreach ($kuratorsadj as $kurator) {
+            $kurnotify[] = $kurator;
+        }
+    }
+
+    foreach ($kuracceptance as $kurator) {
+        (new CUserAccess($kurator))->setAcceptanceForLost($id);
+    }
+    foreach ($kurnotify as $kurator) {
+        (new CUserAccess($kurator))->setNotificationForLost($id);
+    }
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
-    __CrmPropductRowListEndResponse(array('error'=>strip_tags($add->LAST_ERROR)));
+    __CrmPropductRowListEndResponse(array('error'=>strip_tags($ID)));
 }

@@ -81,9 +81,9 @@
                 <div class="input_container">
                     <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
                 </div><!-- END input_container -->
-                <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
             </div><!-- END gray_block -->
-            <div class="form_row client_comp">
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row client_comp hidden">
                 <div class="input_container without_small">
                     <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
                 </div><!-- END input_container -->
@@ -97,18 +97,18 @@
                 </div><!-- END input_container -->
                 <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
             </div><!-- END gray_block -->
-            <div class="form_row brok_comp">
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row brok_comp hidden">
                 <div class="input_container without_small">
                     <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
-                    <!-- <input type="hidden" class="inserted_co_label" />
-                    <input type="hidden" class="inserted_co_id" /> -->
                 </div><!-- END input_container -->
             </div>
             <div id="brok_kur_card" class="company_card_container">
             </div>
             <h4 class="big_label">Страховая компания</h4>
-            <div class="form_row ins_comp">
-                <div class="input_container without_small">
+            <a href="#" class="link ico_add js_add"><span>Добавить страховую компанию</span></a>
+            <div class="form_row ins_comp hidden">
+                <div class="input_container column_100">
                     <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
                 </div><!-- END input_container -->
             </div> <!-- END form_row -->
@@ -121,7 +121,7 @@
                 </div><!-- END switch_container -->
                 <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
             </div><!-- END originals_required -->
-            <!--<div class="form_row">
+            <div class="form_row">
                 <div class="switches_container">
                     <label class="big_label">Необходимость акцепта</label>
                     <div class="switch_container">
@@ -159,8 +159,8 @@
                         <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
                         <span>Аджастер</span>
                     </div>
-                </div><
-            </div> --><!-- END form_row -->
+                </div>
+            </div><!-- END form_row -->
             <!-- <div class="btn senddoc">Добавить договор</div> -->
             <p class="link" id="mistake"></p>
             <input type="submit" class="btn" value="Добавить договор" />
@@ -168,6 +168,9 @@
     </div><!-- END popup -->
     <?php if (!empty($arResult['CONTRACTS'])) :
         $alllosts = 0;
+        $green = 0;
+        $yellow = 0;
+        $red = 0;
         ?>
         <div id="contracts-list">
             <ul class="data_table">
@@ -184,15 +187,18 @@
                 </li>
                 <?php foreach ($arResult['CONTRACTS'] as $arItem) :
                     $alllosts += $arItem['ALL_LOST'];
+                    $green += $arItem['G_LOST'];
+                    $yellow += $arItem['Y_LOST'];
+                    $red += $arItem['R_LOST'];
                     ?>
                     <li class="row">
                         <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                         <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                         <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
                         <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem['ALL_LOST']?></div>
-                        <div class="table_block stat_column green">н.д.</div>
-                        <div class="table_block stat_column yellow item2">н.д.</div>
-                        <div class="table_block stat_column red">н.д.</div>
+                        <div class="table_block stat_column green"><?=$arItem['G_LOST']?></div>
+                        <div class="table_block stat_column yellow item2"><?=$arItem['Y_LOST']?></div>
+                        <div class="table_block stat_column red"><?=$arItem['R_LOST']?></div>
                         <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
                         <div class="table_block item6 links_column">
                             <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
@@ -205,9 +211,9 @@
                 <li class="row">
                     <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
                     <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
-                    <div class="table_block stat_column item2" data-name="Закрыто">н.д.</div>
-                    <div class="table_block stat_column item2" data-name="Документы предоставлены">н.д.</div>
-                    <div class="table_block stat_column item2" data-name="Открыто">н.д.</div>
+                    <div class="table_block stat_column item2" data-name="Закрыто"><?= $green ?></div>
+                    <div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $yellow ?></div>
+                    <div class="table_block stat_column item2" data-name="Открыто"><?= $red ?></div>
                     <div class="table_block links_column"></div>
                 </li>
             </ul><!-- END data_table -->

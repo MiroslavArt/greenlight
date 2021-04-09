@@ -19,7 +19,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <?=$arResult['DOCUMENT']['NAME']?>
             </h2>
             <div class="card_status_container">
-                <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']?>">
+                <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE'][$arResult['COLOR_FIELD']]?>">
                     <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']?>
                 </span>
                 <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?></span>
@@ -81,7 +81,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?
             if($arResult['SHOWACCEPT']) {
         ?>
-            <a href="#" class="btn" id="accept">Акцептовать</a>
+            <a href="#" class="btn" id="accept" data-orig="<?=$arResult['SHOWORIGINAL']?>">Акцептовать</a>
         <? } ?>
         <?
             if($arResult['SHOWDECLINE']) {
