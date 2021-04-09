@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
     // текущая дата по умолчанию
     var options = {
         year: 'numeric',
@@ -14,8 +13,6 @@ $(document).ready(function() {
         // если значение есть.
         $(el).val(new Date().toLocaleString("ru", options))
     });
-
-
 
     /*$(".reqdoclink").fancybox({
         afterClose: function(){
@@ -36,6 +33,25 @@ $(document).ready(function() {
                 location.reload();
             } else {
                 $("#mistake").text(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+        });
+    })
+
+    $( ".form_popup2" ).submit(function( event ) {
+        event.preventDefault();
+        var formData = $(this).serializeArray();  // создаем переменную, которая содержит закодированный набор элементов формы в виде строки
+        BX.ajax.runAction('itrack:custom.api.signal.closeLoss', {
+            data: {
+                formdata: formData
+            }
+        }).then(function (response) {
+            if(response.data=='added') {
+                location.reload();
+            } else {
+                $("#mistake2").text(response.data)
             }
         }, function (error) {
             //сюда будут приходить все ответы, у которых status !== 'success'

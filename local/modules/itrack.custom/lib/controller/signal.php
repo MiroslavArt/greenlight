@@ -647,5 +647,50 @@ class Signal extends Controller
             return "error";
         }
     }
+
+    // workflow
+    public function closeLossAction($formdata)
+    {
+        $result = 'error';
+
+        $data = [];
+
+        global $USER;
+
+        $uid = $USER->GetID();
+
+        if($formdata) {
+            foreach ($formdata as $item) {
+                if($item['name']=='decision') {
+                    if($item['value']=='Y') {
+                        $PROP[76] = 33;
+                    } else {
+                        $PROP[76] = 34;
+                    }
+                } else if($item['name']=='sum') {
+                    $PROP[75] = $item['value'];
+                } else if($item['name']=='lostid') {
+                    $lostid = $item['value'];
+                }
+            }
+            $data['PROPERTY_VALUES']['STATUS'] = '1';
+
+            $PROP[16] = 'green';
+            Lost::updateElement($lostid, [], $PROP);
+
+            $objHistory = new HLBWrap('e_history_lost_status');
+            $histdata = [
+                        'UF_CODE_ID' => '3',
+                        'UF_DATE' => date("d.m.Y. H:i:s"),
+                        'UF_LOST_ID' => $lostid,
+                        'UF_USER_ID' => $USER->GetID()
+            ];
+            $objHistory->add($histdata);
+
+            $result = 'added';
+        }
+
+        return $result;
+    }
 }
 
