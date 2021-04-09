@@ -1,4 +1,15 @@
 $(function(){
+	$('.js_open_list').click(function(){
+		var $this = $(this);
+		$this.prev('.js_list_docs').slideToggle();
+		$this.toggleClass('active');
+		if($this.hasClass('active')){
+			$this.text('Свернуть весь список');
+		} else {
+			$this.text('Развернуть весь список');
+		}
+	});
+
 	$('.js_open_dropdown').click(function(){
 		if ($(this).hasClass('active')) {
 			// если кликаем по кнопке с классом active (то есть блок уже открыт)
