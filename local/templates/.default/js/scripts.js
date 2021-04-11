@@ -79,6 +79,9 @@ $(function(){
 			$(this).parent().toggleClass('active');
 		}
 	});
+	$('.js-checkbox input').click(function(){
+		$(this).parent().toggleClass('active');
+	});
     $(document).on('click', '.js_delete', function(e){
         BX.remove(e.target.parentElement)
     });
@@ -226,76 +229,76 @@ $(function(){
 
 	initFormValidation();
 
-	let mySubmit = function (options) {
-		let url = options.url?options.url:'',
-			method = options.method?options.method:'GET',
-			data = options.data?options.data:'',
-			scrollTo = options.scrollTo?options.scrollTo:'',
-			historyUrl = options.historyUrl?options.historyUrl:'',
-			that = options.that?options.that:''//click event target
-		;
+});
 
-		return new Promise(function (resolve, reject) {
-			$.ajax({
-				'url': url,
-				'method': method,
-				dataType: 'json',
-				'data': data,
-				processData: (typeof options.processData != 'undefined' && options.processData == false)?false:'application/x-www-form-urlencoded',
-				contentType: (typeof options.contentType != 'undefined' && options.contentType == false)?false:'application/x-www-form-urlencoded',
-				beforeSend: function () {
-					$('.b-preloader-radial').addClass('active');
-				},
-				complete: function () {
-					$('.b-preloader-radial').removeClass('active');
-				},
-				success: function (json) {
-					if (Boolean(json.success)) {
+let mySubmit = function (options) {
+	let url = options.url?options.url:'',
+		method = options.method?options.method:'GET',
+		data = options.data?options.data:'',
+		scrollTo = options.scrollTo?options.scrollTo:'',
+		historyUrl = options.historyUrl?options.historyUrl:'',
+		that = options.that?options.that:''//click event target
+	;
 
-						if (Boolean(json.html)) {
-							if (Boolean(json.htmlContainer)) {
-								htmlContainer = json.htmlContainer;
-							}
-							if (htmlContainer) {
-								$(htmlContainer).html($(json.html).find(htmlContainer).html());
-							}
+	return new Promise(function (resolve, reject) {
+		$.ajax({
+			'url': url,
+			'method': method,
+			dataType: 'json',
+			'data': data,
+			processData: (typeof options.processData != 'undefined' && options.processData == false)?false:'application/x-www-form-urlencoded',
+			contentType: (typeof options.contentType != 'undefined' && options.contentType == false)?false:'application/x-www-form-urlencoded',
+			beforeSend: function () {
+				$('.b-preloader-radial').addClass('active');
+			},
+			complete: function () {
+				$('.b-preloader-radial').removeClass('active');
+			},
+			success: function (json) {
+				if (Boolean(json.success)) {
+
+					if (Boolean(json.html)) {
+						if (Boolean(json.htmlContainer)) {
+							htmlContainer = json.htmlContainer;
 						}
-						if (Boolean(json.timeoutReload)) {
-							setTimeout(function(){
-								location.reload(true);
-							}, json.timeoutReload);
+						if (htmlContainer) {
+							$(htmlContainer).html($(json.html).find(htmlContainer).html());
 						}
-						if (Boolean(json.reload)) {
+					}
+					if (Boolean(json.timeoutReload)) {
+						setTimeout(function(){
 							location.reload(true);
-						}
-						if (Boolean(json.redirect)) {
-							location.href = json.redirect;
-						}
-
-						if (Boolean(json.url)) {
-							history.pushState({json: json.json}, json.url, json.url);
-						}
-						if (historyUrl.length) {
-							history.pushState(null,null, historyUrl);
-						}
-
-						if(Boolean(json.error_message)) {
-							//UIkit.notification('<h3>' + json.error_message + '</h3>');
-						}
-
+						}, json.timeoutReload);
+					}
+					if (Boolean(json.reload)) {
+						location.reload(true);
+					}
+					if (Boolean(json.redirect)) {
+						location.href = json.redirect;
 					}
 
-					if (Boolean(json.errors)) {
-						for (let key in json.errors) {
-							let error = {};
-							error[key] = json.errors[key];
-							window.validator.showErrors(error);
-						}
+					if (Boolean(json.url)) {
+						history.pushState({json: json.json}, json.url, json.url);
+					}
+					if (historyUrl.length) {
+						history.pushState(null,null, historyUrl);
+					}
+
+					if(Boolean(json.error_message)) {
+						//UIkit.notification('<h3>' + json.error_message + '</h3>');
 					}
 
 				}
-			}).done(resolve).fail(reject);
-		});
-	};
 
-});
+				if (Boolean(json.errors)) {
+					for (let key in json.errors) {
+						let error = {};
+						error[key] = json.errors[key];
+						window.validator.showErrors(error);
+					}
+				}
+
+			}
+		}).done(resolve).fail(reject);
+	});
+};

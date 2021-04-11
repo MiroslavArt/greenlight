@@ -28,6 +28,7 @@ $arDefaultUrlTemplates404 = array(
     'useful-documents-add' => "#ELEMENT_ID#/useful-documents/add/",
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
     "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
+    "lost-curators" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/curators/",
     "lost-document" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/",
     "lost-document-history" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/status/",
 );

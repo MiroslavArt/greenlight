@@ -45,8 +45,23 @@ class ItrUsefulDocumentsList extends CBitrixComponent
             $arResult['IS_AJAX'] = 'Y';
         }
 
+        if(isset($this->request['action'])) {
+            $this->arParams['ACTION'] = $this->request['action'];
+        }
+
         if($this->arParams['ACTION'] == 'add') {
             if($this->addDocument()) {
+                $arResult['success'] = true;
+                $arResult['reload'] = true;
+                $APPLICATION->RestartBuffer();
+                echo  json_encode($arResult);
+                die();
+            }
+        }
+
+        //удаляем привязки
+        if($this->arParams['ACTION'] == 'unlink' && !empty($this->request['doc_id'])) {
+            if($this->unlinkDocuments($this->request['doc_id'])) {
                 $arResult['success'] = true;
                 $arResult['reload'] = true;
                 $APPLICATION->RestartBuffer();
@@ -154,5 +169,32 @@ class ItrUsefulDocumentsList extends CBitrixComponent
         }
 
     }
+
+    /**
+     * Удаляем привязку к данной компании или договору
+     * @param array $arIds массив идентификаторов документов
+     * @return bool
+     */
+    private function unlinkDocuments($arIds) {
+        $elements = UsefulDocuments::getElementsByConditions(['ID' => $arIds], [], []);
+
+        if(empty($elements)) {
+            return false;
+        }
+
+        foreach ($elements as $element) {
+            if (!empty($this->companyId)) {
+                $propertyCode = "COMPANY_ID";
+            }
+            if (!empty($this->contractId)) {
+                $propertyCode = "CONTRACT_ID";
+            }
+
+            \CIBlockElement::SetPropertyValuesEx($element['ID'], false, array($propertyCode => ''));
+        }
+
+        return true;
+    }
+
 
 }
