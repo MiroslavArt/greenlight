@@ -86,10 +86,6 @@ $(function(){
 		//console.log(e)
 		BX.remove(e.target.parentElement.parentElement)
 	});
-	$(document).on('click', '.js_delete1', function(e){
-		//console.log(e)
-		BX.remove(e.target.parentElement.parentElement)
-	});
 	$(document).on('click', '.js_add', function(e){
 		//console.log(e)
 		$(this).next().toggleClass('hidden');
