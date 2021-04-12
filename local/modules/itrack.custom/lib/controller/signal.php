@@ -195,27 +195,23 @@ class Signal extends Controller
         $company = $res->fetch();
         $groups = array(5);
         if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
-            $type = 'СБ';
             array_push($groups, SB_GROUP);
-            if ($userdata['superuser']) {
+            if ($userdata['superuser']=='true') {
                 array_push($groups, SB_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
-            $type = 'СК';
             array_push($groups, INS_GROUP);
-            if ($userdata['superuser']) {
+            if ($userdata['superuser']=='true') {
                 array_push($groups, INS_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
-            $type = 'Клиент';
             array_push($groups, CL_GROUP);
-            if ($userdata['superuser']) {
+            if ($userdata['superuser']=='true') {
                 array_push($groups, CL_SU_GROUP);
             }
         } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
-            $type = 'Аджастер';
             array_push($groups, AJ_GROUP);
-            if ($userdata['superuser']) {
+            if ($userdata['superuser']=='true') {
                 array_push($groups, AJ_SU_GROUP);
             }
         }
