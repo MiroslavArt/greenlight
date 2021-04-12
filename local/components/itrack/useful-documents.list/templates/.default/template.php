@@ -29,8 +29,9 @@ use \Bitrix\Main\Localization\Loc;
             </li>
             <?php foreach ($arResult['DOCUMENTS'] as $arDocument) : ?>
             <li class="row">
-                <div class="table_block align_left" data-name="Выбрать"><label class="checkbox js_checkbox"><input
-                                type="checkbox"></label></div>
+                <div class="table_block align_left" data-name="Выбрать">
+                    <label class="checkbox js_checkbox js-checkbox"><input type="checkbox" name="doc_id[]" value="<?=$arDocument['ID']?>"></label>
+                </div>
                 <div class="table_block align_left item8" data-name="Название документа">
                     <p><?=(!empty($arDocument['PROPERTIES']['FILE']['VALUE']) ? '<a href = "' . \CFile::GetPath($arDocument['PROPERTIES']['FILE']['VALUE']) . '" download>' . $arDocument['NAME'] . '</a>' : $arDocument['NAME'])?></p></div>
                 <div class="table_block align_left item6" data-name="Вид документа"><p><?=$arDocument['PROPERTIES']['DOC_TYPE']['VALUE']?></p></div>
@@ -48,7 +49,7 @@ use \Bitrix\Main\Localization\Loc;
     <?php endif; ?>
     <div class="btn_container">
         <a href="<?/*=$arParams['PATH_TO']['useful-documents-add']*/?>#useful_doc" data-fancybox class="btn ico_plus">Добавить</a>
-        <a href="#" class="btn ico_minus">Открепить</a>
+        <a href="#" class="btn ico_minus js-deactive-documents">Открепить</a>
     </div><!-- END btn_container -->
 </div>
 

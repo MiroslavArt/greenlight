@@ -74,7 +74,13 @@ class ItrLost extends CBitrixComponent
         }
 
         $arResult['CONTRACT_PAGE_URL'] = $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $this->arParams['CONTRACT_ID'] . '/';
-        $APPLICATION->SetTitle(GetMessage('LOST_CARD') . ' - ' . $arResult['LOST']['NAME']);
+
+        if($this->arParams['CURATORS_MODE'] == 'Y') {
+            $APPLICATION->SetTitle(GetMessage('ALL_LOST_CURATORS') . ' - ' . $arResult['LOST']['NAME']);
+        } else {
+            $APPLICATION->SetTitle(GetMessage('LOST_CARD') . ' - ' . $arResult['LOST']['NAME']);
+        }
+
 
         $this->includeComponentTemplate();
     }
@@ -118,12 +124,17 @@ class ItrLost extends CBitrixComponent
             return false;
         }
 
+        $this->arResult['CURATORS_LEADERS'] = [];
         $arCuratorsIds = [];
+
         foreach ($arCurators as $arCurator) {
             //$arCuratorsIds[] = $arCurator['PROPERTIES']['CURATORS']['VALUE'];
             $arCuratorsIds = array_merge($arCuratorsIds, $arCurator['PROPERTIES']['CURATORS']['VALUE']);
-
+            if(!empty($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) && intval($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) > 0) {
+                $this->arResult['CURATORS_LEADERS'][$arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']] = $arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE'];
+            }
         }
+
         $query = UserGroupTable::query()
             ->setSelect([
                 'ID' => 'USER.ID',
@@ -135,6 +146,7 @@ class ItrLost extends CBitrixComponent
                 'LAST_LOGIN' => 'USER.LAST_LOGIN',
                 'POSITION' => 'USER.WORK_POSITION',
                 'PHONE' => 'USER.WORK_PHONE',
+                'EMAIL' => 'USER.EMAIL',
                 'COMPANY_ID' => 'IB_COMPANY.ID',
                 'COMPANY_NAME' => 'IB_COMPANY.NAME',
                 'COMPANY_TYPE' => 'IB_COMPANY.TYPE.ITEM.VALUE'
@@ -169,6 +181,9 @@ class ItrLost extends CBitrixComponent
             $items[$userId] = $row;
             $items[$userId]['GROUPS'] = $groups;
             $items[$userId]['IS_SUPER'] = $isSuper;
+            if(in_array($userId, $this->arResult['CURATORS_LEADERS'])) {
+                $items[$userId]['IS_LEADER'] = 'Y';
+            }
         }
 
         return $items;
