@@ -277,6 +277,7 @@ class Signal extends Controller
         $reset = false;
 
         $data = [];
+        $data['DATE_ACTIVE_FROM'] = date('d.m.Y');
 
         global $USER;
 
@@ -288,8 +289,6 @@ class Signal extends Controller
                     $data['PROPERTY_VALUES']['LOST'] = $item['value'];
                 } else if($item['name']=='docname') {
                     $data['NAME'] = $item['value'];
-                } else if($item['name']=='docdate') {
-                    $data['DATE_ACTIVE_FROM'] = $item['value'];
                 } else if($item['name']=='docterm') {
                     $data['PROPERTY_VALUES']['REQUEST_DEADLINE'] = $item['value'];
                 } else if($item['name']=='author') {

@@ -9,7 +9,16 @@ $(function(){
 			$this.text('Развернуть весь список');
 		}
 	});
-
+	$('.js_desc_show').click(function(){
+		var $this = $(this);
+		$this.prev('.js_desc_hide').slideToggle();
+		$this.toggleClass('active');
+		if($this.hasClass('active')){
+			$this.text('Свернуть описание');
+		} else {
+			$this.text('Посмотреть описание полностью');
+		}
+	});
 	$('.js_open_dropdown').click(function(){
 		if ($(this).hasClass('active')) {
 			// если кликаем по кнопке с классом active (то есть блок уже открыт)

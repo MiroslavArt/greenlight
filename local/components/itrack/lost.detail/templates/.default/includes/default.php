@@ -70,7 +70,7 @@
             <div class="table_block align_left"><p>Статус</p></div>
             <div class="table_block align_left item2"><p>Детали</p></div>
             <div class="table_block align_left item3"><p>Запрошенные документы</p></div>
-            <div class="table_block align_left item2"><p>Дата запроса</p></div>
+            <div class="table_block align_left item2"><p>Предоставить до</p></div>
             <div class="table_block align_left item3"><p>Автор запроса</p></div>
             <div class="table_block align_left item2"><p>Ссылка <br/>на запрос</p></div>
             <div class="table_block align_left item2"><p>Информация <br/>предоставлена</p></div>
@@ -85,7 +85,7 @@
                 <div class="table_block align_left align_top" data-name="Статус"><span class="status <?= $arResult['STATUSES'][$arItem['PROPERTIES']['STATUS']['VALUE']][$arResult['COLOR_FIELD']] ?>"></span></div>
                 <div class="table_block align_left align_top item2" data-name="Детали"><?= $arItem['STATUS_NAME'] ?></div>
                 <div class="table_block align_left align_top item3" data-name="Запрошенные документы"><?= $arItem['NAME'] ?></div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса"><?= (new \DateTime($arItem['DATE_CREATE']))->format('d.m.Y') ?></div>
+                <div class="table_block align_left align_top item2" data-name="Срок предоставления"><?= (new \DateTime($arItem['PROPERTIES']['REQUEST_DEADLINE']['VALUE']))->format('d.m.Y') ?></div>
                 <div class="table_block align_left align_top item3" data-name="Автор запроса"><?= $arItem['USER_FIO'] ?></div>
                 <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#add_doc<?= $arItem['ID'] ?>" data-fancybox class="link reqdoclink">Запрос</a></div>
                 <div class="popup add_doc" id="add_doc<?= $arItem['ID'] ?>">

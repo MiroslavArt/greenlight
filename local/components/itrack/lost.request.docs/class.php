@@ -54,6 +54,10 @@ class ItrLostRequestDocs extends CBitrixComponent
             if(intval($arDocument['UF_FILE']) > 0) {
                 $arDocument['FILE'] =  \CFile::GetFileArray($arDocument['UF_FILE']);
             }
+            $rsUser = \CUser::GetByID($arDocument['UF_USER_ID']);
+            $arUser = $rsUser->Fetch();
+            $arDocument['USER_FIO'] = $arUser['NAME'].' '.$arUser['LAST_NAME'];
+
             $arDocuments[] = $arDocument;
         }
         $arResult['DOCUMENTS'] = $arDocuments;
