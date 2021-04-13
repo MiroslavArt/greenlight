@@ -248,6 +248,21 @@ class Signal extends Controller
                 $participant->bindCurator($ID);
             }
             $result = 'added';
+
+            \CEvent::Send(
+                "USER_INFO",
+                SITE_ID,
+                [
+                    "EMAIL" => $userdata['email'],
+                    "NAME" => $userdata['name'],
+                    "LAST_NAME" => $userdata['lastname'],
+                    "LOGIN" => $userdata['email'],
+                    "PWD" => $userdata['pwd'],
+                    "USER_ID" => $ID
+                ]
+            );
+
+
         } else {
             $result = strip_tags($user->LAST_ERROR);
         }
