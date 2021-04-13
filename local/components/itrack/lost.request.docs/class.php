@@ -44,11 +44,19 @@ class ItrLostRequestDocs extends CBitrixComponent
 
         $arDocuments = [];
         $objDocuments = new \Itrack\Custom\Highloadblock\HLBWrap('uploaded_docs');
-        $rsDocuments = $objDocuments->getList([
-            "filter" => array('UF_LOST_ID' => $this->arParams['LOST_DOC'], 'UF_DOC_TYPE' => 1),
-            "select" => array("*"),
-            "order" => array("UF_DATE_CREATED" => "DESC")
-        ]);
+        if($this->arParams['TYPE'] == 1) {
+            $rsDocuments = $objDocuments->getList([
+                "filter" => array('UF_LOST_ID' => $this->arParams['LOST_DOC'], 'UF_DOC_TYPE' => $this->arParams['TYPE']),
+                "select" => array("*"),
+                "order" => array("UF_DATE_CREATED" => "DESC")
+            ]);
+        } else {
+            $rsDocuments = $objDocuments->getList([
+                "filter" => array('UF_MAINLOST_ID' => $this->arParams['LOST_DOC'], 'UF_DOC_TYPE' => $this->arParams['TYPE']),
+                "select" => array("*"),
+                "order" => array("UF_DATE_CREATED" => "DESC")
+            ]);
+        }
 
         while ($arDocument = $rsDocuments->fetch()) {
             if(intval($arDocument['UF_FILE']) > 0) {

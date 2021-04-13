@@ -94,7 +94,8 @@
                         'itrack:lost.request.docs',
                         '',
                         array(
-                            "LOST_DOC" => $arItem['ID']
+                            "LOST_DOC" => $arItem['ID'],
+                            "TYPE" => 1
                         ),
                         null
                     );
