@@ -248,6 +248,21 @@ class Signal extends Controller
                 $participant->bindCurator($ID);
             }
             $result = 'added';
+
+            \CEvent::Send(
+                "USER_INFO",
+                SITE_ID,
+                [
+                    "EMAIL" => $userdata['email'],
+                    "NAME" => $userdata['name'],
+                    "LAST_NAME" => $userdata['lastname'],
+                    "LOGIN" => $userdata['email'],
+                    "PWD" => $userdata['pwd'],
+                    "USER_ID" => $ID
+                ]
+            );
+
+
         } else {
             $result = strip_tags($user->LAST_ERROR);
         }
@@ -336,6 +351,26 @@ class Signal extends Controller
 
         //if($id->isSuccess()) {
         return 'success';
+        //} else {
+        //    return $id->getErrorMessages();
+        //}
+    }
+
+    public function updateLossdescAction($formdata)
+    {
+        $PROP = [];
+
+        if($formdata) {
+            foreach ($formdata as $item) {
+                if ($item['name'] == 'lossdescript') {
+                    $PROP['DESCRIPTION'] = $item['value'];
+                } elseif($item['name'] == 'lostid') {
+                    $lostid = $item['value'];
+                }
+            }
+        }
+        Lost::updateElement($lostid, [], $PROP);
+        return 'updated';
         //} else {
         //    return $id->getErrorMessages();
         //}

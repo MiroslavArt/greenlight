@@ -4,7 +4,20 @@
     <div class="desc">
         <span class="desc_title">Описание страхового случая</span>
         <?php if (!empty($arResult['LOST']['PROPERTIES']['DESCRIPTION'])) : ?>
-            <?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?>
+            <p data-fancybox data-src="#edit_comm" class="pointer"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></p>
+            <div class="popup add_comment" id="edit_comm">
+                <h6 class="small_title">Комментарий</h6>
+                <form class="form_popup1">
+                    <div class="form_row">
+                        <div class="input_container column_100">
+                            <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
+                            <textarea class="textarea" name="lossdescript"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></textarea>
+                        </div><!-- END input_container -->
+                    </div><!-- END form_row -->
+                    <p class="link" id="mistake1"></p>
+                    <input type="submit" class="btn" value="Обновить">
+                </form><!-- END form_popup -->
+            </div><!-- END popup -->
         <?php endif; ?>
     </div><!-- END desc -->
     <div class="table_container">

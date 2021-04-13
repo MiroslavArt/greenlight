@@ -40,6 +40,26 @@ $(document).ready(function() {
         });
     })
 
+    $( ".form_popup1" ).submit(function( event ) {
+        event.preventDefault();
+        var formData = $(this).serializeArray();  // создаем переменную, которая содержит закодированный набор элементов формы в виде строки
+        BX.ajax.runAction('itrack:custom.api.signal.updateLossdesc', {
+            data: {
+                formdata: formData
+            }
+        }).then(function (response) {
+            if(response.data=='updated') {
+                location.reload();
+            } else {
+                $("#mistake1").text(response.data)
+            }
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error)
+        });
+    })
+
+
     $( ".form_popup2" ).submit(function( event ) {
         event.preventDefault();
         var formData = $(this).serializeArray();  // создаем переменную, которая содержит закодированный набор элементов формы в виде строки
