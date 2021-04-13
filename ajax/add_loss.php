@@ -6,6 +6,7 @@ define('DisableEventsCheck', true);
 define("EXTRANET_NO_REDIRECT", true);
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
+use Itrack\Custom\CNotification;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\InfoBlocks\Lost;
 use Itrack\Custom\Participation\CLost;
@@ -201,6 +202,10 @@ if(intval($ID) > 0) {
     foreach ($kurnotify as $kurator) {
         (new CUserAccess($kurator))->setNotificationForLost($id);
     }
+    if($kurnotify) {
+        CNotification::send( 'new_loss', $kurnotify, 'nocomment', $ID);
+    }
+
     __CrmPropductRowListEndResponse(array('sucsess'=>'Y'));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>strip_tags($ID)));

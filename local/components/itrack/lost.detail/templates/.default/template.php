@@ -69,12 +69,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <input type="text" class="text_input" name="docname" placeholder="Название документа" />
                 </div><!-- END input_container -->
             </div><!-- END form_row -->
-            <div class="form_row">
+            <!-- <div class="form_row">
                 <div class="input_container column_50">
                     <span>Дата запроса</span>
                     <input type="text" class="text_input ico_date js_datapicker" name="docdate" placeholder="Дата запроса" />
-                </div><!-- END input_container -->
-            </div><!-- END form_row -->
+                </div>
+            </div>-->
             <div class="form_row margin">
                 <div class="input_container column_50">
                     <span>Срок предоставления</span>

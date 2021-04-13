@@ -54,6 +54,7 @@
 		font-size: 14px;
 		line-height: 22px;
 	}
+	.with_hidden_text .link{left: 20px;}
 	.table_container{width: calc(100% - 456px);}
 		.table_curators td:first-child,.table_curators th:first-child,.all_curators{padding-left: 20px;}
 		.table_curators td{
@@ -82,7 +83,7 @@
 	text-align: center;
 }
 .checkbox_type2{font-size: 10px;}
-.popup,.popup.add_doc2,.popup.useful_doc,.popup.change_status,.popup.all_statuses{
+.popup,.popup.add_doc2,.popup.useful_doc,.popup.change_status,.popup.all_statuses,.popup.correspondence{
 	padding-left: 30px;
 	padding-right: 30px;
 }
@@ -404,6 +405,12 @@
 .originals{margin-bottom: 10px;}
 .company_card{width: calc(100% - 10px);}
 .originals_required p{text-align: center;}
+.upload_doc_container{padding: 20px 20px 0;}
+	.upload_doc_container .input_container{
+		margin: 0 0 20px 0;
+		width: 100%;
+	}
+	.upload_doc_container .logo_upload,.upload_doc_container .btn{margin-bottom: 20px;}
 }/* END 1023px */
 @media screen and (max-width: 768px){
 .authorization_container{
@@ -485,18 +492,12 @@
 	margin-bottom: 15px;
 	padding-bottom: 15px;
 }
-	.doc_desc,.doc_format{width: 100%;}
-	.doc_desc{
-		margin-bottom: 10px;
-		order: -1;
-	}
-	.doc_list li .delete{top: 3px;}
-.upload_doc_container{padding: 20px 20px 0;}
-	.upload_doc_container .input_container{
-		margin: 0 0 20px 0;
+	.doc_desc,.doc_format,.correspondence .doc_format,.correspondence .doc_desc{
+		margin: 0 0 10px;
 		width: 100%;
 	}
-	.upload_doc_container .logo_upload,.upload_doc_container .btn{margin-bottom: 20px;}
+	.doc_list li .delete{top: 3px;}
+	.correspondence .upload_doc_container .input_container{width: 100%;}
 .popup .block_title{margin-bottom: 40px;}
 .form_row.margin{margin-top: 0;}
 .not_found_column{width: 100%;}
@@ -547,6 +548,10 @@
 .useful_doc .upload span.upload_btn_text br{display: block;}
 .small_select,.decision_title{width: 100%;}
 	.decision_title{margin-bottom: 15px;}
+.popup .block_title{
+	font-size: 24px;
+	line-height: 30px;
+}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 

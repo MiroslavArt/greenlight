@@ -208,10 +208,36 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             <div class="table_block links_column item9" data-name="Ссылки">
                                 <a href="#" class="link"><span>Список <br>Аджастеров</span></a>
                                 <a href="/html/docs.html" class="link"><span>Список <br>документов</span></a>
-                                <a href="#" class="link"><span>Корреспон<wbr>денция</span></a>
-                                <a href="#" class="link"><span>Отчеты</span></a>
+                                <a href="#corresp<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Корреспон<wbr>денция</span></a>
+                                <a href="#report<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Отчеты</span></a>
                             </div><!-- END links_column -->
                         </li>
+                        <div class="popup add_doc correspondence" id="corresp<?= $arItem['ID'] ?>">
+                            <?php
+                            $APPLICATION->IncludeComponent(
+                                'itrack:lost.request.docs',
+                                'repcorr',
+                                array(
+                                    "LOST_DOC" => $arItem['ID'],
+                                    "TYPE" => 3
+                                ),
+                                null
+                            );
+                            ?>
+                        </div>
+                        <div class="popup add_doc correspondence" id="report<?= $arItem['ID'] ?>">
+                            <?php
+                            $APPLICATION->IncludeComponent(
+                                'itrack:lost.request.docs',
+                                'repcorr',
+                                array(
+                                    "LOST_DOC" => $arItem['ID'],
+                                    "TYPE" => 4
+                                ),
+                                null
+                            );
+                            ?>
+                        </div>
                     <?php endforeach; ?>
                 </ul><!-- END data_table -->
             </div>

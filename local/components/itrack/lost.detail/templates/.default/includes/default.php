@@ -4,7 +4,20 @@
     <div class="desc">
         <span class="desc_title">Описание страхового случая</span>
         <?php if (!empty($arResult['LOST']['PROPERTIES']['DESCRIPTION'])) : ?>
-            <?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?>
+            <p data-fancybox data-src="#edit_comm" class="pointer"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></p>
+            <div class="popup add_comment" id="edit_comm">
+                <h6 class="small_title">Комментарий</h6>
+                <form class="form_popup1">
+                    <div class="form_row">
+                        <div class="input_container column_100">
+                            <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
+                            <textarea class="textarea" name="lossdescript"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></textarea>
+                        </div><!-- END input_container -->
+                    </div><!-- END form_row -->
+                    <p class="link" id="mistake1"></p>
+                    <input type="submit" class="btn" value="Обновить">
+                </form><!-- END form_popup -->
+            </div><!-- END popup -->
         <?php endif; ?>
     </div><!-- END desc -->
     <div class="table_container">
@@ -57,7 +70,7 @@
             <div class="table_block align_left"><p>Статус</p></div>
             <div class="table_block align_left item2"><p>Детали</p></div>
             <div class="table_block align_left item3"><p>Запрошенные документы</p></div>
-            <div class="table_block align_left item2"><p>Дата запроса</p></div>
+            <div class="table_block align_left item2"><p>Предоставить до</p></div>
             <div class="table_block align_left item3"><p>Автор запроса</p></div>
             <div class="table_block align_left item2"><p>Ссылка <br/>на запрос</p></div>
             <div class="table_block align_left item2"><p>Информация <br/>предоставлена</p></div>
@@ -72,7 +85,7 @@
                 <div class="table_block align_left align_top" data-name="Статус"><span class="status <?= $arResult['STATUSES'][$arItem['PROPERTIES']['STATUS']['VALUE']][$arResult['COLOR_FIELD']] ?>"></span></div>
                 <div class="table_block align_left align_top item2" data-name="Детали"><?= $arItem['STATUS_NAME'] ?></div>
                 <div class="table_block align_left align_top item3" data-name="Запрошенные документы"><?= $arItem['NAME'] ?></div>
-                <div class="table_block align_left align_top item2" data-name="Дата запроса"><?= (new \DateTime($arItem['DATE_CREATE']))->format('d.m.Y') ?></div>
+                <div class="table_block align_left align_top item2" data-name="Срок предоставления"><?= (new \DateTime($arItem['PROPERTIES']['REQUEST_DEADLINE']['VALUE']))->format('d.m.Y') ?></div>
                 <div class="table_block align_left align_top item3" data-name="Автор запроса"><?= $arItem['USER_FIO'] ?></div>
                 <div class="table_block align_left align_top item2" data-name="Ссылка на запрос"><a href="#add_doc<?= $arItem['ID'] ?>" data-fancybox class="link reqdoclink">Запрос</a></div>
                 <div class="popup add_doc" id="add_doc<?= $arItem['ID'] ?>">
@@ -81,7 +94,8 @@
                         'itrack:lost.request.docs',
                         '',
                         array(
-                            "LOST_DOC" => $arItem['ID']
+                            "LOST_DOC" => $arItem['ID'],
+                            "TYPE" => 1
                         ),
                         null
                     );
