@@ -341,6 +341,26 @@ class Signal extends Controller
         //}
     }
 
+    public function updateLossdescAction($formdata)
+    {
+        $PROP = [];
+
+        if($formdata) {
+            foreach ($formdata as $item) {
+                if ($item['name'] == 'lossdescript') {
+                    $PROP['DESCRIPTION'] = $item['value'];
+                } elseif($item['name'] == 'lostid') {
+                    $lostid = $item['value'];
+                }
+            }
+        }
+        Lost::updateElement($lostid, [], $PROP);
+        return 'updated';
+        //} else {
+        //    return $id->getErrorMessages();
+        //}
+    }
+
     public function delLostfileAction($fileid)
     {
         $objDocument = new HLBWrap('uploaded_docs');
