@@ -35,6 +35,11 @@ if($_POST['type']) {
     $type = '2';
 }
 
+$curuser = $USER->GetID();
+$rsUser = \CUser::GetByID($curuser);
+$arUser = $rsUser->Fetch();
+$curusername = $arUser['NAME'].' '.$arUser['LAST_NAME'];
+
 
 $arr_file=Array(
     "name" =>  $_FILES['loss_file']['name'],
@@ -48,15 +53,27 @@ $fid = CFile::SaveFile($arr_file, "lossdocs");
 
 $file = \CFile::MakeFileArray($fid);
 
-$data = array(
-    "UF_LOST_ID" => $_POST['lost_id'],
-    "UF_NAME"=>$_POST['doc_name'],
-    "UF_FILE"=> $file,
-    "UF_COMMENT"=>$_POST['comment'],
-    "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
-    "UF_USER_ID" => $USER->GetID(),
-    "UF_DOC_TYPE"=> $type
-);
+if($type=='1' || $type=='2') {
+    $data = array(
+        "UF_LOST_ID" => $_POST['lost_id'],
+        "UF_NAME"=>$_POST['doc_name'],
+        "UF_FILE"=> $file,
+        "UF_COMMENT"=>$_POST['comment'],
+        "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
+        "UF_USER_ID" => $curuser,
+        "UF_DOC_TYPE"=> $type
+    );
+} else {
+    $data = array(
+        "UF_MAINLOST_ID" => $_POST['lost_id'],
+        "UF_NAME"=>$_POST['doc_name'],
+        "UF_FILE"=> $file,
+        "UF_COMMENT"=>$_POST['comment'],
+        "UF_DATE_CREATED" => ConvertDateTime($_POST['doc_date'], "DD.MM.YYYY")." 23:59:59",
+        "UF_USER_ID" => $curuser,
+        "UF_DOC_TYPE"=> $type
+    );
+}
 
 $objDocument = new HLBWrap('uploaded_docs');
 
@@ -64,6 +81,7 @@ $id = $objDocument->add($data);
 
 if(intval($id->getId())>0) {
     $file['docid'] = intval($id->getId());
+    $file['uname'] = $curusername;
     __CrmPropductRowListEndResponse(array('success' => $file));
 } else {
     __CrmPropductRowListEndResponse(array('error'=>strip_tags($id)));

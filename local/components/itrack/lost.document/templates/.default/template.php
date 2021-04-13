@@ -97,7 +97,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             'itrack:lost.request.docs',
             '',
             array(
-                "LOST_DOC" => $arResult['DOCUMENT']['ID']
+                "LOST_DOC" => $arResult['DOCUMENT']['ID'],
+                "TYPE" => 1
             ),
             null
         );
