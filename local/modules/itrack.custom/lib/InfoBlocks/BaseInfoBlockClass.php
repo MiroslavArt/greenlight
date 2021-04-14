@@ -370,6 +370,19 @@ class BaseInfoBlockClass extends AbstractInfoBlock
         }
     }
 
+	/**
+	 * Delete element
+	 * @param int $id
+	 */
+	public static function deleteElement(int $id)
+	{
+		if (empty($id) || $id === null) {
+			exit('ID not set!');
+		}
+
+		CIBlockElement::Delete($id);
+	}
+
     /**
      * Create new section
      * @param array $fields
