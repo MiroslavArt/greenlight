@@ -21,6 +21,21 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div><!-- END client -->
                 <p class="contract_number" data-id="<?=$arResult['CONTRACT']['ID']?>">№ договора<span><?=$arResult['CONTRACT']['NAME']?></span></p>
             </div><!-- END cart_block -->
+            <div class="title_right_block">
+                <a href="<?=$arParams['PATH_TO']['contract-useful-documents']?>" class="btn">Полезные документы</a>
+                <a href="#" class="btn">Редактировать <br>договор</a>
+                <?php if(!empty($arResult['INSURANCE_COMPANIES'])) : ?>
+                <a href="#all_sk" data-fancybox="" class="btn">Все СК по договору</a>
+                <?php endif; ?>
+            </div>
+            <?php if(!empty($arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE_XML_ID'])
+            && $arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE_XML_ID'] == 'Y') : ?>
+            <div class="title_container">
+                <div class="title_right_block">
+                    <span class="originals"><span>Предоставление оригиналов</span></span>
+                </div><!-- END title_right_block -->
+            </div>
+            <?php endif;?>
         </div>
         <div class="title_container">
             <div class="title_block">
@@ -239,7 +254,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <div class="table_block align_left item3"><p>Статус развернуто</p></div>
                         <div class="table_block align_left item3"><p>Уникальный <br>номер</p></div>
                         <div class="table_block align_left item2"><p>Дата</p></div>
-                        <div class="table_block align_left item2"><p>Описание</p></div>
+                        <div class="table_block align_left item3"><p>Описание</p></div>
                         <div class="table_block links_column align_left item9"><p>Ссылки</p></div>
                     </li>
                     <?php foreach ($arResult['LOSTS'] as $arItem) : ?>
@@ -248,10 +263,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             <div class="table_block align_left item3" data-name="Статус развернуто"><p><?=$arItem['STATUS']['UF_NAME']?></p></div>
                             <div class="table_block align_left item3" data-name="Уникальный номер"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>
-                            <div class="table_block align_left item2" data-name="Описание"><?=$arItem['DESCRIPTION']?></div>
+                            <div class="table_block align_left item3" data-name="Описание"><?=$arItem['DESCRIPTION']?></div>
                             <div class="table_block links_column item9" data-name="Ссылки">
                                 <a href="#" class="link"><span>Список <br>Аджастеров</span></a>
-                                <a href="/html/docs.html" class="link"><span>Список <br>документов</span></a>
+                                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link"><span>Список <br>документов</span></a>
                                 <a href="#corresp<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Корреспон<wbr>денция</span></a>
                                 <a href="#report<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Отчеты</span></a>
                             </div><!-- END links_column -->
@@ -294,6 +309,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div>
         <?php endif; ?>
     </div><!-- END wrapper -->
+
+<?php
+//Все страховые компании по договору
+include 'include/insurance_companies_popup.php';
+?>
 
 <?php
 if ($arResult['IS_AJAX'] == 'Y') {

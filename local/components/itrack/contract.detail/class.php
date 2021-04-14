@@ -41,10 +41,7 @@ class ItrContract extends CBitrixComponent
         $arResult['INSURANCE_COMPANIES'] = $insarray;
         $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
         $arResult['BROKER'] = $this->getCompany(current($arResult['CONTRACT']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
-        $arFilter = [
-            "ACTIVE" => 'Y',
-            "PROPERTY_CONTRACT.ID" => [$this->contractId],
-            ];
+
         if(isset($this->request['q_name'])) {
             $arFilter = [
                 array("LOGIC" => "OR",
@@ -59,6 +56,9 @@ class ItrContract extends CBitrixComponent
         if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
         }
+
+        $arFilter["ACTIVE"] = 'Y';
+        $arFilter["PROPERTY_CONTRACT.ID"] = [$this->contractId];
 
         $this->getLostList($arFilter);
 
@@ -109,6 +109,7 @@ class ItrContract extends CBitrixComponent
         }
 
         foreach ($elements as $element) {
+            $arCompaniesIds[] = $element['PROPERTIES']['CLIENT']['VALUE'];
             $arItem = [
                 'ID' => $element['ID'],
                 'NAME' => $element['NAME'],
@@ -120,7 +121,50 @@ class ItrContract extends CBitrixComponent
             $arResult['LOSTS'][$element['ID']] = $arItem;
         }
 
+        if(!empty($arCompaniesIds)) {
+            $arResult['LOST_COMPANIES_IDS'] = array_unique($arCompaniesIds);
+            $arResult['LOST_COMPANIES'] = $this->getCompanies($arResult['LOST_COMPANIES_IDS']);
+        }
+
         unset($elements);
     }
 
+    private function getCompanies(array $ids) {
+        $result = [];
+        $notFoundInCache = [];
+        $ttl = 86400;
+        $initDir = "itrack";
+
+
+        $cache = \Bitrix\Main\Data\Cache::createInstance();
+
+
+        foreach ($ids as $id) {
+            $cacheId = "COMPANY_LOGO_$id";
+
+            if ($cache->initCache($ttl, $cacheId, $initDir)) {
+                $result[$id] = $cache->getVars();
+            }
+            else {
+                $notFoundInCache[] = $id;
+            }
+        }
+
+        if (count($notFoundInCache) && Loader::includeModule("iblock")) {
+            $companies = Company::getElementsByConditions([ "ID" => $notFoundInCache ]);
+            foreach ($companies as $company) {
+                $logoFileId = $company['PROPERTIES']['LOGO']['VALUE'];
+                $companyId = $company['ID'];
+                $cacheId = "COMPANY_LOGO_$companyId";
+
+                $cache->initCache($ttl, $cacheId, $initDir);
+                $cache->startDataCache();
+                $cache->endDataCache($logoFileId);
+
+                $result[$companyId] = $logoFileId;
+            }
+        }
+
+        return $result;
+    }
 }

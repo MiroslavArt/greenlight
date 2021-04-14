@@ -45,6 +45,14 @@ use \Bitrix\Main\Localization\Loc;
         <div class="ui-alert ui-alert-danger ui-alert-icon-danger has-errors">
             <span class="ui-alert-message">Данные не найдены</span>
         </div>
+        <ul class="data_table">
+            <li class="row table_head">
+                <div class="table_block align_left"></div>
+                <div class="table_block align_left item8"><p>Название документа</p></div>
+                <div class="table_block align_left item6"><p>Вид документа</p></div>
+                <div class="table_block align_left item6"><p>Дата загрузки</p></div>
+            </li>
+        </ul>
     </div>
     <?php endif; ?>
     <div class="btn_container">

@@ -18,6 +18,7 @@ class ItrUsefulDocumentsList extends CBitrixComponent
     private $userId;
     private $userRole;
     private $companyId;
+    private $contractId;
 
     private $errors;
 
@@ -27,6 +28,11 @@ class ItrUsefulDocumentsList extends CBitrixComponent
         $this->userId = $USER->GetID();
         $this->userRole = new CUserRole();
         $this->companyId = $arParams['ELEMENT_ID'];
+        $this->contractId = (!empty($arParams['CONTRACT_ID'])) ? $arParams['CONTRACT_ID'] : false;
+
+        if($this->contractId) {
+            $arParams['PATH_TO']['useful-documents-add'] = $arParams['PATH_TO']['contract-useful-documents-add'];
+        }
         return $arParams;
     }
 
@@ -40,6 +46,13 @@ class ItrUsefulDocumentsList extends CBitrixComponent
             "ACTIVE" => 'Y',
             "PROPERTY_COMPANY_ID" => $this->companyId
             ];
+
+        if($this->contractId) {
+            $arFilter = [
+                "ACTIVE" => 'Y',
+                "PROPERTY_CONTRACT_ID" => $this->contractId
+            ];
+        }
 
         if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
@@ -143,11 +156,11 @@ class ItrUsefulDocumentsList extends CBitrixComponent
         $arProperties['DATE_TO_LOAD'] = $date;
         $arProperties['DATE_LOADED'] = $date;
 
-        if(!empty($this->arParams['CONTRACT_ID'])) {
-            $arProperties['CONTRACT_ID'] = $this->arParams['CONTRACT_ID'];
+        if($this->contractId) {
+            $arProperties['CONTRACT_ID'] = $this->contractId;
         }
 
-        if(!empty($this->arParams['ELEMENT_ID'])) {
+        if(!empty($this->arParams['ELEMENT_ID']) && !$this->contractId) {
             $arProperties['COMPANY_ID'] = $this->arParams['ELEMENT_ID'];
         }
 
