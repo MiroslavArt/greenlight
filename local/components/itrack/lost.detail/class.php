@@ -279,7 +279,4 @@ class ItrLost extends CBitrixComponent
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
     }
-
-
-
 }

@@ -3,10 +3,20 @@
 use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
+use Itrack\Custom\CUserRole;
 use Itrack\Custom\Helpers\Utils;
+use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\UserFieldValueTable;
+use \Bitrix\Main\UserGroupTable;
+use \Bitrix\Main\Entity\ReferenceField;
+use \Bitrix\Main\ORM\Query\Join;
+use \Bitrix\Iblock\Elements\ElementCompanyTable;
 
 class ItrContract extends CBitrixComponent
 {
@@ -60,7 +70,13 @@ class ItrContract extends CBitrixComponent
         $arFilter["ACTIVE"] = 'Y';
         $arFilter["PROPERTY_CONTRACT.ID"] = [$this->contractId];
 
+        $this->getInstypes();
         $this->getLostList($arFilter);
+        $arCurators = $this->getCurators();
+        if (!empty($arCurators)) {
+            $arResult['CONTRACT']['PROPERTIES']['CURATORS'] = $arCurators;
+            unset($arCurators);
+        }
 
         $APPLICATION->SetTitle($arResult['CONTRACT']['NAME']);
 
@@ -76,9 +92,30 @@ class ItrContract extends CBitrixComponent
         }
     }
 
+    private function getInstypes() {
+        $arResult =& $this->arResult;
+
+        $objDocument = new HLBWrap('e_ins_types');
+
+        $rsData = $objDocument->getList(array(
+            "select" => array("*"),
+            "order" => array("ID" => "ASC"),
+            "filter" => array()  // Задаем параметры фильтра выборки
+        ));
+
+        $arResult['INSTYPES'] = $rsData->fetchAll();
+
+
+    }
+
     private function getContract() {
         $arContract = Contract::getElementByID($this->contractId);
         if(!empty($arContract)) {
+            if($arContract['PROPERTIES']['DOCS']['VALUE']) {
+                foreach ($arContract['PROPERTIES']['DOCS']['VALUE'] as $item) {
+                    $arContract['PROPERTIES']['DOCS']['VALUE_DETAIL'][$item] =  \CFile::GetFileArray($item);
+                }
+            }
             $this->arResult['CONTRACT'] = $arContract;
         } else {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
@@ -127,6 +164,82 @@ class ItrContract extends CBitrixComponent
         }
 
         unset($elements);
+    }
+
+
+    private function getCurators()
+    {
+        //$arCurators = \Itrack\Custom\InfoBlocks\LostUsers::getElementsByConditions(['PROPERTY_LOST' => [$this->arLost['ID']]]);
+        $participation = new CParticipation(new CContract($this->contractId));
+
+        $arCurators  = $participation->getParticipants();
+        if (empty($arCurators)) {
+            return false;
+        }
+
+        $this->arResult['CONTRACT']['PROPERTIES']['CURATORS_LEADERS'] = [];
+        $arCuratorsIds = [];
+
+        foreach ($arCurators as $arCurator) {
+            //$arCuratorsIds[] = $arCurator['PROPERTIES']['CURATORS']['VALUE'];
+            $arCuratorsIds = array_merge($arCuratorsIds, $arCurator['PROPERTIES']['CURATORS']['VALUE']);
+            if(!empty($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) && intval($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) > 0) {
+                $this->arResult['CONTRACT']['PROPERTIES']['CURATORS_LEADERS'][$arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']] = $arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE'];
+            }
+        }
+
+        $query = UserGroupTable::query()
+            ->setSelect([
+                'ID' => 'USER.ID',
+                'LOGIN' => 'USER.LOGIN',
+                'GROUP_CODE' => 'GROUP.STRING_ID',
+                'NAME' => 'USER.NAME',
+                'LAST_NAME' => 'USER.LAST_NAME',
+                'SECOND_NAME' => 'USER.SECOND_NAME',
+                'LAST_LOGIN' => 'USER.LAST_LOGIN',
+                'POSITION' => 'USER.WORK_POSITION',
+                'PHONE' => 'USER.WORK_PHONE',
+                'EMAIL' => 'USER.EMAIL',
+                'MPHONE' => 'USER.PERSONAL_PHONE',
+                'COMPANY_ID' => 'IB_COMPANY.ID',
+                'COMPANY_NAME' => 'IB_COMPANY.NAME',
+                'COMPANY_TYPE' => 'IB_COMPANY.TYPE.ITEM.VALUE'
+            ])
+            ->registerRuntimeField(new ReferenceField(
+                'UF_VAL',
+                UserFieldValueTable::class,
+                Join::on('this.USER_ID', 'ref.VALUE_ID')
+            ))
+            ->registerRuntimeField((new ReferenceField(
+                'IB_COMPANY',
+                ElementCompanyTable::class,
+                Join::on('this.UF_VAL.UF_COMPANY', 'ref.ID')
+            ))->configureJoinType(Join::TYPE_INNER))
+            ->whereIn('ID', $arCuratorsIds);
+
+
+        $result = $query->exec();
+        $items = [];
+
+        while ($row = $result->fetch()) {
+
+            $userId = $row['ID'];
+            $group = $row['GROUP_CODE'];
+
+            //$isSuper = in_array($group, CUserRole::getSuperGroups()) || $items[$userId]['IS_SUPER'];
+
+            $groups = $items[$userId]['GROUPS'] ?: [];
+            $groups[] = $group;
+
+            unset($row['GROUP_CODE']);
+            $items[$row['COMPANY_ID']][$userId] = $row;
+            //$items[$userId]['GROUPS'] = $groups;
+            //$items[$userId]['IS_SUPER'] = $isSuper;
+            if(in_array($userId, $this->arResult['CONTRACT']['PROPERTIES']['CURATORS_LEADERS'])) {
+                $items[$row['COMPANY_ID']][$userId]['IS_LEADER'] = 'Y';
+            }
+        }
+        return $items;
     }
 
     private function getCompanies(array $ids) {

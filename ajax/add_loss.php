@@ -91,7 +91,7 @@ $companies = array_merge($companies, $adjarray);
 
 $data = [
     'ACTIVE' => 'Y',
-    'NAME' => 'Убыток №:'.$_POST['docnum'],
+    'NAME' => $_POST['docnum'],
     'CODE' => $_POST['docnum'],
     'DATE_ACTIVE_FROM' => $_POST['docdate'],
     'PROPERTY_VALUES' => [

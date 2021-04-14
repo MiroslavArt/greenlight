@@ -77,7 +77,7 @@ if($_POST['neednotify']) {
 $companies = array_merge($companies, $insarray);
 
 $data = [
-    'NAME' => 'Договор №:'.$_POST['docnum'],
+    'NAME' => $_POST['docnum'],
     'PROPERTY_VALUES' => [
         'DATE'=> $_POST['docdate'],
         'TYPE'=> $_POST['instype'],
