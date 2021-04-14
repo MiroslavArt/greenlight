@@ -40,9 +40,9 @@ $APPLICATION->SetTitle("Страховые компании");
 		"SEF_MODE" => "Y",
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
-		"TYPE_ID" => "2",
 		"USER_MESSAGE_ADD" => "",
 		"USER_MESSAGE_EDIT" => "",
-		"USE_CAPTCHA" => "N"
+		"USE_CAPTCHA" => "N",
+		"PARTY" => "insurer"
 	)
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

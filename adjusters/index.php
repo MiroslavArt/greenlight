@@ -41,9 +41,9 @@ $APPLICATION->SetTitle("Аджастеры");
 		"SEF_MODE" => "Y",
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
-		"TYPE_ID" => "3",
 		"USER_MESSAGE_ADD" => "",
 		"USER_MESSAGE_EDIT" => "",
-		"USE_CAPTCHA" => "N"
+		"USE_CAPTCHA" => "N",
+		"PARTY" => "adjuster"
 	)
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

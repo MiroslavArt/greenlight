@@ -28,7 +28,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
                 <!-- <a href="/html/stats.html" class="btn">Добавить компанию</a> -->
-                <a href="#add_company" data-fancybox class="btn">Добавить <?=$arResult['addtxt']?></a>
+                <a href="#add_company" data-fancybox class="btn">Добавить <?=GetMessage("add_" . $arParams["PARTY"])?></a>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_company">
@@ -72,12 +72,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <input type="submit" class="btn" value="Добавить компанию" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
-        <?php if (!empty($arResult['ITEMS'])) :
-            $alllosts = 0;
-            $green = 0;
-            $yellow = 0;
-            $red = 0;
-            ?>
+        <?php if (!empty($arResult['ITEMS'])):?>
             <div id="clients-list">
                 <ul class="data_table">
                     <li class="row table_head">
@@ -88,12 +83,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <div class="table_block stat_column item2"><p>Открыто</p></div>
                         <div class="table_block links_column item8"><p>Ссылки</p></div>
                     </li>
-                    <?php foreach ($arResult['ITEMS'] as $arItem) :
-                        $alllosts += $arItem['ALL_LOST'];
-                        $green += $arItem['G_LOST'];
-                        $yellow += $arItem['Y_LOST'];
-                        $red += $arItem['R_LOST'];
-                        ?>
+                    <?php foreach ($arResult['ITEMS'] as $arItem):?>
                         <li class="row">
                             <div class="table_block clients_column item6 no_header" data-name="Клиент">
                                 <?php if (!empty($arItem['LOGO_SRC'])) : ?>
@@ -102,11 +92,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <?php endif; ?>
                                 <span><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?= $arItem['NAME'] ?></a></span>
                             </div><!-- END table_block -->
-                            <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arItem['ALL_LOST'] ?></div>
-                            <div class="table_block stat_column green item2" data-name="Закрыто"><?=$arItem['G_LOST']?></div>
-                            <div class="table_block stat_column yellow item2" data-name="Документы предоставлены"><?=$arItem['Y_LOST']?>
+                            <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arItem["CNT"]["SUM"] ?: 0 ?></div>
+                            <div class="table_block stat_column green item2" data-name="Закрыто"><?=$arItem["CNT"]["green"] ?: 0?></div>
+                            <div class="table_block stat_column yellow item2" data-name="Документы предоставлены"><?=$arItem["CNT"]["yellow"] ?: 0?>
                             </div>
-                            <div class="table_block stat_column red item2" data-name="Открыто"><?=$arItem['R_LOST']?></div>
+                            <div class="table_block stat_column red item2" data-name="Открыто"><?=$arItem["CNT"]["red"] ?: 0 ?></div>
                             <div class="table_block links_column item8" data-name="Ссылки">
                                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link ico_doc"><span>Список договоров страхования</span></a>
                             </div>
@@ -116,10 +106,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <ul class="data_table no_bg">
                     <li class="row">
                         <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
-                        <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
-                        <div class="table_block stat_column item2" data-name="Закрыто"><?= $green ?></div>
-                        <div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $yellow ?></div>
-                        <div class="table_block stat_column item2" data-name="Открыто"><?= $red ?></div>
+                        <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arResult["CNT_TOTAL"]["SUM"] ?: 0?></div>
+                        <div class="table_block stat_column item2" data-name="Закрыто"><?= $arResult["CNT_TOTAL"]["green"] ?: 0 ?></div>
+                        <div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $arResult["CNT_TOTAL"]["yellow"] ?: 0 ?></div>
+                        <div class="table_block stat_column item2" data-name="Открыто"><?= $arResult["CNT_TOTAL"]["red"] ?: 0 ?></div>
                         <div class="table_block links_column"></div>
                     </li>
                 </ul><!-- END data_table -->
