@@ -27,6 +27,8 @@ $arDefaultUrlTemplates404 = array(
     'useful-documents' => "#ELEMENT_ID#/useful-documents/",
     'useful-documents-add' => "#ELEMENT_ID#/useful-documents/add/",
     "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/",
+    "contract-useful-documents" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/useful-documents/",
+    "contract-useful-documents-add" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/useful-documents/add/",
     "lost" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/",
     "lost-curators" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/curators/",
     "lost-document" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/lost-#LOST_ID#/lost-document-#LOST_DOCUMENT_ID#/",
@@ -104,7 +106,7 @@ if($arParams["SEF_MODE"] == "Y")
         $arResult["PATH_TO"][$url] = CComponentEngine::MakePathFromTemplate($arParams["SEF_FOLDER"] . $value, $arVariables);
     }
 
-    if($componentPage == 'useful-documents-add') {
+    if(in_array($componentPage, ['useful-documents-add', 'contract-useful-documents-add'])) {
         $componentPage = 'useful-documents';
         $arResult['ACTION'] = 'add';
     }

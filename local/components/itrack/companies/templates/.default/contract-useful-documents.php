@@ -1,4 +1,4 @@
-<?
+<?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var array $arParams */
 /** @var array $arResult */
@@ -11,20 +11,19 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+
 $this->setFrameMode(false);
 
 $APPLICATION->IncludeComponent(
-    'itrack:contract.detail',
+    'itrack:useful-documents.list',
     '',
     array(
         "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
         "LIST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["list"],
-        "CLIENT_ID" => $arResult['VARIABLES']["ELEMENT_ID"],
+        "ELEMENT_ID" => $arResult['VARIABLES']["ELEMENT_ID"],
         "CONTRACT_ID" => $arResult['VARIABLES']["CONTRACT_ID"],
-        "CONTRACT_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["contract"],
-        "LOST_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["lost"],
-        "PATH_TO" => $arResult['PATH_TO']
+        "PATH_TO" => $arResult['PATH_TO'],
+        "ACTION" => !empty($arResult['ACTION']) ? $arResult['ACTION'] : '',
     ),
     null
 );
-?>
