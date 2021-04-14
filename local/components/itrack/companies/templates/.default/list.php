@@ -17,7 +17,7 @@ $APPLICATION->IncludeComponent(
     'itrack:companies.list',
     '',
     array(
-        'TYPE_ID' => $arParams['TYPE_ID'],
+        'PARTY' => $arParams['PARTY'],
         "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
     ),
     null

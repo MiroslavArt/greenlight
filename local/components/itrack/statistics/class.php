@@ -146,6 +146,7 @@ class ItrStatistics extends CBitrixComponent
 				"INSURER" => $lostLeaders[$lostId][$insurerCode]["NAME"],
 				"LOGO" => $lostLeaders[$lostId][$insurerCode]["LOGO"],
 				"CONTRACT_TYPE" => $arLost["CONTRACT_TYPE"],
+				"CONTRACT_CODE" => $arLost["CONTRACT_CODE"],
 				"RESULT" => $arLost["RESULT"],
 				"COMPENSATION" => $compensationFormatted,
 				"DATE_OPENED" => $dateOpened ? $dateOpened->format("d.m.Y") : "",
@@ -284,7 +285,7 @@ class ItrStatistics extends CBitrixComponent
 			"PROPERTY_STATUS",
 			"PROPERTY_RESULT",
 			"PROPERTY_COMPENSATION",
-			"PROPERTY_CONTRACT.PROPERTY_TYPE",
+			"PROPERTY_CONTRACT.NAME",
 			"PROPERTY_CONTRACT.PROPERTY_TYPE",
 		]);
 
@@ -294,6 +295,7 @@ class ItrStatistics extends CBitrixComponent
 			$id = $arLost["ID"];
 			$result[$id] = [
 				"STATUS" 		=> $arLost["PROPERTY_STATUS_VALUE"],
+				"CONTRACT_CODE" => $arLost["PROPERTY_CONTRACT_NAME"],
 				"CONTRACT_TYPE" => $arLost["PROPERTY_CONTRACT_PROPERTY_TYPE_VALUE"],
 				"RESULT" 		=> $arLost["PROPERTY_RESULT_VALUE"],
 				"COMPENSATION" 	=> $arLost["PROPERTY_COMPENSATION_VALUE"],

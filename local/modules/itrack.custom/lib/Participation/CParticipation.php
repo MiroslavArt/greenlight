@@ -55,24 +55,67 @@ class CParticipation
 		/** @var AParticipant $participant */
 		$participant = $this->target::getParticipantClass();
 
+		$arExistingParticipants = $this->getParticipants();
+		$propsToCompare = [];
+		$participationIdsByCompany = [];
+		foreach ($arExistingParticipants as $arParticipant) {
+			$participationId = $arParticipant["ID"];
+			$companyId = $arParticipant["PROPERTIES"]["PARTICIPANT_ID"]["VALUE"];
+
+			$participationIdsByCompany[$companyId] = $participationId;
+
+			$propsToCompare[$companyId] = [
+				"TARGET_ID" => $arParticipant["PROPERTIES"]["TARGET_ID"]["VALUE"],
+				"PARTICIPANT_ID" => $arParticipant["PROPERTIES"]["PARTICIPANT_ID"]["VALUE"],
+				"IS_LEADER" => $arParticipant["PROPERTIES"]["IS_LEADER"]["VALUE_ENUM_ID"],
+				"CURATORS" => $arParticipant["PROPERTIES"]["CURATORS"]["VALUE"],
+				"CURATOR_LEADER" => $arParticipant["PROPERTIES"]["CURATOR_LEADER"]["VALUE"],
+			];
+		}
+
+
 		$participantIsLeaderPropValueId = $participant::getProperty("IS_LEADER")["ID"];
 
 		foreach ($companiesByParties as $party => $arCompanies) {
-			foreach ($arCompanies as $copmanyId => $arCompany) {
+			foreach ($arCompanies as $companyId => $arCompany) {
 				$fields = [
-					"NAME" => "Участие $copmanyId в {$this->target->getId()}"
+					"NAME" => "TEST Участие $companyId в {$this->target->getId()}"
 				];
 
 				$props = [
 					"TARGET_ID" => $this->target->getId(),
-					"PARTICIPANT_ID" => $copmanyId,
+					"PARTICIPANT_ID" => $companyId,
 					"IS_LEADER" => $arCompany["IS_LEADER"] ? $participantIsLeaderPropValueId : false,
 					"CURATORS" => $arCompany["CURATORS"],
 					"CURATOR_LEADER" => $arCompany["LEADERS"][0]
 				];
 
-				$participant::createElement($fields, $props);
+				$participationToCompare = $propsToCompare[$companyId];
+
+				if (isset($participationToCompare)) {
+					$participationId = $participationIdsByCompany[$companyId];
+					unset($participationIdsByCompany[$companyId]);
+
+					$diffInProps =
+						!empty(array_diff($props, $participationToCompare)) ||
+						!empty(array_diff($participationToCompare, $props));
+
+					$diffInCuratorList =
+						!empty(array_diff($props["CURATORS"], $participationToCompare["CURATORS"])) ||
+						!empty(array_diff($participationToCompare["CURATORS"], $props["CURATORS"]));
+
+
+					if ($diffInProps || $diffInCuratorList) {
+						$participant::updateElement($participationId, $fields, $props);
+					}
+				} else {
+					$participant::createElement($fields, $props);
+				}
 			}
+		}
+
+		foreach ($participationIdsByCompany as $companyId => $participationId) {
+			$participant::deleteElement($participationId);
 		}
 	}
 

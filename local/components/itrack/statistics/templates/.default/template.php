@@ -4,7 +4,7 @@
 
 
 
-<a href="#" class="back">Настройки</a>
+<a href="/" class="back">Вернуться к главному разделу</a>
 <div class="title_container">
 	<div class="title_block">
 		<h2 class="block_title">Статистика</h2>
@@ -78,7 +78,12 @@
 							<img src="<?=$arItem["LOGO"]?>" width="40" height="40" alt="<?=$arItem[$fieldCode]?>">
 							<span class="insurer-name" data-fancybox data-type="ajax" data-src="?rivals=y&target-id=<?=$arItem["ID"]?>"><?=$arItem[$fieldCode]?></span>
 						<?else:?>
-							<p><?=$arItem[$fieldCode]?></p>
+							<?switch($fieldCode) {
+								case "CLIENT": $hint = $arItem["CONTRACT_CODE"]; break;
+								case "DATE_CLOSED": $hint = $arItem["RESULT"]; break;
+								default: $hint = ""; break;
+							}?>
+							<p title="<?=$hint?>"><?=$arItem[$fieldCode]?></p>
 						<?endif?>
 					</div>
 				<?endforeach?>

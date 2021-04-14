@@ -14,17 +14,3 @@ if(!empty($arResult['ITEMS'])) {
         }
     }
 }
-
-switch ($arParams['TYPE_ID']) {
-    case 2:
-        $addtxt = "страховую компанию";
-        break;
-    case 3:
-        $addtxt = "аджастера";
-        break;
-    case 4:
-        $addtxt = "клиента";
-        break;
-}
-
-$arResult['addtxt'] = $addtxt;

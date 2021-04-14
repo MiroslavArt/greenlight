@@ -44,9 +44,9 @@ $APPLICATION->SetTitle("Клиенты");
 		"SEF_URL_TEMPLATES" => Array("detail"=>"#ELEMENT_ID#/","list"=>"", "contract" => "#ELEMENT_ID#/contract/#CONTRACT_ID#/"),
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
-		"TYPE_ID" => "4",
 		"USER_MESSAGE_ADD" => "",
 		"USER_MESSAGE_EDIT" => "",
-		"USE_CAPTCHA" => "N"
+		"USE_CAPTCHA" => "N",
+		"PARTY" => "client"
 	)
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
