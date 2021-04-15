@@ -10,11 +10,22 @@ use Itrack\Custom\InfoBlocks\Lost;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\SystemException;
 use \Itrack\Custom\Highloadblock\HLBWrap;
-
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CContractParticipant;
+use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CLostParticipant;
+use Itrack\Custom\CUserEx;
+use Itrack\Custom\CUserRole;
 
 class ItrCompany extends CBitrixComponent
 {
+    private $pageIsClientList;
+    private $userId;
     private $companyId;
+
+    /** @var CUserRole $userRole */
+    private $userRole;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -26,6 +37,17 @@ class ItrCompany extends CBitrixComponent
     {
         global $APPLICATION;
 
+        $this->userId = $GLOBALS["USER"]->GetID();
+        $this->userRole = new CUserRole($this->userId);
+
+        $userIsNotUsualClient = $this->userRole->isSuperUser() || !$this->userRole->isClient();
+
+        $this->pageIsClientList = $this->arParams["PARTY"] === CUserRole::getClientGroupCode();
+
+        $userHasAccess = $userIsNotUsualClient && ($this->pageIsClientList || $this->userRole->isBroker());
+
+        if (!$userHasAccess) LocalRedirect("/");
+
         $arResult =& $this->arResult;
 
         //get company
@@ -36,6 +58,7 @@ class ItrCompany extends CBitrixComponent
         } else {
             $arResult['ERRORS'][] = Loc::getMessage('COMPANY_TYPE_IS_EMPTY');
         }
+
 
         $arFilter = [
             "ACTIVE" => 'Y',
@@ -61,6 +84,14 @@ class ItrCompany extends CBitrixComponent
 
         $this->getInstypes();
         $this->getBroker();
+
+
+        $contracts = CParticipation::getTargetsByCompany($this->companyId, CContract::class);
+        //Utils::varDump(array_column($contracts['TARGETS'], 'ID'));
+        $items = CContractParticipant::getElementsByConditions(["PROPERTY_PARTICIPANT_ID" => array_column($contracts['TARGETS'], 'ID')]);
+        //Utils::varDump($items);
+
+        $this->fetchCompanies();
 
         $APPLICATION->SetTitle($this->arResult['COMPANY']['NAME']);
 
@@ -157,4 +188,107 @@ class ItrCompany extends CBitrixComponent
 
     }
 
+
+    private function fetchCompanies()
+    {
+        $counts = $this->getLostCountsByCompany();
+        $searchQuery = trim($this->request->get("q_name"));
+
+        $arCompanies = Company::getElementsByConditions(
+            [
+                "ID" => $this->userRole->isSuperBroker() ? [] : array_keys($counts),
+                "NAME" => $searchQuery ? "%$searchQuery%" : "",
+                "PROPERTY_TYPE" => $this->getPermittedCompanyTypeId(),
+            ],
+            [],
+            [
+                "ID",
+                "NAME",
+                "DETAIL_PAGE_URL",
+                "PROPERTY_LOGO",
+            ],
+            $this->arParams["DETAIL_URL"]
+        );
+
+        $companies = [];
+        $countsTotal = [];
+        foreach ($arCompanies as $arCompany) {
+            $companyId = $arCompany["ID"];
+
+            $companies[$companyId] = [
+                "ID" => $arCompany["ID"],
+                "NAME" => $arCompany["NAME"],
+                "LOGO" => $arCompany["PROPERTY_LOGO_VALUE"],
+                "DETAIL_PAGE_URL" => $arCompany["DETAIL_PAGE_URL"]
+            ];
+
+            $sumByCompany = 0;
+            $countsOfCompany = $counts[$companyId];
+
+            foreach ($countsOfCompany as $statusCode => $count) {
+                $companies[$companyId]["CNT"][$statusCode] = $count;
+                $sumByCompany += $count;
+
+                $countsTotal[$statusCode] += $count;
+            }
+
+            $companies[$companyId]["CNT"]["SUM"] = $sumByCompany;
+            $countsTotal["SUM"] += $sumByCompany;
+        }
+
+        $this->arResult["ITEMS"] = $companies;
+        $this->arResult["CNT_TOTAL"] = $countsTotal;
+    }
+
+    private function getLostCountsByCompany() {
+        $arParticipants = CLostParticipant::getElementsByConditions([
+            "PROPERTY_TARGET_ID" => $this->getLostIds()
+        ], [], [
+            "PROPERTY_TARGET_ID.PROPERTY_STATUS",
+            "PROPERTY_PARTICIPANT_ID",
+        ]);
+
+
+        $counts = [];
+        foreach ($arParticipants as $arParticipant) {
+            $companyId = $arParticipant["PROPERTY_PARTICIPANT_ID_VALUE"];
+            $statusCode = $arParticipant["PROPERTY_TARGET_ID_PROPERTY_STATUS_VALUE"];
+
+            $counts[$companyId][$statusCode]++;
+        }
+
+        return $counts;
+    }
+
+    private function getLostIds() {
+        if ($this->userRole->isSuperBroker()) {
+            return [];
+        }
+
+        $arTargets = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetsByCompany($this->companyId, CLost::class)["TARGETS"]
+            : CParticipation::getTargetsByUser($this->userId, CLost::class)["TARGETS"]
+        ;
+
+
+        return array_map(
+            function($v) { return $v["ID"]; },
+            $arTargets
+        );
+    }
+
+    private function getPermittedCompanyTypeId() {
+        $arParties = Company::getPropertyList("TYPE");
+
+        foreach ($arParties as $arParty) {
+            $code = $arParty["XML_ID"];
+            $id = $arParty["ID"];
+
+            if ($code == 'client') {
+                return $id;
+            }
+        }
+
+        throw new Exception("Invalid parameter value");
+    }
 }

@@ -10,12 +10,16 @@ use Bitrix\Main\Page\Asset;
 ?>
 
 <?php
+
 switch ($arResult['COMPANY_TYPE']) {
     case 'client':
         include 'types/client.php';
         break;
     case 'insurer':
         include 'types/insurer.php';
+        break;
+    case 'adjuster':
+        include 'types/adjuster.php';
         break;
 }
  ?>

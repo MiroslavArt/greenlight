@@ -37,7 +37,7 @@ $APPLICATION->SetTitle("Аджастеры");
 		"PROPERTY_CODES" => array("1","2"),
 		"PROPERTY_CODES_REQUIRED" => array("1","2"),
 		"RESIZE_IMAGES" => "N",
-		"SEF_FOLDER" => "/clients/",
+		"SEF_FOLDER" => "/adjusters/",
 		"SEF_MODE" => "Y",
 		"STATUS" => "ANY",
 		"STATUS_NEW" => "N",
