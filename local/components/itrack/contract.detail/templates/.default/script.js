@@ -677,7 +677,7 @@ $(document).ready(function() {
                     var delblock = $("<span></span>").attr("class", "delete js_delete1")
                     var inplock = $("<div></div>").attr("class", "input_container with_flag")
                     var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
-                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id").val(ui.item.value)
+                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id foredit").val(ui.item.value)
                     var labelleader = $("<label></label>").attr("class", "flag js_checkbox")
                     var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
                     labelleader.append(leaderbox)
@@ -747,7 +747,165 @@ $(document).ready(function() {
 
     $( ".form2" ).submit(function( event ) { // задаем функцию при срабатывании события "submit" на элементе <form>
         event.preventDefault(); // действие события по умолчанию не будет срабатывать
-        console.log("submit")
+        var curdocids = []
+        var inscompanies = []
+        var insleader = 0
+        var original = 0
+        var kurators = []
+        var kurleaders = []
+        var kuratorscl = []
+        var kuratorsbr = []
+        var kuratorsins = []
+        var needaccept = []
+        var neednotify = []
+        var docnum = $("#docnum").val()
+        var docdate = $("#docdate").val()
+        var instype = $('#instype option:selected').text()
+        $(".doclink").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).attr('data-id');
+            if (v) curdocids.push(v);
+        })
+        console.log(curdocids)
+        if($("#provideoriginal").hasClass('active')) {
+            original = 5
+        }
+        if($("#clientaccept_2").hasClass('active')) {
+            needaccept.push(17)
+        }
+        if($("#brokeraccept_2").hasClass('active')) {
+            needaccept.push(18)
+        }
+        if($("#insaccept_2").hasClass('active')) {
+            needaccept.push(19)
+        }
+        if($("#adjaccept_2").hasClass('active')) {
+            needaccept.push(20)
+        }
+        if($("#clientnot_2").hasClass('active')) {
+            neednotify.push(21)
+        }
+        if($("#brokernot_2").hasClass('active')) {
+            neednotify.push(22)
+        }
+        if($("#insnot_2").hasClass('active')) {
+            neednotify.push(23)
+        }
+        if($("#adjnot_2").hasClass('active')) {
+            neednotify.push(24)
+        }
+
+        $(".foredit").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) inscompanies.push(v);
+            if($(el).next().hasClass('active')) {
+                insleader = v
+            }
+        })
+
+        $(".inserted_kur_co_id_2").each(function (index, el){
+            // Для каждого элемента сохраняем значение в personsIdsArray,
+            // если значение есть.
+            var v  = $(el).val();
+            if (v) {
+                kurators.push(v);
+                if($(el).next().hasClass('active')) {
+                    kurleaders.push(v)
+                }
+                if($(el).next().hasClass('broker')) {
+                    kuratorsbr.push(v)
+                } else if($(el).next().hasClass('insco')) {
+                    kuratorsins.push(v)
+                } else if($(el).next().hasClass('client')) {
+                    kuratorscl.push(v)
+                }
+            }
+        })
+
+        var mistake = ''
+
+        if(insleader==0) {
+            mistake += 'Не указана страховая компания - лидер.'
+        }
+        if(inscompanies.length == 0) {
+            mistake += 'Не выбрана страховая компания.'
+        }
+        if(kuratorscl.length == 0) {
+            mistake += 'Не выбраны кураторы от клиента.'
+        }
+        if(kuratorsbr.length == 0) {
+            mistake += 'Не выбраны кураторы от страхового брокера.'
+        }
+        if(kuratorsins.length == 0) {
+            mistake += 'Не выбраны кураторы от страховой компании.'
+        }
+
+        var mistake = ''
+
+        if(insleader==0) {
+            mistake += 'Не указана страховая компания - лидер.'
+        }
+        if(inscompanies.length == 0) {
+            mistake += 'Не выбрана страховая компания.'
+        }
+        if(kuratorscl.length == 0) {
+            mistake += 'Не выбраны кураторы от клиента.'
+        }
+        if(kuratorsbr.length == 0) {
+            mistake += 'Не выбраны кураторы от страхового брокера.'
+        }
+        if(kuratorsins.length == 0) {
+            mistake += 'Не выбраны кураторы от страховой компании.'
+        }
+
+        if(mistake) {
+            $("#mistake2").text(mistake)
+        } else {
+            var form_data = new FormData();
+            //console.log(files[0])
+            form_data.append('contractnum', contractnum)
+            form_data.append('docnum', docnum)
+            form_data.append('docdate', docdate)
+            form_data.append('instype', instype)
+            form_data.append('clientid', clientid)
+            form_data.append('brokerid', brokerid)
+            form_data.append('original', original)
+            form_data.append('inscompanies', inscompanies)
+            form_data.append('insleader', insleader)
+            form_data.append('kurators', kurators)
+            form_data.append('kurleaders', kurleaders)
+            form_data.append('kuratorscl', kuratorscl)
+            form_data.append('kuratorsins', kuratorsins)
+            form_data.append('kuratorsbr', kuratorsbr)
+            form_data.append('needaccept', needaccept)
+            form_data.append('neednotify', neednotify)
+            form_data.append('curdocids', curdocids)
+
+            $.each(files,function(index,value){
+                //console.log(value)
+                form_data.append('file'+index, value);
+            });
+            $.ajax({
+                url: '/ajax/add_contract.php',
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                type: 'post',
+                success: function(data){
+                    console.log(data);
+                    if(data.error) {
+                        $("#mistake2").text(data.error)
+                    } else {
+                        location.reload();
+                    }
+                }
+            })
+        }
     })
 })
 
@@ -845,7 +1003,16 @@ function kuratoradd(cardblock, item, type, company, transfer = false, method) {
 
         addedcompany[company]++
     } else {
-        var lileaderlabel = $("<label></label>").attr("class", "leader client js_checkbox").text("Назначен лидером")
+        if(type == 1) {
+            var lileaderlabel = $("<label></label>").attr("class", "leader broker js_checkbox").text("Назначен лидером")
+        } else if (type == 2) {
+            var lileaderlabel = $("<label></label>").attr("class", "leader insco js_checkbox").text("Назначен лидером")
+        } else if (type == 3) {
+            var lileaderlabel = $("<label></label>").attr("class", "leader adjuster js_checkbox").text("Назначен лидером")
+        } else if (type == 4) {
+            var lileaderlabel = $("<label></label>").attr("class", "leader client js_checkbox").text("Назначен лидером")
+        }
+
     }
 
     var lileaderinput = $("<input>").attr("type", "checkbox").attr("data-insc-leader", item.value)
