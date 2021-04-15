@@ -7,7 +7,7 @@
             <p data-fancybox data-src="#edit_comm" class="pointer"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></p>
             <div class="popup add_comment" id="edit_comm">
                 <h6 class="small_title">Комментарий</h6>
-                <form class="form_popup1">
+                <form class="form3">
                     <div class="form_row">
                         <div class="input_container column_100">
                             <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>

@@ -144,7 +144,7 @@ $(function(){
 	/* Datepicker */
 	$('.js_datapicker').datepicker({
 		// Можно выбрать тольо даты, идущие за сегодняшним днем, включая сегодня
-		minDate: new Date()
+		//minDate: new Date()
 	})
 
 	//form validation

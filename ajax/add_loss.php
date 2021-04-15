@@ -87,31 +87,55 @@ if($_POST['neednotify']) {
     $neednotify = explode(",", $_POST['neednotify']);
 }
 
+$companies = array_merge($companies, $insarray);
 $companies = array_merge($companies, $adjarray);
 
-$data = [
-    'ACTIVE' => 'Y',
-    'NAME' => $_POST['docnum'],
-    'CODE' => $_POST['docnum'],
-    'DATE_ACTIVE_FROM' => $_POST['docdate'],
-    'PROPERTY_VALUES' => [
-        'DESCRIPTION'=> $_POST['description'],
-        'STATUS' => $_POST['status'],
-        'CONTRACT' => $_POST['contract'],
+if($_POST['lostid']) {
+    $ID = $_POST['lostid'];
+    $data = [
+        'DATE_ACTIVE_FROM' => $_POST['docdate']
+    ];
+
+    $PROP = [
         'NEED_ACCEPT' => $needaccept,
         'NEED_NOTIFY' => $neednotify,
-        'CLIENT'=> array($_POST['clientid']),
-        'CLIENT_LEADER'=> $_POST['clientid'],
-        'INSURANCE_BROKER'=> array($_POST['brokerid']),
-        'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
+        //'CLIENT'=> array($_POST['clientid']),
+        //'CLIENT_LEADER'=> $_POST['clientid'],
+        //'INSURANCE_BROKER'=> array($_POST['brokerid']),
+        //'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
         'INSURANCE_COMPANY' => $insarray,
         'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
         'ADJUSTER' => $adjarray,
         'ADJUSTER_LEADER' => $_POST['adjleader']
-    ]
-];
+    ];
 
-$ID = Lost::createElement($data, []);
+    Lost::updateElement($ID, $data, $PROP);
+
+} else {
+    $data = [
+        'ACTIVE' => 'Y',
+        'NAME' => $_POST['docnum'],
+        'CODE' => $_POST['docnum'],
+        'DATE_ACTIVE_FROM' => $_POST['docdate'],
+        'PROPERTY_VALUES' => [
+            'DESCRIPTION'=> $_POST['description'],
+            'STATUS' => $_POST['status'],
+            'CONTRACT' => $_POST['contract'],
+            'NEED_ACCEPT' => $needaccept,
+            'NEED_NOTIFY' => $neednotify,
+            'CLIENT'=> array($_POST['clientid']),
+            'CLIENT_LEADER'=> $_POST['clientid'],
+            'INSURANCE_BROKER'=> array($_POST['brokerid']),
+            'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
+            'INSURANCE_COMPANY' => $insarray,
+            'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
+            'ADJUSTER' => $adjarray,
+            'ADJUSTER_LEADER' => $_POST['adjleader']
+        ]
+    ];
+
+    $ID = Lost::createElement($data, []);
+}
 
 if(intval($ID) > 0) {
     $id = intval($ID);
@@ -140,6 +164,10 @@ if(intval($ID) > 0) {
         $objDocument = new HLBWrap('uploaded_docs');
         $objDocument->add($data);
     }*/
+    \Bitrix\Main\Diag\Debug::writeToFile($kurators, "1", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($kurleaders, "2", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($companies, "3", "__miros.log");
+    \Bitrix\Main\Diag\Debug::writeToFile($companiesleaders, "4", "__miros.log");
 
     try {
         $participation = new CParticipation(new CLost($id));
@@ -152,6 +180,14 @@ if(intval($ID) > 0) {
     } catch (Exception $e) {
         __CrmPropductRowListEndResponse(array('error'=>$e->getMessage()));
     }
+
+    if($_POST['lostid']) {
+        foreach ($kurators as $kurator) {
+            (new CUserAccess($kurator))->dropAcceptanceForLost($id);
+            (new CUserAccess($kurator))->dropNotificationForLost($id);
+        }
+    }
+
     $kuracceptance = [];
     $kurnotify = [];
 
@@ -202,7 +238,7 @@ if(intval($ID) > 0) {
     foreach ($kurnotify as $kurator) {
         (new CUserAccess($kurator))->setNotificationForLost($id);
     }
-    if($kurnotify) {
+    if($kurnotify && !$_POST['lostid']) {
         CNotification::send( 'new_loss', $kurnotify, 'nocomment', $ID);
     }
 

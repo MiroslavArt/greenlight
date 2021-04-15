@@ -79,7 +79,7 @@ class CParticipation
 		foreach ($companiesByParties as $party => $arCompanies) {
 			foreach ($arCompanies as $companyId => $arCompany) {
 				$fields = [
-					"NAME" => "TEST Участие $companyId в {$this->target->getId()}"
+					"NAME" => "Участие $companyId в {$this->target->getId()}"
 				];
 
 				$props = [

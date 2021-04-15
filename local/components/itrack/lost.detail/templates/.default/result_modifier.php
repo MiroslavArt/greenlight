@@ -13,3 +13,7 @@ if($arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE']) {
 } else {
     $arResult['COLOR_FIELD'] = 'UF_COLOR';
 }
+
+foreach ($arResult['CURATORS'] as $item) {
+    $arResult['LOST']['PROPERTIES']['CURATORS'][$item['COMPANY_ID']][$item['ID']] = $item;
+}
