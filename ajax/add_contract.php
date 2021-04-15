@@ -49,6 +49,13 @@ foreach ($_FILES as $file) {
     array_push($fidids, $fid);
 }
 
+if($_POST['curdocids']) {
+    $curdocsarray = explode(",", $_POST['curdocids']);
+    foreach ($curdocsarray as $curdoc) {
+        array_push($fidids, $curdoc);
+    }
+}
+
 //\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
@@ -94,7 +101,12 @@ $data = [
     ]
 ];
 
-$ID = Contract::createElement($data, []);
+if($_POST['contractnum']) {
+    $ID = $_POST['contractnum'];
+    Contract::updateElement($ID, $data, []);
+} else {
+    $ID = Contract::createElement($data, []);
+}
 
 if(intval($ID) > 0) {
     $id = intval($ID);
@@ -109,6 +121,14 @@ if(intval($ID) > 0) {
     } catch (Exception $e) {
         __CrmPropductRowListEndResponse(array('error'=>$e->getMessage()));
     }
+
+    if($_POST['contractnum']) {
+        foreach ($kurators as $kurator) {
+            (new CUserAccess($kurator))->dropAcceptanceForContract($id);
+            (new CUserAccess($kurator))->dropNotificationForContract($id);
+        }
+    }
+
     $kuracceptance = [];
     $kurnotify = [];
 

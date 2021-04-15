@@ -352,9 +352,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <li>
                                     <input type="hidden" class="inserted_kur_co_id_2" value="<?= $item['ID'] ?>" />
                                     <? if($item['IS_LEADER']=='Y') { ?>
-                                        <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader client js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } else { ?>
-                                        <label class="leader js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader client js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } ?>
                                 </li>
                             </ul><!-- END company_card_list -->
@@ -402,9 +402,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <li>
                                     <input type="hidden" class="inserted_kur_co_id_2" value="<?= $item['ID'] ?>" />
                                     <? if($item['IS_LEADER']=='Y') { ?>
-                                        <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader broker js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } else { ?>
-                                        <label class="leader js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader broker js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } ?>
                                 </li>
                             </ul><!-- END company_card_list -->
@@ -463,9 +463,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                             <li>
                                                 <input type="hidden" class="inserted_kur_co_id_2" value="<?= $item['ID'] ?>" />
                                                 <? if($item['IS_LEADER']=='Y') { ?>
-                                                    <label class="leader js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                                    <label class="leader insco js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
                                                 <? } else { ?>
-                                                    <label class="leader js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                                    <label class="leader insco js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
                                                 <? } ?>
                                             </li>
                                         </ul><!-- END company_card_list -->

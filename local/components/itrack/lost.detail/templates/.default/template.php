@@ -16,7 +16,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <h2 class="block_title"><?= $arResult['LOST']['NAME'] ?></h2>
             <div class="card_status_container">
                 <span class="card_status <?= $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR'] ?>">Статус: <?= (!empty($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']) ? $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME'] : ' не установлен') ?></span>
-                <span class="type_page">от <?= (new \DateTime($arResult['TIMESTAMP_X']))->format('d.m.Y') ?></span>
+                <span class="type_page">от <?= $arResult['LOST']['DATE_ACTIVE_FROM']// (new  \DateTime($arResult['TIMESTAMP_X']))->format('d.m.Y') ?></span>
 
             </div><!-- END card_status_container -->
 
@@ -28,13 +28,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
                 <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
             <? } ?>
+            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red') { ?>
+                <a href="#edit_loss" data-fancybox class="btn">Редактировать <br>убыток</a>
+            <? } ?>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
     <div class="popup all_statuses" id="change_status">
-		<form class="form_popup2">
+		<form class="form_popup form1">
 			<div class="form_row">
 				<div class="input_container column_50 decision_container">
-				    <input type="hidden" name="lostid" value="<?=$arResult['LOST']['ID']?>"/>
+				    <input type="hidden" name="lostid" id="lostid" value="<?=$arResult['LOST']['ID']?>"/>
 					<span class="decision_title"><em class="decision">Признано страховым случаем</em></span>
 					<div class="small_select">
 						<select class="select js_select"  name="decision">
@@ -60,7 +63,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 	</div><!-- END popup -->
     <div class="popup add_doc2" id="add_doc2">
         <h3 class="block_title">Добавление документа</h3>
-        <form class="form_popup">
+        <form class="form_popup form2">
             <div class="form_row">
                 <div class="input_container column_100">
                     <input type="hidden" name="origin" value="<?=$arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE']?>"/>
@@ -78,7 +81,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <div class="form_row margin">
                 <div class="input_container column_50">
                     <span>Срок предоставления</span>
-                    <input type="text" class="text_input ico_date js_datapicker" name="docterm" placeholder="Срок предоставления" />
+                    <input type="text" class="text_input ico_date js_datapicker" id="term_date" name="docterm" placeholder="Срок предоставления" />
                 </div><!-- END input_container -->
                 <div class="input_container column_50">
                     <span>От куратора</span>
@@ -93,6 +96,305 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <input type="submit" class="btn" value="Добавить документ">
         </form><!-- END form_popup -->
     </div><!-- END popup -->
+    <div class="popup" id="edit_loss">
+        <h3 class="block_title">Редактирование убытка</h3>
+        <form class="form_popup form4">
+            <div class="form_row">
+                <div class="input_container column_25">
+                    <span>Дата убытка</span>
+                    <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата убытка" value="<?=$arResult['LOST']['DATE_ACTIVE_FROM']?>"/>
+                </div><!-- END input_container -->
+                <!-- <a href="#" class="link ico_add"><span>Добавить договор страхования</span></a> -->
+            </div><!-- END form_row -->
+            <h3 class="subtitle">Кураторы</h3>
+            <h4 class="big_label">Клиент</h4>
+            <div class="gray_block">
+                <div class="input_container">
+                    <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
+                </div><!-- END input_container -->
+                <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
+            </div><!-- END gray_block -->
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row client_comp hidden">
+                <div class="input_container without_small">
+                    <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
+                </div>
+            </div><!-- END input_container -->
+            <div id="ins_kur_card" class="company_card_container">
+                <? foreach ($arResult['LOST']['PROPERTIES']['CURATORS'][$arResult['COMPANY']['ID']] as $item) { ?>
+                    <div class="company_card">
+                        <!-- <span class="delete"></span> -->
+                        <ul class="company_card_list">
+                            <li>
+                                <span>ФИО</span>
+                                <p><?= $item['NAME'] ?></p>
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p><?= $item['POSITION'] ?></p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p><?= $item['EMAIL'] ?></p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+<?= $item['MPHONE'] ?></p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p><?= $item['PHONE'] ?></p>
+                            </li>
+                            <li>
+                                <input type="hidden" class="inserted_kur_co_id" value="<?= $item['ID'] ?>" />
+                                <? if($item['IS_LEADER']=='Y') { ?>
+                                    <label class="leader client js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                <? } else { ?>
+                                    <label class="leader client js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                <? } ?>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
+                <? } ?>
+            </div>
+            <h4 class="big_label">Страховой брокер</h4>
+            <div class="gray_block">
+                <div class="input_container">
+                    <label class="big_label"><?=$arResult['BROKER']['NAME']?></label>
+                </div><!-- END input_container -->
+                <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
+            </div><!-- END gray_block -->
+            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+            <div class="form_row brok_comp hidden">
+                <div class="input_container without_small">
+                    <input id="kur_broker_search_ins" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
+                </div>
+            </div>
+            <div id="brok_kur_card" class="company_card_container">
+                <? foreach ($arResult['LOST']['PROPERTIES']['CURATORS'][$arResult['BROKER']['ID']] as $item) { ?>
+                    <div class="company_card">
+                        <!-- <span class="delete"></span> -->
+                        <ul class="company_card_list">
+                            <li>
+                                <span>ФИО</span>
+                                <p><?= $item['NAME'] ?></p>
+                            </li>
+                            <li>
+                                <span>Должность</span>
+                                <p><?= $item['POSITION'] ?></p>
+                            </li>
+                            <li>
+                                <span>email</span>
+                                <p><?= $item['EMAIL'] ?></p>
+                            </li>
+                            <li>
+                                <span>Моб.телефон</span>
+                                <p>+<?= $item['MPHONE'] ?></p>
+                            </li>
+                            <li>
+                                <span>Раб. телефон</span>
+                                <p><?= $item['PHONE'] ?></p>
+                            </li>
+                            <li>
+                                <input type="hidden" class="inserted_kur_co_id" value="<?= $item['ID'] ?>" />
+                                <? if($item['IS_LEADER']=='Y') { ?>
+                                    <label class="leader broker js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                <? } else { ?>
+                                    <label class="leader broker js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                <? } ?>
+                            </li>
+                        </ul><!-- END company_card_list -->
+                    </div><!-- END company_card -->
+                <? } ?>
+            </div>
+            <h4 class="big_label">Страховая компания</h4>
+            <div class="gray_blocks" id="ins_insuers">
+                <? foreach ($arResult['INSURANCE_COMPANIES'] as $insco) { ?>
+                    <div class="ins_insuer">
+                        <div class="gray_block delete_left">
+                            <!-- <span class="delete js_delete1"></span> -->
+                            <div class="input_container with_flag">
+                                <label class="big_label"><?=$insco['NAME']?></label>
+                                <input class="inserted_co_id" type="hidden" data-type="ins" value="<?= $insco['ID'] ?>"/>
+                                <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                            </div><!-- END input_container -->
+                        </div><!-- END gray_block -->
+                    </div>
+                    <div class="company_card_container ins_kurators">
+                        <? foreach ($arResult['LOST']['PROPERTIES']['CURATORS'][$insco['ID']] as $item) { ?>
+                            <div class="company_card">
+                                <!-- <span class="delete"></span> -->
+                                <ul class="company_card_list">
+                                    <li>
+                                        <span>ФИО</span>
+                                        <p><?= $item['NAME'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Должность</span>
+                                        <p><?= $item['POSITION'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>email</span>
+                                        <p><?= $item['EMAIL'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Моб.телефон</span>
+                                        <p>+<?= $item['MPHONE'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Раб. телефон</span>
+                                        <p><?= $item['PHONE'] ?></p>
+                                    </li>
+                                    <li>
+                                        <input type="hidden" class="inserted_kur_co_id" value="<?= $item['ID'] ?>" />
+                                        <? if($item['IS_LEADER']=='Y') { ?>
+                                            <label class="leader insco js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                        <? } else { ?>
+                                            <label class="leader insco js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                        <? } ?>
+                                    </li>
+                                </ul><!-- END company_card_list -->
+                            </div><!-- END company_card -->
+                        <? } ?>
+                    </div>
+                <? } ?>
+            </div>
+            <h4 class="big_label">Аджастер</h4>
+            <a href="#" class="link ico_add js_add"><span>Добавить аджастера</span></a>
+            <div class="form_row ins_comp hidden">
+                <div class="input_container without_small">
+                    <input type="text" class="text_input inserted_co_label" id="search_adj" placeholder="Выберите аджастера по вводу букв из названия" />
+                </div><!-- END input_container -->
+            </div> <!-- END form_row -->
+            <div class="gray_blocks" id="ins_adjusters">
+                <? foreach ($arResult['ADJUSTER_COMPANIES'] as $adjco) { ?>
+                    <div class="ins_adjuster" data-id="<?= $adjco['ID'] ?>">
+                        <div class="gray_block delete_left">
+                            <!-- <span class="delete js_delete1"></span> -->
+                            <div class="input_container with_flag">
+                                <label class="big_label"><?=$adjco['NAME']?></label>
+                                <input class="inserted_co_id" type="hidden" data-type="aj"  value="<?=$adjco['ID'] ?>"/>
+                                <label class="flag js_checkbox <? if($adjco['ID']==$arResult['ADJUSTER_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                            </div><!-- END input_container -->
+                        </div><!-- END gray_block -->
+                    </div>
+                    <div class="company_card_container">
+                        <? foreach ($arResult['LOST']['PROPERTIES']['CURATORS'][$adjco['ID']] as $item) { ?>
+                            <div class="company_card">
+                                <!-- <span class="delete"></span> -->
+                                <ul class="company_card_list">
+                                    <li>
+                                        <span>ФИО</span>
+                                        <p><?= $item['NAME'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Должность</span>
+                                        <p><?= $item['POSITION'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>email</span>
+                                        <p><?= $item['EMAIL'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Моб.телефон</span>
+                                        <p>+<?= $item['MPHONE'] ?></p>
+                                    </li>
+                                    <li>
+                                        <span>Раб. телефон</span>
+                                        <p><?= $item['PHONE'] ?></p>
+                                    </li>
+                                    <li>
+                                        <input type="hidden" class="inserted_kur_co_id" value="<?= $item['ID'] ?>" />
+                                        <? if($item['IS_LEADER']=='Y') { ?>
+                                            <label class="leader insco js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                        <? } else { ?>
+                                            <label class="leader insco js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                        <? } ?>
+                                    </li>
+                                </ul><!-- END company_card_list -->
+                            </div><!-- END company_card -->
+                        <? } ?>
+                    </div>
+                <? } ?>
+            </div>
+            <div class="form_row">
+                <div class="switches_container">
+                    <label class="big_label">Необходимость акцепта</label>
+                    <div class="switch_container">
+                        <? if(in_array('CL', $arResult['LOST']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="clientaccept"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="clientaccept"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Клиент</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('BR', $arResult['LOST']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="brokeraccept"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="brokeraccept"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Страховой Брокер</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('INS', $arResult['LOST']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="insaccept"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="insaccept"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Страховая Компания</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('AJ', $arResult['LOST']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="adjaccept"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="adjaccept"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Аджастер</span>
+                    </div>
+                </div>
+                <div class="switches_container">
+                    <label class="big_label">Уведомления</label>
+                    <div class="switch_container">
+                        <? if(in_array('CL', $arResult['LOST']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="clientnot"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="clientnot"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Клиент</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('BR', $arResult['LOST']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="brokernot"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="brokernot"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Страховой Брокер</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('INS', $arResult['LOST']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="insnot"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="insnot"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Страховая Компания</span>
+                    </div>
+                    <div class="switch_container">
+                        <? if(in_array('AJ', $arResult['LOST']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
+                            <label class="switch js_checkbox active" id="adjnot"><input type="checkbox"></label>
+                        <? } else {?>
+                            <label class="switch js_checkbox" id="adjnot"><input type="checkbox"></label>
+                        <? } ?>
+                        <span>Аджастер</span>
+                    </div>
+                </div>
+            </div>
+            <p class="link" id="mistake3"></p>
+            <input type="submit" class="btn" value="Отредактировать" />
+        </form><!-- END form_edit_profile -->
+    </div><!-- END popup -->
+
+
     <?php if($arParams['CURATORS_MODE']) : ?>
         <?php include 'includes/curators.php'; ?>
     <?php else :?>

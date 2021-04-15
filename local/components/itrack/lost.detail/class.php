@@ -69,6 +69,29 @@ class ItrLost extends CBitrixComponent
         //Lost Requests
         $arResult['REQUESTS'] = $this->getRequests();
 
+        // ins companies
+        $insarray = [];
+        foreach($arResult['LOST']['PROPERTIES']['INSURANCE_COMPANY']['VALUE'] as $insco) {
+            $inscodata = $this->getCompany($insco);
+            array_push($insarray, $inscodata);
+        }
+        $arResult['INSURANCE_COMPANIES'] = $insarray;
+        $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['LOST']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
+
+        // adjusters
+        $adjarray = [];
+        foreach($arResult['LOST']['PROPERTIES']['ADJUSTER']['VALUE'] as $adjco) {
+            $adjcodata = $this->getCompany($adjco);
+            array_push($adjarray, $adjcodata);
+        }
+        $arResult['ADJUSTER_COMPANIES'] = $adjarray;
+        $arResult['ADJUSTER_COMPANY'] = $this->getCompany($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE']);
+
+
+        $arResult['BROKER'] = $this->getCompany(current($arResult['LOST']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
+
+
+
         if (isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
         }
