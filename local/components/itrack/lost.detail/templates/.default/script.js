@@ -320,7 +320,7 @@ $(document).ready(function() {
         var neednotify = []
 
         var clientid = $( "#kur_client_search_ins").attr('data-id')
-        var brokerid = $( "#kur_broker_search_ins" ).attr('data-id');
+        var brokerid = $( "#kur_broker_search_ins" ).attr('data-id')
         if($("#clientaccept").hasClass('active')) {
             needaccept.push(25)
         }
@@ -389,6 +389,11 @@ $(document).ready(function() {
         })
 
         var mistake = ''
+
+
+        if(kurleaders.length != (2 + inscompanies.length + adjusters.length)) {
+            mistake += 'Указаны не все кураторы-лидеры.'
+        }
 
         if(!$("#doc_date").val()) {
             mistake += 'Не указана дата убытка.'

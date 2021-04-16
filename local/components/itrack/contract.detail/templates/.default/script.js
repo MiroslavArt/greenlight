@@ -472,6 +472,10 @@ $(document).ready(function() {
 
         var mistake = ''
 
+        if(kurleaders.length != (2 + inscompanies.length + adjusters.length)) {
+            mistake += 'Указаны не все кураторы-лидеры.'
+        }
+
         if(insleader==0) {
             mistake += 'Не указана страховая компания-лидер.'
         }
@@ -826,6 +830,10 @@ $(document).ready(function() {
         })
 
         var mistake = ''
+
+        if(kurleaders.length != (2 + inscompanies.length)) {
+            mistake += 'Указаны не все кураторы-лидеры.'
+        }
 
         if(insleader==0) {
             mistake += 'Не указана страховая компания - лидер.'
