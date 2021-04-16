@@ -584,12 +584,24 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>
                             <div class="table_block align_left item3" data-name="Описание"><?=$arItem['DESCRIPTION']?></div>
                             <div class="table_block links_column item9" data-name="Ссылки">
-                                <a href="#" class="link"><span>Список <br>Аджастеров</span></a>
+                                <a href="#ajusters<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Список <br>Аджастеров</span></a>
                                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link"><span>Список <br>документов</span></a>
                                 <a href="#corresp<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Корреспон<wbr>денция</span></a>
                                 <a href="#report<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Отчеты</span></a>
                             </div><!-- END links_column -->
                         </li>
+                        <div class="popup small" id="ajusters<?= $arItem['ID'] ?>">
+                            <?php
+                            $APPLICATION->IncludeComponent(
+                                'itrack:lost.all.ajusters',
+                                '',
+                                array(
+                                    "LOST_DOC" => $arItem['ID']
+                                ),
+                                null
+                            );
+                            ?>
+                        </div>
                         <div class="popup add_doc correspondence" id="corresp<?= $arItem['ID'] ?>">
                             <?php
                             $APPLICATION->IncludeComponent(
