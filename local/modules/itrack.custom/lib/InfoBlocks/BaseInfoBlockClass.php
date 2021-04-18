@@ -314,6 +314,39 @@ class BaseInfoBlockClass extends AbstractInfoBlock
         return $elements;
     }
 
+	/**
+	 * Get elements by conditions with grouping
+	 * @param array $filter
+	 * @param array $sort
+	 * @param array $groupBy
+	 * @return array
+	 * @throws \Bitrix\Main\LoaderException
+	 */
+	public static function getElementsGrouped(array $filter = [], array $sort = [], array $groupBy = []):array
+	{
+		$key        =   0;
+		$elements   =   [];
+
+		if (empty($sort)) {
+			$arOrder = static::$sort;
+		} else {
+			$arOrder = $sort;
+		}
+
+		$arFilter = array_merge(['IBLOCK_ID' => Utils::getIDIblockByCode(static::$ibBlockCode, static::$ibBlockType)], $filter);
+
+		$elementsList = CIBlockElement::GetList($arOrder, $arFilter, $groupBy);
+
+		$elementsList->SetUrlTemplates(static::$detailElementUrlTemplate, static::$detailSectionUrlTemplate);
+
+		while ($el = $elementsList->GetNext()) {
+			$elements[$key] = $el;
+			$key++;
+		}
+
+		return $elements;
+	}
+
     /**
      * Create new element
      * @param array $fields
