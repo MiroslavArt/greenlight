@@ -122,7 +122,7 @@ class ItrStatistics extends CBitrixComponent
 
 		$statuses = $this->getStatusListOfLost();
 		$history = $this->getHistoryOfLosts($lostIds);
-		$lostLeaders = $this->getLeadersOfLosts($lostIds);
+		$lostLeaders = CLostParticipant::getLeaders($lostIds);
 
 		$clientCode = CUserRole::getClientGroupCode();
 		$insurerCode = CUserRole::getInsurerGroupCode();
@@ -231,38 +231,6 @@ class ItrStatistics extends CBitrixComponent
 		}
 
 		return $companyPartyCodesById;
-	}
-
-	private function getLeadersOfLosts(array $arIds) {
-		$companyPartyCodesById = $this->getCompanyTypes();
-
-
-    	$arLeaders = CLostParticipant::getElementsByConditions([
-    		"PROPERTY_TARGET_ID" => $arIds,
-			"!PROPERTY_IS_LEADER" => false,
-		],
-		[],
-		[
-			"PROPERTY_TARGET_ID",
-			"PROPERTY_PARTICIPANT_ID.NAME",
-			"PROPERTY_PARTICIPANT_ID.PROPERTY_LOGO",
-			"PROPERTY_PARTICIPANT_ID.PROPERTY_TYPE"
-		]);
-
-
-    	$result = [];
-		foreach ($arLeaders as $arLeader) {
-			$partyId = $arLeader["PROPERTY_PARTICIPANT_ID_PROPERTY_TYPE_ENUM_ID"];
-			$lostId = $arLeader["PROPERTY_TARGET_ID_VALUE"];
-			$party = $companyPartyCodesById[$partyId];
-
-			$result[$lostId][$party] = [
-				"NAME" => $arLeader["PROPERTY_PARTICIPANT_ID_NAME"],
-				"LOGO" => $arLeader["PROPERTY_PARTICIPANT_ID_PROPERTY_LOGO_VALUE"],
-			];
-    	}
-
-		return $result;
 	}
 
 	private function getLosts() {
