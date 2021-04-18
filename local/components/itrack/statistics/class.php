@@ -36,13 +36,6 @@ class ItrStatistics extends CBitrixComponent
 		$session = Application::getInstance()->getSession();
     	$request = Context::getCurrent()->getRequest();
 
-		$isAjax = $request->isAjaxRequest() && $request->get("rivals") === "y";
-
-		if ($isAjax) {
-			$GLOBALS["APPLICATION"]->RestartBuffer();
-			$this->handleAjaxRequest($request);
-			die();
-		}
 
 		$arSort = $this->handleSort($request, $session);
 
@@ -328,72 +321,4 @@ class ItrStatistics extends CBitrixComponent
 		$entity = HighloadBlockTable::compileEntity($hlblock);
 		return $entity->getDataClass();
 	}
-
-	private function handleAjaxRequest($request) {
-		$targetId = $request->get("target-id");
-
-		$arParticipants = $this->getParticipants($targetId);
-
-		$arRivals = array_merge(
-			$arParticipants[CUserRole::getInsurerGroupCode()],
-			$arParticipants[CUserRole::getAdjusterGroupCode()]
-		);
-
-
-		$this->arResult["ITEMS"] = $arRivals;
-
-		$this->includeComponentTemplate("rivals-popup");
-	}
-
-	private function getParticipants(int $lostId) {
-		$companyPartyCodesById = $this->getCompanyTypes();
-
-		$arParticipants = CLostParticipant::getElementsByConditions([
-			"PROPERTY_TARGET_ID" => $lostId
-		],
-		[],
-		[
-			"ID",
-			"PROPERTY_PARTICIPANT_ID",
-			"PROPERTY_PARTICIPANT_ID.NAME",
-			"PROPERTY_PARTICIPANT_ID.PROPERTY_TYPE",
-			"PROPERTY_PARTICIPANT_ID.PROPERTY_LOGO",
-			"PROPERTY_CURATORS",
-			"PROPERTY_CURATOR_LEADER",
-		]);
-
-		$currParticipantFound = false;
-
-		$result = [];
-		foreach ($arParticipants as $arParticipant) {
-			$participantId = $arParticipant["PROPERTY_PARTICIPANT_ID_VALUE"];
-			$partyId = $arParticipant["PROPERTY_PARTICIPANT_ID_PROPERTY_TYPE_ENUM_ID"];
-			$party = $companyPartyCodesById[$partyId];
-
-			$curator = $arParticipant["PROPERTY_CURATORS_VALUE"];
-			$curatorLeader = $arParticipant["PROPERTY_CURATOR_LEADER_VALUE"];
-
-			$participationConfirmed = $this->userRole->isSuperUser()
-				? $this->companyId == $participantId
-				: $this->userId == $curator || $this->userId == $curatorLeader
-			;
-
-			if ($participationConfirmed) {
-				$currParticipantFound = true;
-			}
-
-			$result[$party][$participantId] = [
-				"NAME" => $arParticipant["PROPERTY_PARTICIPANT_ID_NAME"],
-				"LOGO" => $arParticipant["PROPERTY_PARTICIPANT_ID_PROPERTY_LOGO_VALUE"]
-			];
-		}
-
-		if (!$currParticipantFound) {
-			return [];
-		}
-
-		return $result;
-	}
-
-
 }

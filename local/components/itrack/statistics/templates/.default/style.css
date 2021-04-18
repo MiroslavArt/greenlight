@@ -21,16 +21,6 @@
 }
 
 
-.rivals-list {
-	display: inline-block;
-	padding: 60px;
-}
-
-.rivals-list .client_block {
-	align-items: center;
-}
-
-
 .insurer-name {
 	padding-left: 20px;
 	cursor: pointer;
