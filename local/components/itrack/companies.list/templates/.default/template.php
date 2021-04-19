@@ -22,13 +22,13 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                       data-url="<?= $APPLICATION->GetCurPage() ?>">
                     <?= bitrix_sessid_post() ?>
                     <input type="hidden" name="is_ajax" value="y">
-                    <input type="text" name="q_name"
-                           value="<?= isset($_REQUEST['q_name']) ? $_REQUEST['q_name'] : '' ?>" class="search_text"
-                           placeholder="Поиск по списку клиентов"/>
+                    <input type="text" name="search" class="search_text" placeholder="<?=GetMessage("search_" . $arParams["PARTY"])?>"/>
                     <input type="submit" class="search" value=""/>
                 </form><!-- END search_form -->
                 <!-- <a href="/html/stats.html" class="btn">Добавить компанию</a> -->
-                <a href="#add_company" data-fancybox class="btn">Добавить <?=GetMessage("add_" . $arParams["PARTY"])?></a>
+				<?if ($arResult["USER_IS_BROKER"]):?>
+                	<a href="#add_company" data-fancybox class="btn"><?=GetMessage("add_" . $arParams["PARTY"])?></a>
+				<?endif?>
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_company">
