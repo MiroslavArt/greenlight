@@ -1,56 +1,40 @@
 <?php
 
 use \Bitrix\Main\Loader;
-use \Bitrix\Highloadblock as HL;
 use \Bitrix\Main\Entity;
-use Itrack\Custom\Helpers\Utils;
+use Itrack\Custom\CUserEx;
+use Itrack\Custom\CUserRole;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\InfoBlocks\Lost;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\SystemException;
 use \Itrack\Custom\Highloadblock\HLBWrap;
-use Itrack\Custom\Participation\CParticipation;
-use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CLost;
-use Itrack\Custom\Participation\CLostParticipant;
-use Itrack\Custom\CUserEx;
-use Itrack\Custom\CUserRole;
+use Itrack\Custom\Participation\CParticipation;
+
 
 class ItrCompany extends CBitrixComponent
 {
-    private $pageIsClientList;
     private $userId;
+    private $userCompanyId;
+
     private $companyId;
 
     /** @var CUserRole $userRole */
     private $userRole;
 
-    public function onPrepareComponentParams($arParams)
-    {
-        $this->companyId = $arParams['CLIENT_ID'];
-        return $arParams;
-    }
-
     public function executeComponent()
     {
+		// todo change CLIENT_ID to COMPANY_ID
+    	$this->companyId = $this->arParams['CLIENT_ID'];
+
         global $APPLICATION;
-
-        $this->userId = $GLOBALS["USER"]->GetID();
-        $this->userRole = new CUserRole($this->userId);
-
-        $userIsNotUsualClient = $this->userRole->isSuperUser() || !$this->userRole->isClient();
-
-        $this->pageIsClientList = $this->arParams["PARTY"] === CUserRole::getClientGroupCode();
-
-        $userHasAccess = $userIsNotUsualClient && ($this->pageIsClientList || $this->userRole->isBroker());
-
-        if (!$userHasAccess) LocalRedirect("/");
 
         $arResult =& $this->arResult;
 
-        //get company
         $this->getCompany();
 
         if(!empty($arResult['COMPANY']['PROPERTIES']['TYPE']['VALUE_XML_ID'])) {
@@ -59,20 +43,8 @@ class ItrCompany extends CBitrixComponent
             $arResult['ERRORS'][] = Loc::getMessage('COMPANY_TYPE_IS_EMPTY');
         }
 
-
-        $arFilter = [
-            "ACTIVE" => 'Y',
-            "PROPERTY_CLIENT.ID" => [$this->companyId],
-            ];
-
-        if(isset($this->request['q_name'])) {
-            $arFilter = [
-                array("LOGIC" => "OR",
-                    array("NAME" => "%" . trim($this->request['q_name']) . "%"),
-                    array("PROPERTY_DATE" => "%" . trim($this->request['q_name']) . "%"),
-                    array("PROPERTY_TYPE" => "%" . trim($this->request['q_name']) . "%")
-                )
-            ];
+        // is it necessary?
+        if(isset($this->request['search'])) {
             $this->arResult['ACTION'] = 'search';
         }
 
@@ -80,18 +52,10 @@ class ItrCompany extends CBitrixComponent
             $this->arResult['IS_AJAX'] = 'Y';
         }
 
-        $this->getContractsList($arFilter);
+        $this->getContractList();
 
         $this->getInstypes();
         $this->getBroker();
-
-
-        $contracts = CParticipation::getTargetsByCompany($this->companyId, CContract::class);
-        //Utils::varDump(array_column($contracts['TARGETS'], 'ID'));
-        $items = CContractParticipant::getElementsByConditions(["PROPERTY_PARTICIPANT_ID" => array_column($contracts['TARGETS'], 'ID')]);
-        //Utils::varDump($items);
-
-        $this->fetchCompanies();
 
         $APPLICATION->SetTitle($this->arResult['COMPANY']['NAME']);
 
@@ -110,55 +74,171 @@ class ItrCompany extends CBitrixComponent
 
     }
 
-    private function getContractsList(array $arFilter = [])
+    private function companyIsClient() {
+    	return $this->arResult["COMPANY"]["PROPERTIES"]["TYPE"]["VALUE_XML_ID"] == CUserRole::getClientGroupCode();
+	}
+
+    private function getContractList()
     {
-        $arResult =& $this->arResult;
-        $elements = Contract::getElementsByConditions($arFilter, [], []);
+    	$this->userId = $GLOBALS["USER"]->GetID();
+    	$this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
 
-        foreach ($elements as $element) {
+		$this->userRole = new CUserRole($this->userId);
 
+		$arPermittedContractIds = $this->getPermittedContractIds();
+		$arCounts = $this->getCountsOfLost($arPermittedContractIds);
+		$arLeaders = CContractParticipant::getLeaders($arPermittedContractIds);
 
-            $arFilter2 = [
-                "ACTIVE" => 'Y',
-                "PROPERTY_CONTRACT" => $element['ID'],
-            ];
+		$searchQuery = trim($this->request->get("search"));
 
-            $elements2 = Lost::getElementsByConditions($arFilter2, [], []);
+		$contractFilter = [
+			"ACTIVE" => "Y",
+			"ID" => $arPermittedContractIds,
+		];
 
-            $all = 0;
-            $red = 0;
-            $yellow = 0;
-            $green = 0;
+		// filter for client detail
+		if ($this->companyIsClient()) {
+			$contractFilter[] = [
+				"LOGIC" => "OR",
+				"NAME" => $searchQuery ? "%$searchQuery%" : "",
+				"PROPERTY_TYPE" => $searchQuery ? "%$searchQuery%" : "",
+				"PROPERTY_DATE" => $this->prepareSearchQueryForDate($searchQuery),
+			];
+		}
 
-            foreach ($elements2 as $elitem) {
-                $all++;
-                if($elitem['PROPERTIES']['STATUS']['VALUE']=='red') {
-                    $red++;
-                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='yellow') {
-                    $yellow++;
-                } elseif ($elitem['PROPERTIES']['STATUS']['VALUE']=='green') {
-                    $green++;
-                }
-            }
+		$arContracts = Contract::getElementsByConditions($contractFilter);
 
-            $arItem = [
-                'ID' => $element['ID'],
-                'NAME' => $element['NAME'],
-                'DATE' => $element['PROPERTIES']['DATE']['VALUE'],
-                'TYPE' => $element['PROPERTIES']['TYPE']['VALUE'],
-                'INSURANCE_COMPANY_LEADER' => $element['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'],
-                'INSURANCE_COMPANY_LEADER_NAME' => $element['PROPERTY_INSURANCE_COMPANY_LEADER_NAME'],
-                'DETAIL_PAGE_URL' => $this->arParams['LIST_URL'] . $this->arParams['CLIENT_ID'] . '/contract/' . $element['ID'] . '/',
-                'ALL_LOST' => $all,
-                'R_LOST' => $red,
-                'Y_LOST' => $yellow,
-                'G_LOST' => $green
-            ];
+		$result = [];
 
-            $arResult['CONTRACTS'][$element['ID']] = $arItem;
-        }
-        unset($elements);
+		$listUrl = $this->arParams['LIST_URL'];
+		foreach ($arContracts as $arContract) {
+			$id = $arContract["ID"];
+
+			// filter for adjuster/insurer detail
+			if ($searchQuery && !$this->companyIsClient()) {
+				$arClient = $arLeaders[$id][CUserRole::getClientGroupCode()];
+
+				if (empty($arClient) || mb_stripos($arClient["NAME"], $searchQuery) === false) {
+					// correcting total count values due to such a stupid filtering method
+					foreach ($arCounts["TOTAL"] as $k => &$v) {
+						$v -=$arCounts[$id][$k];
+					}
+
+					continue;
+				}
+			}
+
+			$result[] = [
+				"ID" => $arContract["ID"],
+				"NAME" => $arContract["NAME"],
+				"DATE" => $arContract["PROPERTIES"]["DATE"]["VALUE"],
+				"TYPE" => $arContract["PROPERTIES"]["TYPE"]["VALUE"],
+				"DETAIL_PAGE_URL" => "$listUrl{$this->companyId}/contract/$id/",
+				"CNT" => $arCounts[$id],
+				"LEADERS" => $arLeaders[$id],
+			];
+		}
+
+		$this->arResult["ITEMS"] = $result;
+		$this->arResult["CNT_TOTAL"] = $arCounts["TOTAL"];
     }
+
+    private function getCountsOfLost(array $arContractIds) {
+		$arCountsOfLost = Lost::getElementsGrouped([
+			"ACTIVE" => "Y",
+			"PROPERTY_CONTRACT" => $arContractIds
+		], [], [
+			"PROPERTY_CONTRACT",
+			"PROPERTY_STATUS",
+		]);
+
+
+		$result = [];
+		foreach ($arCountsOfLost as $arCount) {
+			$contractId = $arCount["PROPERTY_CONTRACT_VALUE"];
+			$statusCode = $arCount["PROPERTY_STATUS_VALUE"];
+			$cnt = (int)$arCount["CNT"];
+
+			$result[$contractId][$statusCode] = $cnt;
+			$result[$contractId]["SUM"] += $cnt;
+
+			$result["TOTAL"][$statusCode] += $cnt;
+			$result["TOTAL"]["SUM"] += $cnt;
+		}
+
+		return $result;
+	}
+
+
+	private function getPermittedContractIds() {
+		$allTargetsOfCompany = $this->getTargetsOfCompany($this->companyId);
+		$arContractIdsOfCompany = $this->getContractIdsByAllTargets($allTargetsOfCompany);
+
+
+		if ($this->userRole->isSuperBroker()) return $arContractIdsOfCompany;
+
+
+		$allTargetsOfUser = $this->userRole->isSuperUser()
+			? $this->getTargetsOfCompany($this->userCompanyId)
+			: $this->getTargetsOfUser($this->userId)
+		;
+
+		$arContractIdsOfUser = $this->getContractIdsByAllTargets($allTargetsOfUser);
+
+		return array_intersect(
+			$arContractIdsOfCompany,
+			$arContractIdsOfUser
+		);
+	}
+
+	private function getContractIdsByAllTargets(array $allTargets) {
+		list($arContractIds, $arLostIds) = $allTargets;
+
+		$arContractIds = array_merge(
+			$arContractIds,
+			array_map(
+				function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+				CLost::getElementsByConditions(["ID" => $arLostIds], [], ["PROPERTY_CONTRACT"])
+			)
+		);
+
+		// Для фильтрации договоров только по привязке к убыткам
+		//return array_map(
+		//	function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+		//	CLost::getElementsByConditions(["ID" => $arLostIds], [], ["PROPERTY_CONTRACT"])
+		//);
+
+		return array_unique($arContractIds);
+	}
+
+	private function getTargetsOfUser(int $userId):array {
+    	return [
+			CParticipation::getTargetIdsByUser($userId, CContract::class),
+			CParticipation::getTargetIdsByUser($userId, CLost::class)
+		];
+	}
+
+	private function getTargetsOfCompany(int $companyId):array {
+    	return [
+			CParticipation::getTargetIdsByCompany($companyId, CContract::class),
+			CParticipation::getTargetIdsByCompany($companyId, CLost::class)
+		];
+	}
+
+    private function prepareSearchQueryForDate($searchQuery) {
+    	if (!$searchQuery) return "";
+
+    	$parts = explode(".", $searchQuery);
+		$parts = array_reverse($parts);
+
+		foreach ($parts as $part) {
+			if (!is_numeric($part)) return "";
+		}
+
+		$searchQuery = implode("-", $parts);
+
+		return "%$searchQuery%";
+	}
 
     private function getInstypes() {
         $arResult =& $this->arResult;
@@ -172,8 +252,6 @@ class ItrCompany extends CBitrixComponent
         ));
 
         $arResult['INSTYPES'] = $rsData->fetchAll();
-
-
     }
 
     private function getBroker() {
@@ -185,110 +263,5 @@ class ItrCompany extends CBitrixComponent
         } else {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
-
-    }
-
-
-    private function fetchCompanies()
-    {
-        $counts = $this->getLostCountsByCompany();
-        $searchQuery = trim($this->request->get("q_name"));
-
-        $arCompanies = Company::getElementsByConditions(
-            [
-                "ID" => $this->userRole->isSuperBroker() ? [] : array_keys($counts),
-                "NAME" => $searchQuery ? "%$searchQuery%" : "",
-                "PROPERTY_TYPE" => $this->getPermittedCompanyTypeId(),
-            ],
-            [],
-            [
-                "ID",
-                "NAME",
-                "DETAIL_PAGE_URL",
-                "PROPERTY_LOGO",
-            ],
-            $this->arParams["DETAIL_URL"]
-        );
-
-        $companies = [];
-        $countsTotal = [];
-        foreach ($arCompanies as $arCompany) {
-            $companyId = $arCompany["ID"];
-
-            $companies[$companyId] = [
-                "ID" => $arCompany["ID"],
-                "NAME" => $arCompany["NAME"],
-                "LOGO" => $arCompany["PROPERTY_LOGO_VALUE"],
-                "DETAIL_PAGE_URL" => $arCompany["DETAIL_PAGE_URL"]
-            ];
-
-            $sumByCompany = 0;
-            $countsOfCompany = $counts[$companyId];
-
-            foreach ($countsOfCompany as $statusCode => $count) {
-                $companies[$companyId]["CNT"][$statusCode] = $count;
-                $sumByCompany += $count;
-
-                $countsTotal[$statusCode] += $count;
-            }
-
-            $companies[$companyId]["CNT"]["SUM"] = $sumByCompany;
-            $countsTotal["SUM"] += $sumByCompany;
-        }
-
-        $this->arResult["ITEMS"] = $companies;
-        $this->arResult["CNT_TOTAL"] = $countsTotal;
-    }
-
-    private function getLostCountsByCompany() {
-        $arParticipants = CLostParticipant::getElementsByConditions([
-            "PROPERTY_TARGET_ID" => $this->getLostIds()
-        ], [], [
-            "PROPERTY_TARGET_ID.PROPERTY_STATUS",
-            "PROPERTY_PARTICIPANT_ID",
-        ]);
-
-
-        $counts = [];
-        foreach ($arParticipants as $arParticipant) {
-            $companyId = $arParticipant["PROPERTY_PARTICIPANT_ID_VALUE"];
-            $statusCode = $arParticipant["PROPERTY_TARGET_ID_PROPERTY_STATUS_VALUE"];
-
-            $counts[$companyId][$statusCode]++;
-        }
-
-        return $counts;
-    }
-
-    private function getLostIds() {
-        if ($this->userRole->isSuperBroker()) {
-            return [];
-        }
-
-        $arTargets = $this->userRole->isSuperUser()
-            ? CParticipation::getTargetsByCompany($this->companyId, CLost::class)["TARGETS"]
-            : CParticipation::getTargetsByUser($this->userId, CLost::class)["TARGETS"]
-        ;
-
-
-        return array_map(
-            function($v) { return $v["ID"]; },
-            $arTargets
-        );
-    }
-
-    private function getPermittedCompanyTypeId() {
-        $arParties = Company::getPropertyList("TYPE");
-
-        foreach ($arParties as $arParty) {
-            $code = $arParty["XML_ID"];
-            $id = $arParty["ID"];
-
-            if ($code == 'client') {
-                return $id;
-            }
-        }
-
-        throw new Exception("Invalid parameter value");
     }
 }

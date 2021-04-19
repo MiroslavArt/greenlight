@@ -3,6 +3,7 @@
 namespace Itrack\Custom\Participation;
 
 use Itrack\Custom\InfoBlocks\BaseInfoBlockClass;
+use Itrack\Custom\InfoBlocks\Company;
 
 abstract class AParticipant extends BaseInfoBlockClass implements IParticipant
 {
@@ -78,5 +79,43 @@ abstract class AParticipant extends BaseInfoBlockClass implements IParticipant
 		);
 
 		return $res ? $res[0] : null;
+	}
+
+	public static function getLeaders(array $arIds) {
+		$arParties = Company::getPropertyList("TYPE");
+
+		$companyPartyCodesById = [];
+		foreach ($arParties as $arParty) {
+			$id = $arParty["ID"];
+			$companyPartyCodesById[$id] = $arParty["XML_ID"];
+		}
+
+
+		$arLeaders = self::getElementsByConditions([
+			"PROPERTY_TARGET_ID" => $arIds,
+			"!PROPERTY_IS_LEADER" => false,
+		],
+			[],
+			[
+				"PROPERTY_TARGET_ID",
+				"PROPERTY_PARTICIPANT_ID.NAME",
+				"PROPERTY_PARTICIPANT_ID.PROPERTY_LOGO",
+				"PROPERTY_PARTICIPANT_ID.PROPERTY_TYPE"
+			]);
+
+
+		$result = [];
+		foreach ($arLeaders as $arLeader) {
+			$partyId = $arLeader["PROPERTY_PARTICIPANT_ID_PROPERTY_TYPE_ENUM_ID"];
+			$targetId = $arLeader["PROPERTY_TARGET_ID_VALUE"];
+			$party = $companyPartyCodesById[$partyId];
+
+			$result[$targetId][$party] = [
+				"NAME" => $arLeader["PROPERTY_PARTICIPANT_ID_NAME"],
+				"LOGO" => $arLeader["PROPERTY_PARTICIPANT_ID_PROPERTY_LOGO_VALUE"],
+			];
+		}
+
+		return $result;
 	}
 }

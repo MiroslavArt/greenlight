@@ -119,6 +119,20 @@ class CParticipation
 		}
 	}
 
+	public static function getTargetIdsByUser(int $userId, string $targetClass): array {
+		return array_map(
+			function($v) { return $v["ID"]; },
+			self::getTargetsByUser($userId, $targetClass)["TARGETS"]
+		);
+	}
+
+	public static function getTargetIdsByCompany(int $companyId, string $targetClass): array {
+		return array_map(
+			function($v) { return $v["ID"]; },
+			self::getTargetsByCompany($companyId, $targetClass)["TARGETS"]
+		);
+	}
+
 
 	public static function getTargetsByUser(int $userId, string $targetClass): array {
 		return self::getTargetsByConditions(

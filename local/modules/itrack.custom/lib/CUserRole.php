@@ -162,7 +162,7 @@ class CUserRole
 		];
 	}
 
-
+	public function equalTo(string $role): bool { return $this->isUserParty($role); }
 	public function isBroker(): bool { return $this->isUserParty(self::BROKER); }
 	public function isClient(): bool { return $this->isUserParty(self::CLIENT); }
 	public function isInsurer(): bool { return $this->isUserParty(self::INSURER); }

@@ -76,7 +76,7 @@
 							<span class="status <?=$arItem["STATUS"]?>" title="<?=$arItem["RESULT"]?>"></span>
 						<?elseif ($fieldCode === "INSURER"):?>
 							<img src="<?=$arItem["LOGO"]?>" width="40" height="40" alt="<?=$arItem[$fieldCode]?>">
-							<span class="insurer-name" data-fancybox data-type="ajax" data-src="?rivals=y&target-id=<?=$arItem["ID"]?>"><?=$arItem[$fieldCode]?></span>
+							<span class="insurer-name" data-fancybox data-type="ajax" data-src="/ajax/companies_popup.php?target-id=<?=$arItem["ID"]?>&target-type=lost&parties=insurer,adjuster"><?=$arItem[$fieldCode]?></span>
 						<?else:?>
 							<?switch($fieldCode) {
 								case "CLIENT": $hint = $arItem["CONTRACT_CODE"]; break;

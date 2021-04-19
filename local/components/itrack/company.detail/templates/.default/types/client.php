@@ -12,9 +12,7 @@
                   data-url="<?= $APPLICATION->GetCurPage() ?>">
                 <?= bitrix_sessid_post() ?>
                 <input type="hidden" name="is_ajax" value="y">
-                <input type="text" name="q_name"
-                       value="<?= isset($_REQUEST['q_name']) ? $_REQUEST['q_name'] : '' ?>" class="search_text"
-                       placeholder="Поиск по списку договоров"/>
+                <input type="text" name="search" class="search_text" placeholder="Поиск по списку договоров"/>
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
@@ -166,12 +164,7 @@
             <input type="submit" class="btn" value="Добавить договор" />
         </form><!-- END form_edit_profile -->
     </div><!-- END popup -->
-    <?php if (!empty($arResult['CONTRACTS'])) :
-        $alllosts = 0;
-        $green = 0;
-        $yellow = 0;
-        $red = 0;
-        ?>
+    <?php if (!empty($arResult['ITEMS'])): ?>
         <div id="contracts-list">
             <ul class="data_table">
                 <li class="row table_head">
@@ -185,37 +178,38 @@
                     <div class="table_block item3"><p>СК (Лидер)</p></div>
                     <div class="table_block item6 links_column"><p>Ссылки</p></div>
                 </li>
-                <?php foreach ($arResult['CONTRACTS'] as $arItem) :
-                    $alllosts += $arItem['ALL_LOST'];
-                    $green += $arItem['G_LOST'];
-                    $yellow += $arItem['Y_LOST'];
-                    $red += $arItem['R_LOST'];
-                    ?>
+                <?php foreach ($arResult['ITEMS'] as $arItem): ?>
                     <li class="row">
                         <div class="table_block align_left item3" data-name="№ договора"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                         <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                         <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
-                        <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem['ALL_LOST']?></div>
-                        <div class="table_block stat_column green"><?=$arItem['G_LOST']?></div>
-                        <div class="table_block stat_column yellow item2"><?=$arItem['Y_LOST']?></div>
-                        <div class="table_block stat_column red"><?=$arItem['R_LOST']?></div>
-                        <div class="table_block item3"><p class="ico_check"><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['INSURANCE_COMPANY_LEADER_NAME']?></a></p></div>
+                        <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem["CNT"]["SUM"] ?: 0?></div>
+                        <div class="table_block stat_column green"><?=$arItem["CNT"]["green"] ?: 0?></div>
+                        <div class="table_block stat_column yellow item2"><?=$arItem["CNT"]["yellow"] ?: 0?></div>
+                        <div class="table_block stat_column red"><?=$arItem["CNT"]["red"] ?: 0?></div>
+                        <div class="table_block item3">
+							<p class="ico_check">
+								<a href="<?=$arItem['DETAIL_PAGE_URL']?>">
+									<?=$arItem["LEADERS"]["insurer"]["NAME"]?>
+								</a>
+							</p>
+						</div>
                         <div class="table_block item6 links_column">
-                            <a href="#" class="link ico_doc"><span>Все СК по договору</span></a>
-                            <a href="#" class="link ico_doc"><span>Все убытки</span></a>
+                            <a data-fancybox data-type="ajax" href="/ajax/companies_popup.php?target-id=<?=$arItem["ID"]?>&target-type=contract&parties=insurer" class="link ico_doc"><span>Все СК по договору</span></a>
+                            <a href="<?=$arItem["DETAIL_PAGE_URL"]?>" class="link ico_doc"><span>Все убытки</span></a>
                         </div><!-- END links_column -->
                     </li>
                 <?php endforeach; ?>
             </ul><!-- END data_table -->
             <ul class="data_table no_bg">
-                <li class="row">
-                    <div class="table_block head_column item6" data-name="Клиент"><p>Итого</p></div>
-                    <div class="table_block stat_column item2" data-name="Убытки, шт"><?= $alllosts ?></div>
-                    <div class="table_block stat_column item2" data-name="Закрыто"><?= $green ?></div>
-                    <div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $yellow ?></div>
-                    <div class="table_block stat_column item2" data-name="Открыто"><?= $red ?></div>
-                    <div class="table_block links_column"></div>
-                </li>
+				<li class="row">
+					<div class="table_block head_column item8" data-name="Клиент"><p>Итого</p></div>
+					<div class="table_block stat_column" data-name="Убытки, шт"><?=$arResult["CNT_TOTAL"]["SUM"] ?: 0?></div>
+					<div class="table_block stat_column"><?=$arResult["CNT_TOTAL"]["green"] ?: 0?></div>
+					<div class="table_block stat_column item2"><?=$arResult["CNT_TOTAL"]["yellow"] ?: 0?></div>
+					<div class="table_block stat_column"><?=$arResult["CNT_TOTAL"]["red"] ?: 0?></div>
+					<div class="table_block item9 links_column"></div>
+				</li>
             </ul><!-- END data_table -->
         </div>
     <?php else: ?>

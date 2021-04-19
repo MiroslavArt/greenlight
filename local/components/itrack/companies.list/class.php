@@ -1,22 +1,42 @@
 <?php
 
 use Bitrix\Main\Loader;
-use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 use Itrack\Custom\CUserEx;
 use Itrack\Custom\CUserRole;
-use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\InfoBlocks\Company;
-use Itrack\Custom\InfoBlocks\Lost;
 use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\Participation\CLostParticipant;
 use Itrack\Custom\Participation\CParticipation;
 
+/*
+
+						client list			insurer list		adjuster list
+
+broker regular			personal			personal			personal
+broker super			all					all					all
+
+client regular			personal*			deny access			deny access
+client super			company	*			deny access			deny access
+
+insurer regular			personal			personal*			deny access
+insurer super			company				company	*			deny access
+
+adjuster regular		personal			deny access			personal*
+adjuster super			company				deny access			company *
+
+all		 - user can see all companies
+personal - user can see all the companies he works with
+company  - user can see all the companies that his company works with
+* 		 - user can only see his company
+
+*/
+
 class ItrCompaniesList extends CBitrixComponent
 {
-	private $pageIsClientList;
 	private $userId;
 	private $companyId;
+	private $companyParty;
 
 	/** @var CUserRole $userRole */
 	private $userRole;
@@ -26,15 +46,16 @@ class ItrCompaniesList extends CBitrixComponent
     	$this->userId = $GLOBALS["USER"]->GetID();
     	$this->companyId = CUserEx::getUserCompanyId($this->userId);
     	$this->userRole = new CUserRole($this->userId);
+    	$this->companyParty = $this->arParams["PARTY"];
 
-    	$userIsNotUsualClient = $this->userRole->isSuperUser() || !$this->userRole->isClient();
+    	$pageIsClientList = $this->companyParty === CUserRole::getClientGroupCode();
+		$userPartyIsEqualToCompanyParty = $this->userRole->equalTo($this->companyParty);
 
-    	$this->pageIsClientList = $this->arParams["PARTY"] === CUserRole::getClientGroupCode();
-
-    	$userHasAccess = $userIsNotUsualClient && ($this->pageIsClientList || $this->userRole->isBroker());
+    	$userHasAccess = $userPartyIsEqualToCompanyParty || $this->userRole->isBroker() || $pageIsClientList;
 
 		if (!$userHasAccess) LocalRedirect("/");
 
+		$this->arResult["USER_IS_BROKER"] = $this->userRole->isBroker();
 
         if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $this->arResult['IS_AJAX'] = 'Y';
@@ -48,11 +69,13 @@ class ItrCompaniesList extends CBitrixComponent
     private function fetchCompanies()
     {
 		$counts = $this->getLostCountsByCompany();
-		$searchQuery = trim($this->request->get("q_name"));
+		$availableCompanyIds = array_keys($counts);
+		$searchQuery = trim($this->request->get("search"));
+
 
 		$arCompanies = Company::getElementsByConditions(
 			[
-				"ID" => $this->userRole->isSuperBroker() ? [] : array_keys($counts),
+				"ID" => $this->getPermittedCompanyIds($availableCompanyIds),
 				"PROPERTY_TYPE" => $this->getPermittedCompanyTypeId(),
 				"NAME" => $searchQuery ? "%$searchQuery%" : "",
 			],
@@ -121,15 +144,22 @@ class ItrCompaniesList extends CBitrixComponent
 			return [];
 		}
 
-		$arTargets = $this->userRole->isSuperUser()
-			? CParticipation::getTargetsByCompany($this->companyId, CLost::class)["TARGETS"]
-			: CParticipation::getTargetsByUser($this->userId, CLost::class)["TARGETS"]
+		return $this->userRole->isSuperUser()
+			? CParticipation::getTargetIdsByCompany($this->companyId, CLost::class)
+			: CParticipation::getTargetIdsByUser($this->userId, CLost::class)
 		;
+	}
 
-		return array_map(
-			function($v) { return $v["ID"]; },
-			$arTargets
-		);
+	private function getPermittedCompanyIds($rivals) {
+		if ($this->userRole->isSuperBroker()) {
+			return [];
+		}
+
+		if ($this->userRole->getUserParty() == $this->companyParty) {
+			return [ $this->companyId ];
+		}
+
+		return $rivals;
 	}
 
 	private function getPermittedCompanyTypeId() {
