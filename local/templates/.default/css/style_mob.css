@@ -146,7 +146,11 @@
 		right: 14px;
 		top: 14px;
 	}
-	.settings_page .tile_link{padding-top: 74px;}
+	.type_2 .tile_link:nth-child(n+4){width: calc(33.33% - 10px);}
+	.settings_page .tile_link{
+		padding-left: 80px;
+		padding-top: 48px;
+	}
 	.header{
 		align-items: center;
 		background-color: #F5F6F8;
@@ -248,7 +252,7 @@
 		border-radius: 20px;
 		padding: 10px 0;
 	}
-	.table_block,.table_block:first-child,.links_column, .align_left{
+	.table_block,.table_block:not(.no_header):first-child,.links_column, .align_left{
 		border-bottom: 1px #D8D9DC solid;
 		justify-content: flex-start;
 		padding: 10px 20px 10px 210px;
@@ -271,7 +275,7 @@
 	.table_block.no_header{padding-left: 20px;}
 	.table_block.no_header:after{display: none;}
 	.table_block:before{
-		left: 138px;
+		left: 210px;
 		width: 20px;
 	}
 	.table_block.links_column{
@@ -426,6 +430,7 @@
 		max-width: none;
 		width: 100%;
 	}
+		.search_text{padding-left: 20px;}
 	.data_table{grid-template-columns: repeat(1,1fr);}
 	.cart_container .cart_block + .title_right_block{
 		margin-bottom: 20px;
@@ -439,6 +444,9 @@
 		width: 100%;
 	}
 	.form_row .input_container:not(.without_small){width: calc(100% - 30px);}
+		.form_popup .small.input_container{width: 113px;}
+		.form_row .input_container.column_25.superuser{width: calc(33.33% - 30px);}
+		.input_container.column_3.superuser{flex-direction: row-reverse;}
 	.logo_upload_container{margin: 0 15px;}
 	.form_edit_profile .column_3.input_container.superuser .btn{margin: 0 auto 0 0;}
 	.popup{padding: 48px 15px;}
@@ -503,6 +511,10 @@
 	.not_found_column{width: 100%;}
 	.small_title{margin-bottom: 30px;}
 	.text{margin-bottom: 40px;}
+	.settings_page .tile_link{
+		padding-left: 20px;
+		padding-top: 74px;
+	}
 }/* END 768px */
 @media only screen and (max-width: 560px){
 	.status_form .fieldset{display: block;}
@@ -524,8 +536,9 @@
 	}
 	.profile_desc{padding: 15px;}
 	.form_edit_profile .column_3.input_container.superuser .btn{margin: 0 0 0 auto;}
-	.table_block,.table_block:first-child,.links_column, .align_left{padding-left: 138px;}
+	.table_block,.table_block:not(.no_header):first-child,.links_column, .align_left{padding-left: 138px;}
 	.table_block::after{width: 110px;}
+	.table_block:before{left: 138px;}
 	.mob_hight{height: 50px;}
 	.settings_page .tile_link{width: calc(100% - 10px);}
 	.originals{
@@ -552,6 +565,7 @@
 		font-size: 24px;
 		line-height: 30px;
 	}
+.type_2 .tile_link:nth-child(n+4),.tile_link,.type2 .tile_link{width: calc(100% - 10px);}
 }/* END 480px */
 @media only screen and (max-width: 520px){
 

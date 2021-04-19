@@ -184,17 +184,17 @@
                         <div class="table_block align_left item2" data-name="Дата договора"><p><?=$arItem['DATE']?></p></div>
                         <div class="table_block align_left item3" data-name="Вид страхования"><p><?=$arItem['TYPE']?></p></div>
                         <div class="table_block stat_column" data-name="Убытки, шт"><?=$arItem["CNT"]["SUM"] ?: 0?></div>
-                        <div class="table_block stat_column green"><?=$arItem["CNT"]["green"] ?: 0?></div>
-                        <div class="table_block stat_column yellow item2"><?=$arItem["CNT"]["yellow"] ?: 0?></div>
-                        <div class="table_block stat_column red"><?=$arItem["CNT"]["red"] ?: 0?></div>
-                        <div class="table_block item3">
+                        <div class="table_block stat_column green" data-name="Закрыто"><?=$arItem["CNT"]["green"] ?: 0?></div>
+                        <div class="table_block stat_column yellow item2" data-name="Документы предоставлены"><?=$arItem["CNT"]["yellow"] ?: 0?></div>
+                        <div class="table_block stat_column red" data-name="Открыто"><?=$arItem["CNT"]["red"] ?: 0?></div>
+                        <div class="table_block item3" data-name="СК (Лидер)">
 							<p class="ico_check">
 								<a href="<?=$arItem['DETAIL_PAGE_URL']?>">
 									<?=$arItem["LEADERS"]["insurer"]["NAME"]?>
 								</a>
 							</p>
 						</div>
-                        <div class="table_block item6 links_column">
+                        <div class="table_block item6 links_column" data-name="Ссылки">
                             <a data-fancybox data-type="ajax" href="/ajax/companies_popup.php?target-id=<?=$arItem["ID"]?>&target-type=contract&parties=insurer" class="link ico_doc"><span>Все СК по договору</span></a>
                             <a href="<?=$arItem["DETAIL_PAGE_URL"]?>" class="link ico_doc"><span>Все убытки</span></a>
                         </div><!-- END links_column -->
