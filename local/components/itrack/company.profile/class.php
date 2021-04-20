@@ -6,6 +6,9 @@ use \Bitrix\Main\Context;
 use Itrack\Custom\CUserEx;
 use \Itrack\Custom\CUserRole;
 use \Itrack\Custom\InfoBlocks\Company;
+use Itrack\Custom\Participation\CContract;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CParticipation;
 
 class ItrCompanyProfile extends CBitrixComponent
 {
@@ -53,6 +56,15 @@ class ItrCompanyProfile extends CBitrixComponent
 
 
 		$this->arResult = Company::getElementByID($companyId);
+
+        $partip = CParticipation::getTargetIdsByCompany($companyId, CContract::class);
+        if(empty($partip)) {
+            $partip = CParticipation::getTargetIdsByCompany($companyId, CLost::class);
+        }
+        if(empty($partip)) {
+            $this->arResult["CHANGE_COMPANY_TYPE"] = true;
+        }
+
 
 		$this->arResult["COMPANY_TYPES"] = $this->getCompanyTypes($this->arResult["PROPERTIES"]["TYPE"]["ID"]);
 

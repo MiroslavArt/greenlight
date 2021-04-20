@@ -62,7 +62,7 @@ if (!function_exists("printInputCompany")) {
 
 			<div class="input_container column_3">
 				<label class="label">Роль компании</label>
-				<?if ($arResult["EDITOR_IS_SUPER_BROKER"]):?>
+				<?if ($arResult["EDITOR_IS_SUPER_BROKER"] && $arResult["CHANGE_COMPANY_TYPE"]):?>
 					<select name="TYPE" class="select js_select">
 						<?foreach ($arResult["COMPANY_TYPES"] as $arType):?>
 							<?$selected = $arResult["PROPERTIES"]["TYPE"]["VALUE_ENUM_ID"] === $arType["ID"] ? "selected" : ""?>
