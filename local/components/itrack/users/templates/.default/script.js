@@ -34,7 +34,7 @@ $(document).ready(function() {
     })
 
     //сохранение пользователя
-    $( ".form_popup" ).submit(function( event ){
+    $( ".js_user_add" ).submit(function( event ){
         event.preventDefault();
         var userdata = {}
         userdata.lastname = $("#last_name").val()

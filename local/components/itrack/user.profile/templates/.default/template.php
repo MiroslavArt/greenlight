@@ -103,7 +103,7 @@ if (!function_exists("printInputProfile")) {
 	<div class="popup small" id="change_pass">
 		<h3 class="block_title">Смена пароля</h3>
 		<form class="form_popup " method="POST">
-			<input type="hidden" name="FORM_SENT2" value="Y">
+			<input type="hidden" name="FORM_SENT" value="Y">
 			<?=bitrix_sessid_post();?>
 
 			<div class="form_row">

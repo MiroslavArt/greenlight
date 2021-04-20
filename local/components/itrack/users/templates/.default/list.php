@@ -31,7 +31,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
 	</div><!-- END title_container -->
     <div class="popup" id="add_user">
         <h3 class="block_title">Добавление пользователя</h3>
-        <form class="form_popup">
+        <form class="form_popup js_user_add">
             <div class="form_row">
                 <div class="input_container column_25">
                     <input type="text" class="text_input" id="last_name" placeholder="Фамилия" />
