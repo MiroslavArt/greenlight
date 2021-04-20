@@ -44,7 +44,8 @@ $(document).ready(function() {
         userdata.pwd = $("#email").attr('data-id')
         userdata.company = $("#company").val()
         userdata.persphone = $("#persphone").val()
-        userdata.workphone = $("#workphone").val() + ' ' + $("#code").val()
+        userdata.workphone = $("#workphone").val()
+        userdata.addphone = $("#code").val()
         if($(".switch").hasClass('active')) {
             userdata.superuser = true
         } else {

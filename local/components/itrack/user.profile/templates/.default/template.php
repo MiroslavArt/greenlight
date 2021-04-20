@@ -85,7 +85,7 @@ if (!function_exists("printInputProfile")) {
 		</div><!-- END form_row -->
 		<div class="form_row">
 			<? printInputProfile($arResult, "Email", "EMAIL") ?>
-			<? printInputProfile($arResult, "Телефон (мобильный)", "PERSONAL_MOBILE", false) ?>
+			<? printInputProfile($arResult, "Телефон (мобильный)", "PERSONAL_PHONE", false) ?>
 			<? printInputProfile($arResult, "Телефон (рабочий)", "WORK_PHONE", false, "tel", "tel") ?>
 			<? printInputProfile($arResult, "Доб. номер", "WORK_FAX", false, "text", "small") ?>
 		</div><!-- END form_row -->

@@ -19,6 +19,7 @@ class ItrUserProfile extends CBitrixComponent
 		"PERSONAL_MOBILE" => "user",
 		"WORK_POSITION" => "super_user",
 		"WORK_PHONE" => "user",
+        "PERSONAL_PHONE" => "user",
 		"WORK_FAX" => "user",
 		"UF_COMPANY" => "super_broker",
 		"PASSWORD" => "user",
