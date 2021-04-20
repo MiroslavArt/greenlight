@@ -79,7 +79,9 @@ class ItrUserProfile extends CBitrixComponent
     }
 
     private function updateUserFields($userId, $request) {
-		$arValues = [];
+
+
+        $arValues = [];
 
 		foreach ($this->arFields as $fieldCode => $role) {
 
