@@ -237,13 +237,13 @@ class Signal extends Controller
         $ID = $user->Add($arFields);
         if(intval($ID) > 0) {
             // обновляем карточку договора
-            if($userdata['contract']) {
+            if($userdata['contract']!="N/A") {
                 $participantClass = CContract::getParticipantClass();
                 $participant = $participantClass::initByTargetAndCompany($userdata['contract'], $userdata['company']);
                 $participant->bindCurator($ID);
             }
 
-            if($userdata['loss']) {
+            if($userdata['loss']!="N/A") {
                 $participantClass = CLost::getParticipantClass();
                 $participant = $participantClass::initByTargetAndCompany($userdata['loss'], $userdata['company']);
                 $participant->bindCurator($ID);

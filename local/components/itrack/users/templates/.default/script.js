@@ -11,6 +11,7 @@ $(document).ready(function() {
                 participant: selcompany
             }
         }).then(function (response) {
+            $("#contract").append($("<option></option>").attr("value", "N/A").text("N/A"));
             $.each(response.data,function(index,value){
                 $("#contract").append($("<option></option>").attr("value", value.ID).text(value.NAME));
             });
@@ -24,6 +25,7 @@ $(document).ready(function() {
                 participant: selcompany
             }
         }).then(function (response) {
+            $("#loss").append($("<option></option>").attr("value", "N/A").text("N/A"));
             $.each(response.data,function(index,value){
                 $("#loss").append($("<option></option>").attr("value", value.ID).text(value.NAME));
             });
@@ -34,7 +36,7 @@ $(document).ready(function() {
     })
 
     //сохранение пользователя
-    $( ".form_popup" ).submit(function( event ){
+    $( ".js_user_add" ).submit(function( event ){
         event.preventDefault();
         var userdata = {}
         userdata.lastname = $("#last_name").val()

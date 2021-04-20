@@ -31,7 +31,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
 	</div><!-- END title_container -->
     <div class="popup" id="add_user">
         <h3 class="block_title">Добавление пользователя</h3>
-        <form class="form_popup">
+        <form class="form_popup js_user_add">
             <div class="form_row">
                 <div class="input_container column_25">
                     <input type="text" class="text_input" id="last_name" placeholder="Фамилия" />
@@ -78,6 +78,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
                 <div class="input_container">
                     <label class="big_label">Прикрепить к договору страхования</label>
                     <select class="select js_select" id="contract">
+                        <option value="N/A">N/A</option>
                         <? foreach ($arResult['CONTRACTS'] as $contract) { ?>
                             <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
                         <? } ?>
@@ -86,6 +87,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
                 <div class="input_container">
                     <label class="big_label">Прикрепить к убытку</label>
                     <select class="select js_select" id="loss">
+                        <option value="N/A">N/A</option>
                         <? foreach ($arResult['LOSSES'] as $contract) { ?>
                             <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
                         <? } ?>

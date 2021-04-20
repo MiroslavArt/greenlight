@@ -53,7 +53,7 @@ if (!function_exists("printInputProfile")) {
 		<div class="form_row">
 			<div class="input_container column_2_3">
 				<label class="label">Компания</label>
-				<?if ($arResult["EDITOR_IS_SUPER_BROKER"]):?>
+				<?if ($arResult["EDITOR_IS_SUPER_BROKER"] && $arResult["CHANGE_COMPANY"]):?>
 					<select name="UF_COMPANY" class="select js_select">
 						<?foreach ($arResult["COMPANY_LIST"] as $arCompany):?>
 							<?$selected = $arResult["UF_COMPANY"] === $arCompany["ID"] ? "selected" : ""?>
@@ -103,7 +103,7 @@ if (!function_exists("printInputProfile")) {
 	<div class="popup small" id="change_pass">
 		<h3 class="block_title">Смена пароля</h3>
 		<form class="form_popup " method="POST">
-			<input type="hidden" name="FORM_SENT2" value="Y">
+			<input type="hidden" name="FORM_SENT" value="Y">
 			<?=bitrix_sessid_post();?>
 
 			<div class="form_row">

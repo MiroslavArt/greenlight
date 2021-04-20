@@ -6,6 +6,9 @@ use \Bitrix\Main\Context;
 use Itrack\Custom\CUserEx;
 use \Itrack\Custom\CUserRole;
 use \Itrack\Custom\InfoBlocks\Company;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CLost;
+use Itrack\Custom\Participation\CContract;
 
 class ItrUserProfile extends CBitrixComponent
 {
@@ -60,6 +63,15 @@ class ItrUserProfile extends CBitrixComponent
 			if ($code === "PASSWORD") continue;
 			$this->arResult[$code] = $arUser[$code];
 		}
+
+        $partip = CParticipation::getTargetIdsByUser($userId, CContract::class);
+		if(empty($partip)) {
+            $partip = CParticipation::getTargetIdsByUser($userId, CLost::class);
+        }
+
+		if(empty($partip)) {
+            $this->arResult["CHANGE_COMPANY"] = true;
+        }
 
 		$companyList = Company::getElements();
 		$this->arResult["COMPANY_LIST"] = $companyList;
