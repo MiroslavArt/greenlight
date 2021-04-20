@@ -78,6 +78,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
                 <div class="input_container">
                     <label class="big_label">Прикрепить к договору страхования</label>
                     <select class="select js_select" id="contract">
+                        <option value="N/A">N/A</option>
                         <? foreach ($arResult['CONTRACTS'] as $contract) { ?>
                             <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
                         <? } ?>
@@ -86,6 +87,7 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
                 <div class="input_container">
                     <label class="big_label">Прикрепить к убытку</label>
                     <select class="select js_select" id="loss">
+                        <option value="N/A">N/A</option>
                         <? foreach ($arResult['LOSSES'] as $contract) { ?>
                             <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
                         <? } ?>

@@ -53,7 +53,7 @@ if (!function_exists("printInputProfile")) {
 		<div class="form_row">
 			<div class="input_container column_2_3">
 				<label class="label">Компания</label>
-				<?if ($arResult["EDITOR_IS_SUPER_BROKER"]):?>
+				<?if ($arResult["EDITOR_IS_SUPER_BROKER"] && $arResult["CHANGE_COMPANY"]):?>
 					<select name="UF_COMPANY" class="select js_select">
 						<?foreach ($arResult["COMPANY_LIST"] as $arCompany):?>
 							<?$selected = $arResult["UF_COMPANY"] === $arCompany["ID"] ? "selected" : ""?>

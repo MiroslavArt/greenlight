@@ -164,10 +164,6 @@ if(intval($ID) > 0) {
         $objDocument = new HLBWrap('uploaded_docs');
         $objDocument->add($data);
     }*/
-    \Bitrix\Main\Diag\Debug::writeToFile($kurators, "1", "__miros.log");
-    \Bitrix\Main\Diag\Debug::writeToFile($kurleaders, "2", "__miros.log");
-    \Bitrix\Main\Diag\Debug::writeToFile($companies, "3", "__miros.log");
-    \Bitrix\Main\Diag\Debug::writeToFile($companiesleaders, "4", "__miros.log");
 
     try {
         $participation = new CParticipation(new CLost($id));
