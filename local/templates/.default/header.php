@@ -63,7 +63,7 @@ Loc::loadMessages(__FILE__);
     <div id="panel"><?php $APPLICATION->ShowPanel(); ?></div>
 <? } ?>
 
-<?php if(!\Itrack\Custom\Helpers\Utils::IsMainPage() || !($USER->IsAuthorized())) : ?>
+<?php if(!\Itrack\Custom\Helpers\Utils::IsMainPage() && ($USER->IsAuthorized())) : ?>
 
 <?php $APPLICATION->IncludeComponent(
     'bitrix:menu',
