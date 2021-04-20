@@ -32,7 +32,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div><!-- END title_right_block -->
         </div><!-- END title_container -->
         <div class="popup" id="add_company">
-            <h3 class="block_title">Добавить <?=$arResult['addtxt']?></h3>
+            <h3 class="block_title"><?=GetMessage("add_" . $arParams["PARTY"])?></h3>
             <form class="form_popup">
                 <input type="hidden" id="company_type" value="<?=$arParams['TYPE_ID']?>"/>
                 <div class="form_row">
@@ -69,7 +69,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END logo_upload_container -->
                 </div><!-- END form_row -->
                 <p class="link" id="mistake"></p>
-                <input type="submit" class="btn" value="Добавить клиента" />
+                <input type="submit" class="btn" value="<?=GetMessage("add_" . $arParams["PARTY"])?>" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
         <?php if (!empty($arResult['ITEMS'])):?>
