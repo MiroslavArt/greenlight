@@ -1,7 +1,7 @@
 <?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div id="contracts-wrapper" class="wrapper">
-    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться назад</a>
+    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться к списку клиентов</a>
     <div class="title_container">
         <div class="title_block">
             <span class="type_page">Карточка клиента</span>
@@ -16,7 +16,7 @@
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
-                <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <a href="#add_contract" class="btn" data-fancybox>Добавить договор страхования</a>
             <? } ?>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
