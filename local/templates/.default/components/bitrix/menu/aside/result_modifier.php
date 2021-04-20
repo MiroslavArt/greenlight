@@ -25,9 +25,11 @@ if(!empty($arUser['PERSONAL_PHOTO'])) {
 
 if ($arCompany = \Itrack\Custom\CUserEx::getUserCompany() ) {
     $arResult['USER_COMPANY'] = $arCompany;
-    if (!empty($arCompany['PROPERTIES']['PROPERTY_LOGO']['VALUE']) && intval($arCompany['PROPERTIES']['PROPERTY_LOGO']['VALUE']) > 0
-        && empty($arUser['PERSONAL_PHOTO']['SRC']) ) {
-        $arUser['PERSONAL_PHOTO']['SRC'] = CFile::GetFileArray($arCompany['PROPERTIES']['PROPERTY_LOGO']['VALUE'])['SRC'];
+
+    if (!empty($arCompany['PROPERTIES']['LOGO']['VALUE']) && intval($arCompany['PROPERTIES']['LOGO']['VALUE']) > 0) {
+        $arResult['COMPANY_LOGO']['SRC'] = CFile::GetFileArray($arCompany['PROPERTIES']['LOGO']['VALUE'])['SRC'];
+    } else {
+        $arResult['COMPANY_LOGO']['SRC'] = $this->GetFolder().'/images/nopic_30x30.gif';
     }
 }
 
@@ -37,4 +39,5 @@ if(empty($arUser['PERSONAL_PHOTO']['SRC']) ) {
 
 $arResult['USER'] = $arUser;
 $arResult['USER']["DETAIL_URL"] = '/settings/users/my/profile/';
+$arResult['USER_COMPANY']["DETAIL_URL"] = '/settings/users/my/company/';
 $arResult['USER']['NAME_FORMATTED'] = CUser::formatName('#NAME# #SECOND_NAME# #LAST_NAME#', $arUser, false, false);
