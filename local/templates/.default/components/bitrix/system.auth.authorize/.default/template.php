@@ -59,7 +59,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div>
         <? endif; ?>
         <div class="flexbox">
-            <label class="checkbox active"><input type="checkbox" id="USER_REMEMBER" name="USER_REMEMBER" value="Y"
+            <label class="checkbox active js-checkbox"><input type="checkbox" id="USER_REMEMBER" name="USER_REMEMBER" value="Y"
                                                   checked/><?= GetMessage("AUTH_REMEMBER_ME") ?></label>
             <? if ($arParams["NOT_SHOW_LINKS"] != "Y"): ?>
                 <noindex>
