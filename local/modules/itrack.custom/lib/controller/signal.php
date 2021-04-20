@@ -218,13 +218,14 @@ class Signal extends Controller
 
         $user = new \CUser;
         $arFields = Array(
-            "NAME" => $userdata['name'],
-            "LAST_NAME" => $userdata['lastname'],
-            "SECOND_NAME" => $userdata['secondname'],
+            "NAME" => $userdata['lastname'].' '.$userdata['name'].' '.$userdata['secondname'],
+            //"LAST_NAME" => $userdata['lastname'],
+            //"SECOND_NAME" => $userdata['secondname'],
             "EMAIL" => $userdata['email'],
             "WORK_POSITION" => $userdata['position'],
             "PERSONAL_PHONE" => $userdata['persphone'],
             "WORK_PHONE" => $userdata['workphone'],
+            "WORK_FAX" => $userdata['addphone'],
             "LOGIN" => $userdata['email'],
             "ACTIVE" => "Y",
             "GROUP_ID" => $groups,

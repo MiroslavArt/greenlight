@@ -1,7 +1,7 @@
 <?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div class="wrapper">
-    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться к главному разделу</a>
+    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться к списку страховых компаний</a>
     <div class="title_container">
         <div class="title_block">
             <span class="type_page">Карточка страховой компании</span>

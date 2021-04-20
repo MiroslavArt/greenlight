@@ -19,6 +19,7 @@ class ItrUserProfile extends CBitrixComponent
 		"PERSONAL_MOBILE" => "user",
 		"WORK_POSITION" => "super_user",
 		"WORK_PHONE" => "user",
+        "PERSONAL_PHONE" => "user",
 		"WORK_FAX" => "user",
 		"UF_COMPANY" => "super_broker",
 		"PASSWORD" => "user",
@@ -78,7 +79,9 @@ class ItrUserProfile extends CBitrixComponent
     }
 
     private function updateUserFields($userId, $request) {
-		$arValues = [];
+
+
+        $arValues = [];
 
 		foreach ($this->arFields as $fieldCode => $role) {
 

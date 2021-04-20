@@ -1,7 +1,7 @@
 <?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
 
 <div id="contracts-wrapper" class="wrapper">
-    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться назад</a>
+    <a href="<?=$arParams['LIST_URL']?>" class="back">Вернуться к списку клиентов</a>
     <div class="title_container">
         <div class="title_block">
             <span class="type_page">Карточка клиента</span>
@@ -16,7 +16,7 @@
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
-                <a href="#add_contract" class="btn" data-fancybox>Добавить договор</a>
+                <a href="#add_contract" class="btn" data-fancybox>Добавить договор страхования</a>
             <? } ?>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
@@ -187,12 +187,13 @@
                         <div class="table_block stat_column green" data-name="Закрыто"><?=$arItem["CNT"]["green"] ?: 0?></div>
                         <div class="table_block stat_column yellow item2" data-name="Документы предоставлены"><?=$arItem["CNT"]["yellow"] ?: 0?></div>
                         <div class="table_block stat_column red" data-name="Открыто"><?=$arItem["CNT"]["red"] ?: 0?></div>
-                        <div class="table_block item3" data-name="СК (Лидер)">
-							<p class="ico_check">
+                        <div class="table_block clients_column item3 align_left" data-name="СК (Лидер)">
+                            <img src="<?=$arItem["LEADERS"]["insurer"]["LOGO"]?>" width="40" height="40" alt="img1" />
+                            <span>
 								<a href="<?=$arItem['DETAIL_PAGE_URL']?>">
 									<?=$arItem["LEADERS"]["insurer"]["NAME"]?>
 								</a>
-							</p>
+							</span>
 						</div>
                         <div class="table_block item6 links_column" data-name="Ссылки">
                             <a data-fancybox data-type="ajax" href="/ajax/companies_popup.php?target-id=<?=$arItem["ID"]?>&target-type=contract&parties=insurer" class="link ico_doc"><span>Все СК по договору</span></a>

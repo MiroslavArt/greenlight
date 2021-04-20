@@ -85,7 +85,7 @@ if (!function_exists("printInputProfile")) {
 		</div><!-- END form_row -->
 		<div class="form_row">
 			<? printInputProfile($arResult, "Email", "EMAIL") ?>
-			<? printInputProfile($arResult, "Телефон (мобильный)", "PERSONAL_MOBILE", false) ?>
+			<? printInputProfile($arResult, "Телефон (мобильный)", "PERSONAL_PHONE", false) ?>
 			<? printInputProfile($arResult, "Телефон (рабочий)", "WORK_PHONE", false, "tel", "tel") ?>
 			<? printInputProfile($arResult, "Доб. номер", "WORK_FAX", false, "text", "small") ?>
 		</div><!-- END form_row -->
@@ -103,7 +103,7 @@ if (!function_exists("printInputProfile")) {
 	<div class="popup small" id="change_pass">
 		<h3 class="block_title">Смена пароля</h3>
 		<form class="form_popup " method="POST">
-			<input type="hidden" name="FORM_SENT" value="Y">
+			<input type="hidden" name="FORM_SENT2" value="Y">
 			<?=bitrix_sessid_post();?>
 
 			<div class="form_row">

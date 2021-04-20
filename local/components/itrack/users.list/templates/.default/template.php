@@ -24,7 +24,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 					<div class="table_block align_left item3" data-name="Логин"><p><?=$arItem["LOGIN"]?></p></div>
 					<div class="table_block align_left item4" data-name="ФИО"><p><?=$arItem["FIO"]?></p></div>
 					<?$super = $arItem["IS_SUPER"] ? "not_registered" : "registered"?>
-					<div class="table_block align_left" data-name="Права"><a href="#" class="<?=$super?>"></a></div>
+					<div class="table_block align_left" data-name="Права"><p class="<?=$super?>"></p></div>
 					<div class="table_block clients_column item4 align_left" data-name="Компания">
 						<?if ($arItem["COMPANY_LOGO"]):?>
 							<img src="<?=$arItem["COMPANY_LOGO"]?>" width="40" height="40" alt="img1" />
