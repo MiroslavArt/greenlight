@@ -25,14 +25,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 					<div class="table_block align_left item4" data-name="ФИО"><p><?=$arItem["FIO"]?></p></div>
 					<?$super = $arItem["IS_SUPER"] ? "not_registered" : "registered"?>
 					<div class="table_block align_left" data-name="Права"><a href="#" class="<?=$super?>"></a></div>
-					<div class="table_block clients_column item4 no_header" data-name="Компания">
+					<div class="table_block clients_column item4 align_left" data-name="Компания">
 						<?if ($arItem["COMPANY_LOGO"]):?>
 							<img src="<?=$arItem["COMPANY_LOGO"]?>" width="40" height="40" alt="img1" />
 						<?endif?>
 						<span><?=$arItem["COMPANY_NAME"]?></span>
 					</div><!-- END table_block -->
 					<div class="table_block align_left item3" data-name="Дата последнего входа"><?=$arItem["LAST_LOGIN"]?></div>
-					<div class="table_block align_left item7" data-name="Ссылки">
+					<div class="table_block align_left links_column item7" data-name="Ссылки">
 						<a href="<?=$arItem['URL_PROFILE']?>" class="link ico_settings">Настройки</a>
 						<a href="<?=$arItem['URL_ACCESS']?>" class="link ico_rights">Права доступа</a>
 					</div><!-- END table_block -->

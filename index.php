@@ -35,7 +35,7 @@ $APPLICATION->SetTitle("Главная страница");
                 );?>
             </div><!-- END tile -->
             <a href="/clients/" class="tile_link ico_1">Клиенты</a>
-            <a href="/insurance-companies/" class="tile_link ico_2">Страховые <br />компании</a>
+            <a href="/insurance-companies/" class="tile_link ico_2">Страховые компании</a>
             <a href="/adjusters/" class="tile_link ico_3">Аджастеры</a>
             <a href="/settings/" class="tile_link ico_4">Настройки</a>
             <a href="/losts/" class="tile_link ico_5">Все убытки</a>

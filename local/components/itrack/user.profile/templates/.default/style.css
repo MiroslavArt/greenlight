@@ -21,8 +21,8 @@
 	width: 32px;
 
 }
-
 .profile-checkbox:checked + label:before{
 	background-color: #800080;
 	left: calc(100% - 34px);
 }
+.profile-checkbox{display: none;}

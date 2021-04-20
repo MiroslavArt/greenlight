@@ -69,7 +69,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END logo_upload_container -->
                 </div><!-- END form_row -->
                 <p class="link" id="mistake"></p>
-                <input type="submit" class="btn" value="Добавить компанию" />
+                <input type="submit" class="btn" value="Добавить клиента" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
         <?php if (!empty($arResult['ITEMS'])):?>
