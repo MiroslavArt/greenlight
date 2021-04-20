@@ -54,6 +54,10 @@ if (!function_exists("printInputCompany")) {
 			<?printInputCompany($arResult, "Юридический адрес", "LEGAL_ADDRESS")?>
 			<?printInputCompany($arResult, "Почтовый адрес", "ACTUAL_ADDRESS")?>
 		</div><!-- END form_row -->
+        <div class="form_row">
+            <?printInputCompany($arResult, "ИНН", "INN")?>
+            <?printInputCompany($arResult, "КПП", "KPP")?>
+        </div><!-- END form_row -->
 		<div class="form_row">
 
 			<div class="input_container column_3">

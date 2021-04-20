@@ -22,6 +22,8 @@ class ItrCompanyProfile extends CBitrixComponent
 		"FULL_NAME" => "super_user",
 		"LEGAL_ADDRESS" => "super_user",
 		"ACTUAL_ADDRESS" => "super_user",
+        "INN" => "super_user",
+        "KPP" => "super_user"
 	];
 
 
