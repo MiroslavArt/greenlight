@@ -80,7 +80,7 @@ class ItrLostDocument extends CBitrixComponent
             $arUser = $rsUser->Fetch();
             if($arUser) {
                 $arResult['REQUEST_USER'] = $arUser;
-                $arResult['REQUEST_USER_FIO'] = \CUser::formatName('#LAST_NAME#&nbsp;#NAME_SHORT#&nbsp;#SECOND_NAME_SHORT# ', $arUser, false, false);
+                $arResult['REQUEST_USER_FIO'] = \CUser::formatName('#NAME#&nbsp #SECOND_NAME#&nbsp #LAST_NAME#&nbsp', $arUser, false, false);
             }
         }
         //Document Files
@@ -206,8 +206,11 @@ class ItrLostDocument extends CBitrixComponent
         if($status==10) {
             if($isadj || $isins) {
                 $this->statuschanged = true;
-                $this->showaccept = true;
-                $this->showdecline = true;
+                //$this->showaccept = true;
+                //$this->showdecline = true;
+                if($this->shpworiginalpanel) {
+                    $this->originalstatuset = true;
+                }
                 $newstatus = '12';
             }
         }

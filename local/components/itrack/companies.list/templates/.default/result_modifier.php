@@ -14,3 +14,11 @@ if(!empty($arResult['ITEMS'])) {
         }
     }
 }
+
+if($arParams["PARTY"]=='client') {
+    $arParams['TYPE_ID'] = 4;
+} elseif($arParams["PARTY"]=='insuer') {
+    $arParams['TYPE_ID'] = 2;
+} elseif($arParams["PARTY"]=='adjuster') {
+    $arParams['TYPE_ID'] = 3;
+}
