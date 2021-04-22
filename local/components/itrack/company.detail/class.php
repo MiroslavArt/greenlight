@@ -93,7 +93,7 @@ class ItrCompany extends CBitrixComponent
 
 		$contractFilter = [
 			"ACTIVE" => "Y",
-			"ID" => $arPermittedContractIds,
+			"ID" => $arPermittedContractIds ?: false,
 		];
 
 		// filter for client detail
@@ -198,7 +198,7 @@ class ItrCompany extends CBitrixComponent
 			$arContractIds,
 			array_map(
 				function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
-				CLost::getElementsByConditions(["ID" => $arLostIds], [], ["PROPERTY_CONTRACT"])
+				CLost::getElementsByConditions(["ID" => $arLostIds ?: false], [], ["PROPERTY_CONTRACT"])
 			)
 		);
 
