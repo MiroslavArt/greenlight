@@ -194,6 +194,13 @@ class ItrLostDocument extends CBitrixComponent
             }
         }
 
+        if($status==6) {
+            if($isbroker) {
+                $this->showaccept = true;
+                $this->showdecline = true;
+            }
+        }
+
         if($status==7 || $status==9) {
             if($issupbroker) {
                 $this->statuschanged = true;
