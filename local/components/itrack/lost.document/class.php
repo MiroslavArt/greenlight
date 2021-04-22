@@ -206,8 +206,8 @@ class ItrLostDocument extends CBitrixComponent
         if($status==10) {
             if($isadj || $isins) {
                 $this->statuschanged = true;
-                $this->showaccept = true;
-                $this->showdecline = true;
+                //$this->showaccept = true;
+                //$this->showdecline = true;
                 if($this->shpworiginalpanel) {
                     $this->originalstatuset = true;
                 }
