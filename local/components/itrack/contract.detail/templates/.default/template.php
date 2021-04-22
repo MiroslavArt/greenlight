@@ -11,7 +11,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 }
 ?>
     <div id="contract-wrapper" class="wrapper">
-        <a href="<?=$arParams['LIST_URL']?><?=$arParams['CLIENT_ID']?>/" class="back"><?=$arResult['COMPANY']['NAME']?></a>
+        <?php if (!empty($arParams['PAGE_TYPE']) && $arParams['PAGE_TYPE'] == 'contracts-list') : ?>
+            <a href="<?= $arParams['LIST_URL'] ?>" class="back">К списку договоров страхования</a>
+        <?php else : ?>
+            <a href="<?= $arParams['LIST_URL'] ?><?= $arParams['CLIENT_ID'] ?>/" class="back"><?= $arResult['COMPANY']['NAME'] ?></a>
+        <?php endif; ?>
         <div class="cart_container">
             <div class="cart_block">
                 <span class="type_page">Карточка договор страхования клиента</span>

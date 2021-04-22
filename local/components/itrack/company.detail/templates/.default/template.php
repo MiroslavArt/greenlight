@@ -11,16 +11,20 @@ use Bitrix\Main\Page\Asset;
 
 <?php
 
-switch ($arResult['COMPANY_TYPE']) {
-    case 'client':
-        include 'types/client.php';
-        break;
-    case 'insurer':
-        include 'types/insurer.php';
-        break;
-    case 'adjuster':
-        include 'types/adjuster.php';
-        break;
+if(!empty($arParams['PAGE_TYPE']) && $arParams['PAGE_TYPE'] == 'contracts-list') {
+    include 'types/contracts-list.php';
+} else {
+    switch ($arResult['COMPANY_TYPE']) {
+        case 'client':
+            include 'types/client.php';
+            break;
+        case 'insurer':
+            include 'types/insurer.php';
+            break;
+        case 'adjuster':
+            include 'types/adjuster.php';
+            break;
+    }
 }
  ?>
 

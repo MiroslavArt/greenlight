@@ -26,7 +26,10 @@ class ItrContract extends CBitrixComponent
 
     public function onPrepareComponentParams($arParams)
     {
-        $this->companyId = $arParams['CLIENT_ID'];
+        if(!empty($arParams['CLIENT_ID'])) {
+            $this->companyId = $arParams['CLIENT_ID'];
+        }
+
         $this->contractId = $arParams['CONTRACT_ID'];
 
         return $arParams;
@@ -41,7 +44,10 @@ class ItrContract extends CBitrixComponent
         $this->getContract();
 
         //get company
-        $arResult['COMPANY'] = $this->getCompany($this->companyId);
+        if(!empty($this->companyId)) {
+            $arResult['COMPANY'] = $this->getCompany($this->companyId);
+        }
+
         //get insurance company
         $insarray = [];
         foreach($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY']['VALUE'] as $insco) {
@@ -49,8 +55,12 @@ class ItrContract extends CBitrixComponent
             array_push($insarray, $inscodata);
         }
         $arResult['INSURANCE_COMPANIES'] = $insarray;
-        $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
-        $arResult['BROKER'] = $this->getCompany(current($arResult['CONTRACT']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
+        if(!empty($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'])) {
+            $arResult['INSURANCE_COMPANY'] = $this->getCompany($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE']);
+        }
+        if(!empty(current($arResult['CONTRACT']['PROPERTIES']['INSURANCE_BROKER']['VALUE']))) {
+            $arResult['BROKER'] = $this->getCompany(current($arResult['CONTRACT']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
+        }
 
         if(isset($this->request['q_name'])) {
             $arFilter = [
