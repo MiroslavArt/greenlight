@@ -343,7 +343,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 </li>
                                 <li>
                                     <span>Моб.телефон</span>
-                                    <p>+<?= $item['MPHONE'] ?></p>
+                                    <p><?= $item['MPHONE'] ?></p>
                                 </li>
                                 <li>
                                     <span>Раб. телефон</span>
@@ -393,7 +393,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 </li>
                                 <li>
                                     <span>Моб.телефон</span>
-                                    <p>+<?= $item['MPHONE'] ?></p>
+                                    <p><?= $item['MPHONE'] ?></p>
                                 </li>
                                 <li>
                                     <span>Раб. телефон</span>
@@ -454,7 +454,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                             </li>
                                             <li>
                                                 <span>Моб.телефон</span>
-                                                <p>+<?= $item['MPHONE'] ?></p>
+                                                <p><?= $item['MPHONE'] ?></p>
                                             </li>
                                             <li>
                                                 <span>Раб. телефон</span>
