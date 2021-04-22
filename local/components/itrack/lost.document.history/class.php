@@ -51,7 +51,7 @@ class ItrLostDocument extends CBitrixComponent
             $arUser = $rsUser->Fetch();
             if($arUser) {
                 $arResult['REQUEST_USER'] = $arUser;
-                $arResult['REQUEST_USER_FIO'] = \CUser::formatName('#LAST_NAME#&nbsp;#NAME_SHORT#&nbsp;#SECOND_NAME_SHORT# ', $arUser, false, false);
+                $arResult['REQUEST_USER_FIO'] = \CUser::formatName('#NAME#&nbsp #SECOND_NAME#&nbsp #LAST_NAME#&nbsp', $arUser, false, false);
             }
         }
         //Document Files
@@ -127,7 +127,7 @@ class ItrLostDocument extends CBitrixComponent
             $filter = ["ID" => implode("|", $arUserIDs)];
             $rsUsers = \CUser::GetList(($by = "NAME"), ($order = "desc"), $filter);
             while ($arUser = $rsUsers->Fetch()) {
-                $arUsers[$arUser['ID']] = \CUser::formatName('#LAST_NAME#&nbsp;#NAME_SHORT#&nbsp;#SECOND_NAME_SHORT# ', $arUser, false, false);
+                $arUsers[$arUser['ID']] = \CUser::formatName('#NAME#&nbsp #SECOND_NAME#&nbsp #LAST_NAME#&nbsp', $arUser, false, false);
             }
         }
 
