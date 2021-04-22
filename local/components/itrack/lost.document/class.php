@@ -208,6 +208,9 @@ class ItrLostDocument extends CBitrixComponent
                 $this->statuschanged = true;
                 $this->showaccept = true;
                 $this->showdecline = true;
+                if($this->shpworiginalpanel) {
+                    $this->originalstatuset = true;
+                }
                 $newstatus = '12';
             }
         }
