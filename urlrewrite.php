@@ -32,6 +32,14 @@ $arUrlRewrite=array (
     'PATH' => '/adjusters/index.php',
     'SORT' => 100,
   ),
+  8 => 
+  array (
+    'CONDITION' => '#^/contracts/#',
+    'RULE' => '',
+    'ID' => 'itrack:contracts',
+    'PATH' => '/contracts/index.php',
+    'SORT' => 100,
+  ),
   5 => 
   array (
     'CONDITION' => '#^/clients/#',
