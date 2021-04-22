@@ -169,6 +169,7 @@ class ItrLost extends CBitrixComponent
                 'LAST_LOGIN' => 'USER.LAST_LOGIN',
                 'POSITION' => 'USER.WORK_POSITION',
                 'PHONE' => 'USER.WORK_PHONE',
+                'MPHONE' => 'USER.PERSONAL_PHONE',
                 'EMAIL' => 'USER.EMAIL',
                 'COMPANY_ID' => 'IB_COMPANY.ID',
                 'COMPANY_NAME' => 'IB_COMPANY.NAME',
