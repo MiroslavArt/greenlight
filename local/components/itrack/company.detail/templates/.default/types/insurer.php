@@ -13,7 +13,7 @@
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <a href="<?=$arParams['PATH_TO']['useful-documents']?>" class="btn tablet_hide">Полезные документы</a>
-            <a href="#" class="btn">Добавить клиента</a>
+            <!--<a href="#" class="btn">Добавить клиента</a> -->
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
 	<div id="contracts-list">
