@@ -2,11 +2,13 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-//\Itrack\Custom\Helpers\Utils::varDump($arResult['CURATORS']);
+//\Itrack\Custom\Helpers\Utils::varDump($arParams);
 ?>
 <div class="wrapper">
     <?php if($arParams['CURATORS_MODE']) : ?>
         <a href="<?= $arParams['PATH_TO']['lost'] ?>" class="back"><?=GetMessage("LOST_CARD")?></a>
+    <?php elseif ( ( empty($arParams['CLIENT_ID']) || empty($arParams['CONTRACT_ID'])) && empty($arParams['CURATORS_MODE']) ) :?>
+        <a href="<?= $arParams['LIST_URL'] ?>" class="back">К списку убытков</a>
     <?php else :?>
         <a href="<?= $arResult['CONTRACT_PAGE_URL'] ?>" class="back">Договор страхования</a>
     <?php endif;?>

@@ -48,7 +48,7 @@ $arUrlRewrite=array (
     'PATH' => '/clients/index.php',
     'SORT' => 100,
   ),
-  6 => 
+  9 => 
   array (
     'CONDITION' => '#^/losts/#',
     'RULE' => '',
