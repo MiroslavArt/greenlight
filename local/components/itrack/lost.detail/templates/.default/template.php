@@ -24,7 +24,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
+            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow' && $arResult["CAN_CLOSE_LOSS"]) { ?>
                  <a href="#change_status" data-fancybox class="ico_settings link">Закрыть убыток</a>
             <? } ?>
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
@@ -102,6 +102,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <h3 class="block_title">Редактирование убытка</h3>
         <form class="form_popup form4">
             <div class="form_row">
+                <div class="input_container column_25">
+                    <span>Номер убытка</span>
+                    <input type="text" class="text_input" id="doc_num" value="<?=$arResult['LOST']['NAME']?>" />
+                </div><!-- END input_container -->
                 <div class="input_container column_25">
                     <span>Дата убытка</span>
                     <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата убытка" value="<?=$arResult['LOST']['DATE_ACTIVE_FROM']?>"/>

@@ -78,6 +78,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <p><a href="#add_doc" data-fancybox class="link"><span>Запрос</span></a></p>
             </li>
         </ul><!-- END doc_info -->
+        <? if($arResult['SHOWADD']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
         <?
             if($arResult['SHOWACCEPT']) {
         ?>
@@ -89,7 +90,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <a href="#decline_comment" class="btn" data-fancybox>Отклонить</a>
         <? } ?>
         <a href="<?=$arParams['PATH_TO']['lost-document-history']?>" class="btn">Все статусы <br />документа</a>
-        <? if($arResult['SHOWADD']) { ?><a href="#add_doc2" class="btn" data-fancybox>Добавить</a> <? } ?>
+
     </div><!-- END desc_container -->
     <div class="popup add_doc" id="add_doc">
         <?php
