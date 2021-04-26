@@ -27,6 +27,7 @@ class ItrLost extends CBitrixComponent
     private $companyId;
     private $contractId;
     private $errors;
+    private $userRole;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -86,6 +87,14 @@ class ItrLost extends CBitrixComponent
             array_push($adjarray, $adjcodata);
         }
         $arResult['ADJUSTER_COMPANIES'] = $adjarray;
+
+        // can close a lost
+        $arResult["CAN_CLOSE_LOSS"] = false;
+        $this->userRole = new CUserRole($GLOBALS["USER"]->GetID());
+        if ($this->userRole->isSuperBroker()) {
+            $arResult["CAN_CLOSE_LOSS"] = true;
+        }
+
 
         if(!empty($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE'])) {
             $arResult['ADJUSTER_COMPANY'] = $this->getCompany($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE']);
