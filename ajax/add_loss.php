@@ -93,6 +93,8 @@ $companies = array_merge($companies, $adjarray);
 if($_POST['lostid']) {
     $ID = $_POST['lostid'];
     $data = [
+        'NAME' => $_POST['docnum'],
+        'CODE' => $_POST['docnum'],
         'DATE_ACTIVE_FROM' => $_POST['docdate']
     ];
 
@@ -109,8 +111,12 @@ if($_POST['lostid']) {
         'ADJUSTER_LEADER' => $_POST['adjleader']
     ];
 
-    Lost::updateElement($ID, $data, $PROP);
-
+    $res = Lost::updateElement($ID, $data, $PROP);
+    if($res != '1') {
+        $ID = 0;
+        $res = preg_replace('/символьным кодом/', 'номером', $res);
+        __CrmPropductRowListEndResponse(array('error'=>strip_tags($res)));
+    }
 } else {
     $data = [
         'ACTIVE' => 'Y',

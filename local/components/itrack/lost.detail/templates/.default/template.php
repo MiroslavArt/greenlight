@@ -103,6 +103,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <form class="form_popup form4">
             <div class="form_row">
                 <div class="input_container column_25">
+                    <span>Номер убытка</span>
+                    <input type="text" class="text_input" id="doc_num" value="<?=$arResult['LOST']['NAME']?>" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
                     <span>Дата убытка</span>
                     <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата убытка" value="<?=$arResult['LOST']['DATE_ACTIVE_FROM']?>"/>
                 </div><!-- END input_container -->

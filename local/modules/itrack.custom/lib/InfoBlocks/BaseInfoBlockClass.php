@@ -393,13 +393,18 @@ class BaseInfoBlockClass extends AbstractInfoBlock
         $el = new CIBlockElement();
 
         if (!empty($params)) {
-            $el->Update($id, $params);
+            $res = $el->Update($id, $params);
         }
 
         if (!empty($properties)) {
             foreach ($properties as $key => $property) {
                 CIBlockElement::SetPropertyValuesEx($id, false, [$key => $property]);
             }
+        }
+        if($el->LAST_ERROR) {
+            return strip_tags($el->LAST_ERROR);
+        } else {
+            return $res;
         }
     }
 
