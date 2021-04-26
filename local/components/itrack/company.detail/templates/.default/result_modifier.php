@@ -7,9 +7,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @global \CDatabase $DB */
 /** @var CBitrixComponentTemplate $this */
 
-
-
-
 foreach ($arResult['ITEMS'] as $index => $arItem) {
 	foreach ($arItem["LEADERS"] as $party => $arLeader) {
 		if (empty($arLeader["LOGO"])) {

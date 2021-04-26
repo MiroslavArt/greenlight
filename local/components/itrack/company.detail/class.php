@@ -187,9 +187,12 @@ class ItrCompany extends CBitrixComponent
 		$allTargetsOfCompany = $this->getTargetsOfCompany($this->companyId);
 		$arContractIdsOfCompany = $this->getContractIdsByAllTargets($allTargetsOfCompany);
 
+        $this->arResult["CAN_ADD_CONTRACT"] = false;
 
-		if ($this->userRole->isSuperBroker()) return $arContractIdsOfCompany;
-
+		if ($this->userRole->isSuperBroker()) {
+            $this->arResult["CAN_ADD_CONTRACT"] = true;
+            return $arContractIdsOfCompany;
+        }
 
 		$allTargetsOfUser = $this->userRole->isSuperUser()
 			? $this->getTargetsOfCompany($this->userCompanyId)

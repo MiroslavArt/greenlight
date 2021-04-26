@@ -15,7 +15,7 @@
                 <input type="text" name="search" class="search_text" placeholder="Поиск по списку договоров"/>
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
-            <? if($arResult['COMPANY']['PROPERTY_1']==4) { ?>
+            <? if($arResult['CAN_ADD_CONTRACT']==1) { ?>
                 <a href="#add_contract" class="btn" data-fancybox>Добавить договор страхования</a>
             <? } ?>
         </div><!-- END title_right_block -->
