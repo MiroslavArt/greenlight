@@ -9,6 +9,13 @@ use \Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\UserFieldValueTable;
+use \Bitrix\Main\UserGroupTable;
+use \Bitrix\Main\Entity;
+use \Bitrix\Main\Entity\Query;
+use \Bitrix\Main\Entity\ReferenceField;
+use \Bitrix\Main\ORM\Query\Join;
+use \Bitrix\Iblock\Elements\ElementCompanyTable;
 
 class ItrCompanyProfile extends CBitrixComponent
 {
@@ -153,6 +160,56 @@ class ItrCompanyProfile extends CBitrixComponent
 
 		CIBlockElement::SetPropertyValuesEx($companyId, false, $arValues);
 
+		// обновление ролей сотрудников
+        $q = $this->getBaseQuery($companyId);
+        $result = $q->exec();
+        while ($row = $result->fetch())
+        {
+            $party = Company::getPartyByCompany($companyId);
+            $userrole = new CUserRole($row['ID']);
+            $role = $userrole->getUserParty();
+            $superuser = $userrole->isSuperUser();
+            if($party == 'broker') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'insurer') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'adjuster') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'client') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            }
+        }
 		return [ "SUCCESS" => true ];
 	}
+
+    private function getBaseQuery($companyId) {
+        return UserGroupTable::query()
+            ->setSelect([
+                'ID' => 'USER.ID',
+                'COMPANY_ID' => 'IB_COMPANY.ID',
+                'COMPANY_NAME' => 'IB_COMPANY.NAME'
+            ])
+            ->where('IB_COMPANY.ID', $companyId)
+            ->registerRuntimeField(new ReferenceField(
+                'UF_VAL',
+                UserFieldValueTable::class,
+                Join::on('this.USER_ID', 'ref.VALUE_ID')
+            ))
+            ->registerRuntimeField((new ReferenceField(
+                'IB_COMPANY',
+                ElementCompanyTable::class,
+                Join::on('this.UF_VAL.UF_COMPANY', 'ref.ID')
+            ))->configureJoinType(Join::TYPE_INNER))
+            ;
+    }
+
+
 }
