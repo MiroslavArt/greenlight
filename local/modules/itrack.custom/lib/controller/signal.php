@@ -490,6 +490,22 @@ class Signal extends Controller
 
         if($usernotify && $nottempl) {
             CNotification::send($nottempl, $usernotify, 'nocomment', $lostid, $lostdocid);
+            if($nottempl=='doc_read_orig') {
+                $curclient = [];
+                $participation = new CParticipation(new CLost($lostid));
+                $partips = $participation->getParticipants();
+                foreach ($partips as $partip) {
+                    $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                    foreach ($curators as $curator) {
+                        $arGroups2 = \CUser::GetUserGroup($curator);
+                        if (in_array(CL_GROUP, $arGroups2)) {
+                            $curclient[] = $curator;
+                        }
+                    }
+                }
+                CNotification::send('doc_read_orig_cl', $curclient, 'nocomment', $lostid, $lostdocid);
+            }
+
         }
 
         if($newstatus) {
