@@ -27,8 +27,15 @@ class ItrCompany extends CBitrixComponent
 
     public function executeComponent()
     {
+        $this->userId = $GLOBALS["USER"]->GetID();
+        $this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
+        $this->userRole = new CUserRole($this->userId);
+
 		// todo change CLIENT_ID to COMPANY_ID
-    	$this->companyId = $this->arParams['CLIENT_ID'];
+        $this->companyId = $this->arParams['CLIENT_ID'] ?: $this->userCompanyId;
+
+
+        $this->arResult["CAN_ADD_CONTRACT"] = $this->userRole->isSuperBroker();
 
         global $APPLICATION;
 
@@ -79,11 +86,6 @@ class ItrCompany extends CBitrixComponent
 
     private function getContractList()
     {
-    	$this->userId = $GLOBALS["USER"]->GetID();
-    	$this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
-
-		$this->userRole = new CUserRole($this->userId);
-
 		$permittedLosts = $this->getPermittedLosts();
 		$arCounts = $this->getCountsOfLost($permittedLosts);
 		$arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
@@ -123,12 +125,19 @@ class ItrCompany extends CBitrixComponent
 				}
 			}
 
+
+			$detailPageUrl = "$listUrl{$this->companyId}/contract/$id/";
+
+            if(!empty($this->arParams['PAGE_TYPE']) && $this->arParams['PAGE_TYPE'] == 'contracts-list') {
+                $detailPageUrl = "$listUrl$id/";
+            }
+
 			$result[] = [
 				"ID" => $arContract["ID"],
 				"NAME" => $arContract["NAME"],
 				"DATE" => $arContract["PROPERTIES"]["DATE"]["VALUE"],
 				"TYPE" => $arContract["PROPERTIES"]["TYPE"]["VALUE"],
-				"DETAIL_PAGE_URL" => "$listUrl{$this->companyId}/contract/$id/",
+				"DETAIL_PAGE_URL" => $detailPageUrl,
 				"CNT" => $arCounts[$id],
 				"LEADERS" => $arLeaders[$id],
 			];

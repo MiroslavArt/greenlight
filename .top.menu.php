@@ -9,7 +9,7 @@ $aMenuLinks = Array(
 	),
 	Array(
 		"Договоры <br />страхования", 
-		"/insurance-companies/",
+		"/contracts/",
 		Array(), 
 		Array("icon"=>"<svg width=\"20\" height=\"23\" viewBox=\"0 0 20 23\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.25 1H3.25C2.65326 1 2.08097 1.22125 1.65901 1.61508C1.23705 2.0089 1 2.54305 1 3.1V19.9C1 20.457 1.23705 20.9911 1.65901 21.3849C2.08097 21.7787 2.65326 22 3.25 22H16.75C17.3467 22 17.919 21.7787 18.341 21.3849C18.7629 20.9911 19 20.457 19 19.9V7.3M12.25 1L19 7.3M12.25 1V7.3H19M14.5 12.55H5.5M14.5 16.75H5.5M7.75 8.35H5.5\" stroke=\"#C2C7CF\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"), 
 		"" 

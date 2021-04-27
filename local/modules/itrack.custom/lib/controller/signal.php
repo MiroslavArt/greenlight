@@ -7,6 +7,7 @@ use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Request;
+use Itrack\Custom\CUserRole;
 use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
@@ -188,33 +189,7 @@ class Signal extends Controller
 
     public function addUserAction($userdata)
     {
-        Loader::includeModule('iblock');
-        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM", "PROPERTY_TYPE");
-        $arFilter = Array("IBLOCK_ID" => 1, "ID" => $userdata['company'], "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-        $res = \CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
-        $company = $res->fetch();
-        $groups = array(5);
-        if ($company['PROPERTY_TYPE_ENUM_ID'] == 1) {
-            array_push($groups, SB_GROUP);
-            if ($userdata['superuser']=='true') {
-                array_push($groups, SB_SU_GROUP);
-            }
-        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 2) {
-            array_push($groups, INS_GROUP);
-            if ($userdata['superuser']=='true') {
-                array_push($groups, INS_SU_GROUP);
-            }
-        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 4) {
-            array_push($groups, CL_GROUP);
-            if ($userdata['superuser']=='true') {
-                array_push($groups, CL_SU_GROUP);
-            }
-        } elseif ($company['PROPERTY_TYPE_ENUM_ID'] == 3) {
-            array_push($groups, AJ_GROUP);
-            if ($userdata['superuser']=='true') {
-                array_push($groups, AJ_SU_GROUP);
-            }
-        }
+        $groups = array(REG_GROUP);
 
         $user = new \CUser;
         $arFields = Array(
@@ -236,13 +211,21 @@ class Signal extends Controller
 
         $ID = $user->Add($arFields);
         if(intval($ID) > 0) {
+            // обновляем роли пользователя
+            $party = Company::getPartyByCompany($userdata['company']);
+            if ($userdata['superuser']=='true') {
+                $superuser = true;
+            }
+            $userrole = new CUserRole($ID);
+            $userrole->setUserRole($party, $superuser);
+
             // обновляем карточку договора
             if($userdata['contract']!="N/A") {
                 $participantClass = CContract::getParticipantClass();
                 $participant = $participantClass::initByTargetAndCompany($userdata['contract'], $userdata['company']);
                 $participant->bindCurator($ID);
             }
-
+            // обновляем карточку убытка
             if($userdata['loss']!="N/A") {
                 $participantClass = CLost::getParticipantClass();
                 $participant = $participantClass::initByTargetAndCompany($userdata['loss'], $userdata['company']);
@@ -262,8 +245,6 @@ class Signal extends Controller
                     "USER_ID" => $ID
                 ]
             );
-
-
         } else {
             $result = strip_tags($user->LAST_ERROR);
         }
@@ -509,6 +490,22 @@ class Signal extends Controller
 
         if($usernotify && $nottempl) {
             CNotification::send($nottempl, $usernotify, 'nocomment', $lostid, $lostdocid);
+            if($nottempl=='doc_read_orig') {
+                $curclient = [];
+                $participation = new CParticipation(new CLost($lostid));
+                $partips = $participation->getParticipants();
+                foreach ($partips as $partip) {
+                    $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                    foreach ($curators as $curator) {
+                        $arGroups2 = \CUser::GetUserGroup($curator);
+                        if (in_array(CL_GROUP, $arGroups2)) {
+                            $curclient[] = $curator;
+                        }
+                    }
+                }
+                CNotification::send('doc_read_orig_cl', $curclient, 'nocomment', $lostid, $lostdocid);
+            }
+
         }
 
         if($newstatus) {

@@ -434,6 +434,7 @@ $(document).ready(function() {
             form_data.append('lostid', $("#lostid").val())
             form_data.append('clientid', clientid)
             form_data.append('brokerid', brokerid)
+            form_data.append('docnum',$("#doc_num").val())
             form_data.append('docdate',$("#doc_date").val())
             form_data.append('inscompanies', inscompanies)
             form_data.append('insleader', insleader)

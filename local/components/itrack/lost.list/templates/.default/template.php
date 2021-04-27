@@ -206,8 +206,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>
                             <div class="table_block align_left item2" data-name="Описание"><?=$arItem['DESCRIPTION']?></div>
                             <div class="table_block links_column item9" data-name="Ссылки">
-                                <a href="#" class="link"><span>Список <br>Аджастеров</span></a>
-                                <a href="/html/docs.html" class="link"><span>Список <br>документов</span></a>
+                                <a data-fancybox data-type="ajax" href="/ajax/companies_popup.php?target-id=<?=$arItem["ID"]?>&target-type=lost&parties=adjuster" class="link ico_doc"><span>Список <br>Аджастеров</span></a>
+                                <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link"><span>Список <br>документов</span></a>
                                 <a href="#corresp<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Корреспон<wbr>денция</span></a>
                                 <a href="#report<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Отчеты</span></a>
                             </div><!-- END links_column -->

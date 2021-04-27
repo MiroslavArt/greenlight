@@ -27,6 +27,7 @@ class ItrLost extends CBitrixComponent
     private $companyId;
     private $contractId;
     private $errors;
+    private $userRole;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -66,6 +67,7 @@ class ItrLost extends CBitrixComponent
             $arResult['CURATORS'] = $arCurators;
             unset($arCurators);
         }
+
         //Lost Requests
         $arResult['REQUESTS'] = $this->getRequests();
 
@@ -85,12 +87,22 @@ class ItrLost extends CBitrixComponent
             array_push($adjarray, $adjcodata);
         }
         $arResult['ADJUSTER_COMPANIES'] = $adjarray;
-        $arResult['ADJUSTER_COMPANY'] = $this->getCompany($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE']);
+
+        // can close a lost
+        $arResult["CAN_CLOSE_LOSS"] = false;
+        $this->userRole = new CUserRole($GLOBALS["USER"]->GetID());
+        if ($this->userRole->isSuperBroker()) {
+            $arResult["CAN_CLOSE_LOSS"] = true;
+        }
 
 
-        $arResult['BROKER'] = $this->getCompany(current($arResult['LOST']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
+        if(!empty($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE'])) {
+            $arResult['ADJUSTER_COMPANY'] = $this->getCompany($arResult['LOST']['PROPERTIES']['ADJUSTER_LEADER']['VALUE']);
+        }
 
-
+        if(!empty(current($arResult['LOST']['PROPERTIES']['INSURANCE_BROKER']['VALUE']))) {
+            $arResult['BROKER'] = $this->getCompany(current($arResult['LOST']['PROPERTIES']['INSURANCE_BROKER']['VALUE']));
+        }
 
         if (isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
@@ -169,6 +181,7 @@ class ItrLost extends CBitrixComponent
                 'LAST_LOGIN' => 'USER.LAST_LOGIN',
                 'POSITION' => 'USER.WORK_POSITION',
                 'PHONE' => 'USER.WORK_PHONE',
+                'MPHONE' => 'USER.PERSONAL_PHONE',
                 'EMAIL' => 'USER.EMAIL',
                 'COMPANY_ID' => 'IB_COMPANY.ID',
                 'COMPANY_NAME' => 'IB_COMPANY.NAME',

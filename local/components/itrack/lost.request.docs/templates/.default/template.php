@@ -37,7 +37,7 @@ use \Bitrix\Main\Localization\Loc;
             <input type="text" class="text_input ico_date js_datapicker" placeholder="Дата запроса" />
         </div><!-- END input_container -->
         <div class="input_container">
-            <input type="text" class="text_input" placeholder="Описание / название документа" />
+            <input type="text" class="text_input" placeholder="Описание запроса" />
         </div><!-- END input_container -->
         <div class="logo_upload">
             <input type="file" class="req_file">

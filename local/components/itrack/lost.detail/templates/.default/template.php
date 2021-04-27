@@ -2,11 +2,13 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 \Bitrix\Main\UI\Extension::load("ui.alerts");
-//\Itrack\Custom\Helpers\Utils::varDump($arResult['CURATORS']);
+//\Itrack\Custom\Helpers\Utils::varDump($arParams);
 ?>
 <div class="wrapper">
     <?php if($arParams['CURATORS_MODE']) : ?>
         <a href="<?= $arParams['PATH_TO']['lost'] ?>" class="back"><?=GetMessage("LOST_CARD")?></a>
+    <?php elseif ( ( empty($arParams['CLIENT_ID']) || empty($arParams['CONTRACT_ID'])) && empty($arParams['CURATORS_MODE']) ) :?>
+        <a href="<?= $arParams['LIST_URL'] ?>" class="back">К списку убытков</a>
     <?php else :?>
         <a href="<?= $arResult['CONTRACT_PAGE_URL'] ?>" class="back">Договор страхования</a>
     <?php endif;?>
@@ -22,7 +24,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
+            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow' && $arResult["CAN_CLOSE_LOSS"]) { ?>
                  <a href="#change_status" data-fancybox class="ico_settings link">Закрыть убыток</a>
             <? } ?>
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
@@ -101,6 +103,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <form class="form_popup form4">
             <div class="form_row">
                 <div class="input_container column_25">
+                    <span>Номер убытка</span>
+                    <input type="text" class="text_input" id="doc_num" value="<?=$arResult['LOST']['NAME']?>" />
+                </div><!-- END input_container -->
+                <div class="input_container column_25">
                     <span>Дата убытка</span>
                     <input type="text" class="text_input ico_date js_datapicker" id="doc_date" placeholder="Дата убытка" value="<?=$arResult['LOST']['DATE_ACTIVE_FROM']?>"/>
                 </div><!-- END input_container -->
@@ -139,7 +145,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             </li>
                             <li>
                                 <span>Моб.телефон</span>
-                                <p>+<?= $item['MPHONE'] ?></p>
+                                <p><?= $item['MPHONE'] ?></p>
                             </li>
                             <li>
                                 <span>Раб. телефон</span>
@@ -189,7 +195,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             </li>
                             <li>
                                 <span>Моб.телефон</span>
-                                <p>+<?= $item['MPHONE'] ?></p>
+                                <p><?= $item['MPHONE'] ?></p>
                             </li>
                             <li>
                                 <span>Раб. телефон</span>
@@ -239,7 +245,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     </li>
                                     <li>
                                         <span>Моб.телефон</span>
-                                        <p>+<?= $item['MPHONE'] ?></p>
+                                        <p><?= $item['MPHONE'] ?></p>
                                     </li>
                                     <li>
                                         <span>Раб. телефон</span>
@@ -297,7 +303,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     </li>
                                     <li>
                                         <span>Моб.телефон</span>
-                                        <p>+<?= $item['MPHONE'] ?></p>
+                                        <p><?= $item['MPHONE'] ?></p>
                                     </li>
                                     <li>
                                         <span>Раб. телефон</span>

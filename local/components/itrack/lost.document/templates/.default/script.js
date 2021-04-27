@@ -33,35 +33,38 @@ $(document).ready(function() {
             $(".upload_btn_text").html(fileElement)
         });
     })
-
+    // workflow - добавление файла
     $(".form_popup").submit(function (event) {
         event.preventDefault()
-        var formData = new FormData()
-        formData.append('lost_id', lost_id)
-        formData.append('doc_name', $("#doc_name").val())
-        formData.append('loss_file', $("#loss_file").prop('files')[0])
-        formData.append('doc_date', $("#doc_date").val())
-        formData.append('comment', $("#comment").val())
-        $.ajax({
-            url: '/ajax/add_loss_file.php',
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: formData,
-            type: 'post',
-            success: function(data){
-                console.log(data);
-                if(data.error) {
-                    $("#mistake").text(data.error)
-                } else {
-                    location.reload();
+        if($("#loss_file").prop('files').length == 0) {
+            $("#mistake").text("Необходимо прикрепить файл")
+        } else {
+            var formData = new FormData()
+            formData.append('lost_id', lost_id)
+            formData.append('doc_name', $("#doc_name").val())
+            formData.append('loss_file', $("#loss_file").prop('files')[0])
+            formData.append('doc_date', $("#doc_date").val())
+            formData.append('comment', $("#comment").val())
+            $.ajax({
+                url: '/ajax/add_loss_file.php',
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,
+                type: 'post',
+                success: function(data){
+                    console.log(data);
+                    if(data.error) {
+                        $("#mistake").text(data.error)
+                    } else {
+                        location.reload();
+                    }
                 }
-            }
-        })
-
+            })
+        }
     })
-
+    // удаление файла
     $(".js_deletefile").click(function (event) {
         var fileid = $(this).parent().attr("data-id")
         BX.ajax.runAction('itrack:custom.api.signal.delLostfile', {
@@ -82,7 +85,7 @@ $(document).ready(function() {
         });
 
     })
-
+    // workflow - правка комментария
     $(".form_popup2").submit(function (event) {
         event.preventDefault()
         var lossdocid = $(this).attr("data-id")
@@ -128,7 +131,6 @@ $(document).ready(function() {
                 orig: orig
             }
         }).then(function (response) {
-            console.log(response)
             if(response.data=='updated') {
                 location.reload();
             } else {

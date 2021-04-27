@@ -75,7 +75,7 @@ if (!function_exists("printInputProfile")) {
 				<div class="flexbox">
 					<label class="label">Суперпользователь</label>
 						<?$checked = $arResult["IS_SUPER"] ? "checked" : ""?>
-						<?$disabled = $arResult["EDITOR_IS_SUPER_BROKER"] ? "" : "disabled"?>
+						<?$disabled = ($arResult["EDITOR_IS_SUPER_BROKER"] && $arResult["CHANGE_COMPANY"]) ? "" : "disabled"?>
 						<input <?=$checked?> <?=$disabled?> class="profile-checkbox" id="is_super_checkbox" name="IS_SUPER" type="checkbox" />
 						<label for="is_super_checkbox">
 					</label>
