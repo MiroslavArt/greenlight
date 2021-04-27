@@ -63,7 +63,7 @@
 					<div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arResult["CNT_TOTAL"]["SUM"] ?: 0?></div>
 					<div class="table_block stat_column item2" data-name="Закрыто"><?= $arResult["CNT_TOTAL"]["green"] ?: 0?></div>
 					<div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $arResult["CNT_TOTAL"]["yellow"] ?: 0?></div>
-					<div class="table_block stat_column item2" data-name="Открыто"><?= $arResult["CNT_TOTAL"]["green"] ?: 0?></div>
+					<div class="table_block stat_column item2" data-name="Открыто"><?= $arResult["CNT_TOTAL"]["red"] ?: 0?></div>
 					<div class="table_block links_column"></div>
 				</li>
 			</ul><!-- END data_table -->

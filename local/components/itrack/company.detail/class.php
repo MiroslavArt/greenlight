@@ -10,7 +10,6 @@ use Itrack\Custom\InfoBlocks\Lost;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\SystemException;
 use \Itrack\Custom\Highloadblock\HLBWrap;
-use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\Participation\CParticipation;
@@ -28,16 +27,15 @@ class ItrCompany extends CBitrixComponent
 
     public function executeComponent()
     {
-
         $this->userId = $GLOBALS["USER"]->GetID();
         $this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
+        $this->userRole = new CUserRole($this->userId);
 
 		// todo change CLIENT_ID to COMPANY_ID
-        if(!empty($this->arParams['CLIENT_ID'])) {
-            $this->companyId = $this->arParams['CLIENT_ID'];
-        } else {
-            $this->companyId = $this->userCompanyId;
-        }
+        $this->companyId = $this->arParams['CLIENT_ID'] ?: $this->userCompanyId;
+
+
+        $this->arResult["CAN_ADD_CONTRACT"] = $this->userRole->isSuperBroker();
 
         global $APPLICATION;
 
@@ -88,11 +86,9 @@ class ItrCompany extends CBitrixComponent
 
     private function getContractList()
     {
-
-		$this->userRole = new CUserRole($this->userId);
-
-		$arPermittedContractIds = $this->getPermittedContractIds();
-		$arCounts = $this->getCountsOfLost($arPermittedContractIds);
+		$permittedLosts = $this->getPermittedLosts();
+		$arCounts = $this->getCountsOfLost($permittedLosts);
+		$arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
 		$arLeaders = CContractParticipant::getLeaders($arPermittedContractIds);
 
 		$searchQuery = trim($this->request->get("search"));
@@ -115,7 +111,7 @@ class ItrCompany extends CBitrixComponent
 		$arContracts = Contract::getElementsByConditions($contractFilter);
 
 		$result = [];
-
+        $countsTotal = [];
 		$listUrl = $this->arParams['LIST_URL'];
 		foreach ($arContracts as $arContract) {
 			$id = $arContract["ID"];
@@ -125,11 +121,6 @@ class ItrCompany extends CBitrixComponent
 				$arClient = $arLeaders[$id][CUserRole::getClientGroupCode()];
 
 				if (empty($arClient) || mb_stripos($arClient["NAME"], $searchQuery) === false) {
-					// correcting total count values due to such a stupid filtering method
-					foreach ($arCounts["TOTAL"] as $k => &$v) {
-						$v -=$arCounts[$id][$k];
-					}
-
 					continue;
 				}
 			}
@@ -150,16 +141,20 @@ class ItrCompany extends CBitrixComponent
 				"CNT" => $arCounts[$id],
 				"LEADERS" => $arLeaders[$id],
 			];
+
+			foreach ($arCounts[$id] as $statusCode => $cnt) {
+                $countsTotal[$statusCode] += $cnt;
+            }
 		}
 
 		$this->arResult["ITEMS"] = $result;
-		$this->arResult["CNT_TOTAL"] = $arCounts["TOTAL"];
+		$this->arResult["CNT_TOTAL"] = $countsTotal;
     }
 
-    private function getCountsOfLost(array $arContractIds) {
-		$arCountsOfLost = Lost::getElementsGrouped([
+    private function getCountsOfLost(array $arLostIds = []): array {
+		$arCountsOfLost = Lost::getElementsByConditions([
 			"ACTIVE" => "Y",
-			"PROPERTY_CONTRACT" => $arContractIds
+			"ID" => $arLostIds ?: false
 		], [], [
 			"PROPERTY_CONTRACT",
 			"PROPERTY_STATUS",
@@ -170,75 +165,37 @@ class ItrCompany extends CBitrixComponent
 		foreach ($arCountsOfLost as $arCount) {
 			$contractId = $arCount["PROPERTY_CONTRACT_VALUE"];
 			$statusCode = $arCount["PROPERTY_STATUS_VALUE"];
-			$cnt = (int)$arCount["CNT"];
 
-			$result[$contractId][$statusCode] = $cnt;
-			$result[$contractId]["SUM"] += $cnt;
-
-			$result["TOTAL"][$statusCode] += $cnt;
-			$result["TOTAL"]["SUM"] += $cnt;
+			$result[$contractId][$statusCode]++;
+			$result[$contractId]["SUM"]++;
 		}
 
 		return $result;
 	}
 
+	private function getPermittedLosts(): array {
+        $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
 
-	private function getPermittedContractIds() {
-		$allTargetsOfCompany = $this->getTargetsOfCompany($this->companyId);
-		$arContractIdsOfCompany = $this->getContractIdsByAllTargets($allTargetsOfCompany);
-
-        $this->arResult["CAN_ADD_CONTRACT"] = false;
-
-		if ($this->userRole->isSuperBroker()) {
-            $this->arResult["CAN_ADD_CONTRACT"] = true;
-            return $arContractIdsOfCompany;
+        if ($this->userRole->isSuperBroker()) {
+            return $lostsOfCompany;
         }
 
-		$allTargetsOfUser = $this->userRole->isSuperUser()
-			? $this->getTargetsOfCompany($this->userCompanyId)
-			: $this->getTargetsOfUser($this->userId)
-		;
+        $lostsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        ;
 
-		$arContractIdsOfUser = $this->getContractIdsByAllTargets($allTargetsOfUser);
+        return array_intersect(
+            $lostsOfCompany,
+            $lostsOfUser
+        );
+    }
 
-		return array_intersect(
-			$arContractIdsOfCompany,
-			$arContractIdsOfUser
-		);
-	}
-
-	private function getContractIdsByAllTargets(array $allTargets) {
-		list($arContractIds, $arLostIds) = $allTargets;
-
-		$arContractIds = array_merge(
-			$arContractIds,
-			array_map(
-				function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
-				CLost::getElementsByConditions(["ID" => $arLostIds ?: false], [], ["PROPERTY_CONTRACT"])
-			)
-		);
-
-		// Для фильтрации договоров только по привязке к убыткам
-		//return array_map(
-		//	function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
-		//	CLost::getElementsByConditions(["ID" => $arLostIds], [], ["PROPERTY_CONTRACT"])
-		//);
-
-		return array_unique($arContractIds);
-	}
-
-	private function getTargetsOfUser(int $userId):array {
-    	return [
-			CParticipation::getTargetIdsByUser($userId, CContract::class),
-			CParticipation::getTargetIdsByUser($userId, CLost::class)
-		];
-	}
-
-	private function getTargetsOfCompany(int $companyId):array {
-    	return [
-			CParticipation::getTargetIdsByCompany($companyId, CContract::class),
-			CParticipation::getTargetIdsByCompany($companyId, CLost::class)
-		];
+	private function getPermittedContractIds(array $arLostIds): array {
+        return array_map(
+            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+            CLost::getElementsByConditions(["ID" => $arLostIds ?: false], [], ["PROPERTY_CONTRACT"])
+        );
 	}
 
     private function prepareSearchQueryForDate($searchQuery) {

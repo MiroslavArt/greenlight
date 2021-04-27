@@ -8,8 +8,9 @@
             <h2 class="block_title"><?= $arResult['COMPANY']['NAME'] ?></h2>
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <form class="search_form">
-                <input type="text" class="search_text" placeholder="Поиск по списку клиентов"/>
+            <form class="search_form js-submit js-needs-validation">
+                <input type="text" class="search_text" name="search" placeholder="Поиск по списку клиентов"/>
+				<input type="hidden" name="is_ajax" value="y">
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <a href="<?=$arParams['PATH_TO']['useful-documents']?>" class="btn tablet_hide">Полезные документы</a>
@@ -61,7 +62,7 @@
 				<div class="table_block stat_column item2" data-name="Убытки, шт"><?= $arResult["CNT_TOTAL"]["SUM"] ?: 0?></div>
 				<div class="table_block stat_column item2" data-name="Закрыто"><?= $arResult["CNT_TOTAL"]["green"] ?: 0?></div>
 				<div class="table_block stat_column item2" data-name="Документы предоставлены"><?= $arResult["CNT_TOTAL"]["yellow"] ?: 0?></div>
-				<div class="table_block stat_column item2" data-name="Открыто"><?= $arResult["CNT_TOTAL"]["green"] ?: 0?></div>
+				<div class="table_block stat_column item2" data-name="Открыто"><?= $arResult["CNT_TOTAL"]["red"] ?: 0?></div>
 				<div class="table_block links_column"></div>
 			</li>
 		</ul><!-- END data_table -->
