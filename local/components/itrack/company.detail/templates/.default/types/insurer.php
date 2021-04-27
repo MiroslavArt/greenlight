@@ -8,8 +8,9 @@
             <h2 class="block_title"><?= $arResult['COMPANY']['NAME'] ?></h2>
         </div><!-- END title_block -->
         <div class="title_right_block">
-            <form class="search_form">
-                <input type="text" class="search_text" placeholder="Поиск по списку клиентов"/>
+            <form class="search_form js-submit js-needs-validation">
+                <input type="text" class="search_text" name="search" placeholder="Поиск по списку клиентов"/>
+				<input type="hidden" name="is_ajax" value="y">
                 <input type="submit" class="search" value=""/>
             </form><!-- END search_form -->
             <a href="<?=$arParams['PATH_TO']['useful-documents']?>" class="btn tablet_hide">Полезные документы</a>
