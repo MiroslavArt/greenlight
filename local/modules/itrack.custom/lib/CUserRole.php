@@ -59,10 +59,17 @@ class CUserRole
 
 		$this->dropUserRoles();
 
-		UserGroupTable::add([
-			"USER_ID" => $this->userId,
-			"GROUP_ID" => $roleGroups[$role],
-		]);
+        UserGroupTable::add([
+            "USER_ID" => $this->userId,
+            "GROUP_ID" => $roleGroups[$party],
+        ]);
+
+        if($role != $party) {
+            UserGroupTable::add([
+                "USER_ID" => $this->userId,
+                "GROUP_ID" => $roleGroups[$role],
+            ]);
+        }
 	}
 
 	private function dropUserRoles() {

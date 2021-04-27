@@ -114,6 +114,34 @@ class ItrUserProfile extends CBitrixComponent
 
 		if (empty($arValues)) return;
 
+        if($arValues['UF_COMPANY']) {
+            $party = Company::getPartyByCompany($arValues['UF_COMPANY']);
+            $userrole = new CUserRole($userId);
+            $role = $userrole->getUserParty();
+            if($request->get("IS_SUPER")) {
+                $superuser = true;
+            } else {
+                $superuser = $userrole->isSuperUser();
+            }
+            if($party == 'broker') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'insurer') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'adjuster') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            } elseif($party == 'client') {
+                if($role!=$party) {
+                    $userrole->setUserRole($party, $superuser);
+                }
+            }
+        }
+
 		$user = new CUser();
 
 		if ($user->Update($userId, $arValues)) {
@@ -124,6 +152,9 @@ class ItrUserProfile extends CBitrixComponent
 			$this->arResult["ERROR"] = $user->LAST_ERROR;
 		}
 	}
+
+
+
 
 	private function updateUserSuperpower($userId, $companyId, $request) {
 		if (!$this->editorRole->isSuperBroker()) return;
