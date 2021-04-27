@@ -68,7 +68,8 @@ class ItrCompaniesList extends CBitrixComponent
 
     private function fetchCompanies()
     {
-		$counts = $this->getLostCountsByCompany();
+        $permittedLostIds = $this->getLostIds();
+		$counts = $this->getLostCountsByCompany($permittedLostIds);
 		$availableCompanyIds = array_keys($counts);
 		$searchQuery = trim($this->request->get("search"));
 
@@ -98,30 +99,24 @@ class ItrCompaniesList extends CBitrixComponent
 				"ID" => $arCompany["ID"],
 				"NAME" => $arCompany["NAME"],
 				"LOGO" => $arCompany["PROPERTY_LOGO_VALUE"],
-				"DETAIL_PAGE_URL" => $arCompany["DETAIL_PAGE_URL"]
+				"DETAIL_PAGE_URL" => $arCompany["DETAIL_PAGE_URL"],
+                "CNT" => $counts[$companyId]
 			];
 
-			$sumByCompany = 0;
-			$countsOfCompany = $counts[$companyId];
-
-			foreach ($countsOfCompany as $statusCode => $count) {
-				$companies[$companyId]["CNT"][$statusCode] = $count;
-				$sumByCompany += $count;
-
-				$countsTotal[$statusCode] += $count;
-			}
-
-			$companies[$companyId]["CNT"]["SUM"] = $sumByCompany;
-			$countsTotal["SUM"] += $sumByCompany;
+            foreach ($counts[$companyId] as $statusCode => $cnt) {
+                $countsTotal[$statusCode] += $cnt;
+            }
 		}
 
 		$this->arResult["ITEMS"] = $companies;
 		$this->arResult["CNT_TOTAL"] = $countsTotal;
     }
 
-    private function getLostCountsByCompany() {
+
+
+    private function getLostCountsByCompany($permittedLostIds) {
 		$arParticipants = CLostParticipant::getElementsByConditions([
-			"PROPERTY_TARGET_ID" => $this->getLostIds()
+			"PROPERTY_TARGET_ID" => $permittedLostIds
 		], [], [
 			"PROPERTY_TARGET_ID.PROPERTY_STATUS",
 			"PROPERTY_PARTICIPANT_ID",
@@ -134,6 +129,7 @@ class ItrCompaniesList extends CBitrixComponent
 			$statusCode = $arParticipant["PROPERTY_TARGET_ID_PROPERTY_STATUS_VALUE"];
 
 			$counts[$companyId][$statusCode]++;
+			$counts[$companyId]["SUM"]++;
 		}
 
 		return $counts;
@@ -144,10 +140,12 @@ class ItrCompaniesList extends CBitrixComponent
 			return [];
 		}
 
-		return $this->userRole->isSuperUser()
-			? CParticipation::getTargetIdsByCompany($this->companyId, CLost::class)
-			: CParticipation::getTargetIdsByUser($this->userId, CLost::class)
-		;
+		$lostIds = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->companyId, CLost::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        ;
+
+        return $lostIds ?: false;
 	}
 
 	private function getPermittedCompanyIds($rivals) {
@@ -155,11 +153,11 @@ class ItrCompaniesList extends CBitrixComponent
 			return [];
 		}
 
-		if ($this->userRole->getUserParty() == $this->companyParty) {
+		if (count($rivals) && $this->userRole->getUserParty() == $this->companyParty) {
 			return [ $this->companyId ];
 		}
 
-		return $rivals;
+		return $rivals ?: false;
 	}
 
 	private function getPermittedCompanyTypeId() {
