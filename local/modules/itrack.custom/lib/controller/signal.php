@@ -191,6 +191,9 @@ class Signal extends Controller
     {
         $groups = array(REG_GROUP);
 
+        $contracts = array_unique($userdata['contract']);
+        $losses = array_unique($userdata['loss']);
+
         $user = new \CUser;
         $arFields = Array(
             "NAME" => $userdata['lastname'].' '.$userdata['name'].' '.$userdata['secondname'],
@@ -215,22 +218,29 @@ class Signal extends Controller
             $party = Company::getPartyByCompany($userdata['company']);
             if ($userdata['superuser']=='true') {
                 $superuser = true;
+            } else {
+                $superuser = false;
             }
             $userrole = new CUserRole($ID);
             $userrole->setUserRole($party, $superuser);
 
             // обновляем карточку договора
-            if($userdata['contract']!="N/A") {
-                $participantClass = CContract::getParticipantClass();
-                $participant = $participantClass::initByTargetAndCompany($userdata['contract'], $userdata['company']);
-                $participant->bindCurator($ID);
+            foreach ($contracts as $item) {
+                if($item!="N/A") {
+                    $participantClass = CContract::getParticipantClass();
+                    $participant = $participantClass::initByTargetAndCompany($item, $userdata['company']);
+                    $participant->bindCurator($ID);
+                }
             }
             // обновляем карточку убытка
-            if($userdata['loss']!="N/A") {
-                $participantClass = CLost::getParticipantClass();
-                $participant = $participantClass::initByTargetAndCompany($userdata['loss'], $userdata['company']);
-                $participant->bindCurator($ID);
+            foreach ($losses as $item) {
+                if($item!="N/A") {
+                    $participantClass = CLost::getParticipantClass();
+                    $participant = $participantClass::initByTargetAndCompany($item, $userdata['company']);
+                    $participant->bindCurator($ID);
+                }
             }
+
             $result = 'added';
 
             \CEvent::Send(

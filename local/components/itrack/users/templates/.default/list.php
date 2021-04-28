@@ -77,21 +77,27 @@ $currTab = $request->get('tab') ?: $currUserRole->getUserParty();
             <div class="form_row">
                 <div class="input_container">
                     <label class="big_label">Прикрепить к договору страхования</label>
-                    <select class="select js_select" id="contract">
-                        <option value="N/A">N/A</option>
-                        <? foreach ($arResult['CONTRACTS'] as $contract) { ?>
-                            <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
-                        <? } ?>
-                    </select><!-- END select -->
+                    <div id="contract_container">
+                        <select class="select js_select sel_contracts">
+                            <option value="N/A">N/A</option>
+                            <? foreach ($arResult['CONTRACTS'] as $contract) { ?>
+                                <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
+                            <? } ?>
+                        </select><!-- END select -->
+                    </div>
+                    <a href="#" class="link ico_add" id="add_contract"><span>Добавить договор страхования</span></a>
                 </div><!-- END input_container -->
                 <div class="input_container">
                     <label class="big_label">Прикрепить к убытку</label>
-                    <select class="select js_select" id="loss">
-                        <option value="N/A">N/A</option>
-                        <? foreach ($arResult['LOSSES'] as $contract) { ?>
-                            <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
-                        <? } ?>
-                    </select><!-- END select -->
+                    <div id="loss_container">
+                        <select class="select js_select sel_losses">
+                            <option value="N/A">N/A</option>
+                            <? foreach ($arResult['LOSSES'] as $contract) { ?>
+                                <option value="<?= $contract['ID']?>"><?= $contract['NAME']?></option>
+                            <? } ?>
+                        </select><!-- END select -->
+                    </div>
+                    <a href="#" class="link ico_add" id="add_loss"><span>Добавить убыток</span></a>
                 </div><!-- END input_container -->
             </div><!-- END form_row -->
             <p class="link" id="mistake"></p>
