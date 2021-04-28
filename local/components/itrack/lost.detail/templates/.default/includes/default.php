@@ -55,7 +55,9 @@
         <?php endif; ?>
         <div class="docs_container_bottom">
             <?php if ($arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE_XML_ID'] == 'Y') : ?>
-                <span class="originals"><span>Предоставление оригиналов</span></span>
+                <span class="originals"><span>Требуется предоставление оригиналов</span></span>
+            <?php else : ?>
+                <span class="originals no_files"><span>Не требуется предоставление оригиналов</span></span>
             <?php endif; ?>
             <?php if (!empty($arResult['REQUESTS'])) : ?>
                 <?php $intDocsQty = count($arResult['REQUESTS']); ?>
