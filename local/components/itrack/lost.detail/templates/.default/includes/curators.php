@@ -22,6 +22,8 @@
         <div class="docs_container_bottom">
             <?php if ($arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE_XML_ID'] == 'Y') : ?>
                 <span class="originals"><span>Предоставление оригиналов</span></span>
+            <?php else : ?>
+                <span class="originals no_files"><span>Без предоставления оригиналов</span></span>
             <?php endif; ?>
             <?php if (!empty($arResult['REQUESTS'])) : ?>
                 <?php $intDocsQty = count($arResult['REQUESTS']); ?>
