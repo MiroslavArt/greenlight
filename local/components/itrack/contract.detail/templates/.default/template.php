@@ -305,15 +305,37 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
                 <div class="form_row attached_container">
-                    <label class="big_label">Документы</label>
-                    <ul class="docs_list">
-                        <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
-                            <li>
-                                <a href="<?=$item['SRC']?>" class="link doclink" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
-                                <span class="delete js_delete"></span>
-                            </li>
-                        <? } ?>
-                    </ul><!-- END docs_list -->
+                    <!--<label class="big_label">Документы</label> -->
+                    <div class="input_container column_25">
+                        <ul class="docs_list" id="contract_files">
+                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                                <li>
+                                    <a href="<?=$item['SRC']?>" class="link doclink" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <span class="delete js_delete"></span>
+                                </li>
+                            <? } ?>
+                        </ul><!-- END docs_list -->
+                    </div>
+                    <div class="input_container column_25">
+                        <ul class="docs_list" id="pamyatka_files">
+                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_PAMYATKA']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                                <li>
+                                    <a href="<?=$item['SRC']?>" class="link doclink_pamyatka" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <span class="delete js_delete"></span>
+                                </li>
+                            <? } ?>
+                        </ul><!-- END docs_list -->
+                    </div>
+                    <div class="input_container column_25">
+                        <ul class="docs_list" id="other_files">
+                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_OTHERS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                                <li>
+                                    <a href="<?=$item['SRC']?>" class="link doclink_other" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <span class="delete js_delete"></span>
+                                </li>
+                            <? } ?>
+                        </ul><!-- END docs_list -->
+                    </div>
                 </div><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
                 <h4 class="big_label">Клиент</h4>

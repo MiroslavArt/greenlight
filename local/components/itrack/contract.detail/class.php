@@ -126,6 +126,16 @@ class ItrContract extends CBitrixComponent
                     $arContract['PROPERTIES']['DOCS']['VALUE_DETAIL'][$item] =  \CFile::GetFileArray($item);
                 }
             }
+            if ($arContract['PROPERTIES']['DOCS_PAMYATKA']['VALUE']) {
+                foreach ($arContract['PROPERTIES']['DOCS_PAMYATKA']['VALUE'] as $item) {
+                    $arContract['PROPERTIES']['DOCS_PAMYATKA']['VALUE_DETAIL'][$item] =  \CFile::GetFileArray($item);
+                }
+            }
+            if ($arContract['PROPERTIES']['DOCS_OTHERS']['VALUE']) {
+                foreach ($arContract['PROPERTIES']['DOCS_OTHERS']['VALUE'] as $item) {
+                    $arContract['PROPERTIES']['DOCS_OTHERS']['VALUE_DETAIL'][$item] =  \CFile::GetFileArray($item);
+                }
+            }
             $this->arResult['CONTRACT'] = $arContract;
         } else {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);

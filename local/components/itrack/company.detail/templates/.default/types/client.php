@@ -69,9 +69,19 @@
                 </div><!-- END input_container -->
             </div><!-- END form_row -->
             <div class="form_row attached_container">
-                <label class="big_label">Документы</label>
-                <ul class="docs_list">
-                </ul><!-- END docs_list -->
+                <!--<label class="big_label">Документы</label>-->
+                <div class="input_container column_25">
+                    <ul class="docs_list" id="contract_files">
+                    </ul><!-- END docs_list -->
+                </div>
+                <div class="input_container column_25">
+                    <ul class="docs_list" id="pamyatka_files">
+                    </ul><!-- END docs_list -->
+                </div>
+                <div class="input_container column_25">
+                    <ul class="docs_list" id="other_files">
+                    </ul><!-- END docs_list -->
+                </div>
             </div><!-- END form_row -->
             <h3 class="subtitle">Кураторы</h3>
             <h4 class="big_label">Клиент</h4>

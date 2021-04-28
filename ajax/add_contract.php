@@ -32,31 +32,68 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
     }
 }
 
-$fidids = [];
+function reArrayFiles(&$file_post)
+{
+    $file_ary = array();
+    $file_count = count($file_post['name']);
+    $file_keys = array_keys($file_post);
+    for ($i = 0; $i < $file_count; $i++) {
+        foreach ($file_keys as $key) {
+            $file_ary[$i][$key] = $file_post[$key][$i];
+        }
+    }
+    return $file_ary;
+}
+
+$fidids = [
+    'contracts' => [],
+    'pamyatka' => [],
+    'other' => []
+];
+
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader']];
 
-foreach ($_FILES as $file) {
-    $arr_file=Array(
-        "name" =>  $file['name'],
-        "size" => $file['size'],
-        "tmp_name" => $file['tmp_name'],
-        "type" => $file['type'],
-        "old_file" => "",
-        "del" => "Y",
-        "MODULE_ID" => "iblock");
-    $fid = CFile::SaveFile($arr_file, "contractdocs");
-    array_push($fidids, $fid);
+foreach ($_FILES as $key => $filearr) {
+    //$fidids[$key] = [];
+    $arDocuments = reArrayFiles($filearr);
+    foreach ($arDocuments as $file) {
+        if (!empty($file['tmp_name'])) {
+            $arr_file=Array(
+                "name" =>  $file['name'],
+                "size" => $file['size'],
+                "tmp_name" => $file['tmp_name'],
+                "type" => $file['type'],
+                "old_file" => "",
+                "del" => "Y",
+                "MODULE_ID" => "iblock");
+            $fid = CFile::SaveFile($arr_file, "contractdocs");
+            array_push($fidids[$key], $fid);
+        }
+    }
 }
 
 if($_POST['curdocids']) {
     $curdocsarray = explode(",", $_POST['curdocids']);
     foreach ($curdocsarray as $curdoc) {
-        array_push($fidids, $curdoc);
+        array_push($fidids['contracts'], $curdoc);
     }
 }
 
-//\Bitrix\Main\Diag\Debug::writeToFile($_POST, "post", "__miros.log");
+if($_POST['curdocids_pamyatka']) {
+    $curdocsarray = explode(",", $_POST['curdocids_pamyatka']);
+    foreach ($curdocsarray as $curdoc) {
+        array_push($fidids['pamyatka'], $curdoc);
+    }
+}
+
+if($_POST['curdocids_other']) {
+    $curdocsarray = explode(",", $_POST['curdocids_other']);
+    foreach ($curdocsarray as $curdoc) {
+        array_push($fidids['other'], $curdoc);
+    }
+}
+
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
 }
@@ -97,7 +134,9 @@ $data = [
         'NEED_ACCEPT' => $needaccept,
         'NEED_NOTIFY' => $neednotify,
         'ORIGIN_REQUIRED' => $_POST['original'],
-        'DOCS' => $fidids
+        'DOCS' => $fidids['contracts'],
+        'DOCS_PAMYATKA' => $fidids['pamyatka'],
+        'DOCS_OTHERS' => $fidids['other']
     ]
 ];
 
