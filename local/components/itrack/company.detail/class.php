@@ -10,6 +10,7 @@ use Itrack\Custom\InfoBlocks\Lost;
 use \Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\SystemException;
 use \Itrack\Custom\Highloadblock\HLBWrap;
+use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\Participation\CParticipation;
@@ -88,7 +89,8 @@ class ItrCompany extends CBitrixComponent
     {
 		$permittedLosts = $this->getPermittedLosts();
 		$arCounts = $this->getCountsOfLost($permittedLosts);
-		$arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
+
+		$arPermittedContractIds = $this->getPermittedContractIds();
 		$arLeaders = CContractParticipant::getLeaders($arPermittedContractIds);
 
 		$searchQuery = trim($this->request->get("search"));
@@ -191,10 +193,21 @@ class ItrCompany extends CBitrixComponent
         );
     }
 
-	private function getPermittedContractIds(array $arLostIds): array {
-        return array_map(
-            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
-            CLost::getElementsByConditions(["ID" => $arLostIds ?: false], [], ["PROPERTY_CONTRACT"])
+	private function getPermittedContractIds(): array {
+        $contractsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CContract::class);
+
+        if ($this->userRole->isSuperBroker()) {
+            return $contractsOfCompany;
+        }
+
+        $contractsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CContract::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CContract::class)
+        ;
+
+        return array_intersect(
+            $contractsOfCompany,
+            $contractsOfUser
         );
 	}
 
