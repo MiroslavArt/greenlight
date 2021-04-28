@@ -17,8 +17,9 @@ $(document).ready(function() {
     var inputFile1 = $('.cont_file1');
     var inputFile2 = $('.cont_file2');
     var inputFile3 = $('.cont_file3');
-    var filesContainer= $('.docs_list');
     var files = [];
+    var files_pam = [];
+    var files_other = [];
 
     // обработчики добавления файлов
     inputFile1.change(function() {
@@ -37,7 +38,7 @@ $(document).ready(function() {
             fileElement.data('fileData', file);
             point.append(fileElement)
             point.append(delElement)
-            filesContainer.append(point)
+            $('#contract_files').append(point)
 
             delElement.click(function(event) {
                 let fileElement = $(event.target).prev();
@@ -53,7 +54,7 @@ $(document).ready(function() {
         for(let index = 0; index < inputFile2[0].files.length; index++) {
             let file = inputFile2[0].files[index];
             newFiles.push(file);
-            files.push(file);
+            files_pam.push(file);
         }
 
         newFiles.forEach(file => {
@@ -64,13 +65,13 @@ $(document).ready(function() {
 
             point.append(fileElement)
             point.append(delElement)
-            filesContainer.append(point)
+            $('#pamyatka_files').append(point)
 
             delElement.click(function(event) {
                 let fileElement = $(event.target).prev();
                 let indexToRemove = files.indexOf(fileElement.data('fileData'));
                 fileElement.parent().remove();
-                files.splice(indexToRemove, 1);
+                files_pam.splice(indexToRemove, 1);
             });
         });
     });
@@ -80,7 +81,7 @@ $(document).ready(function() {
         for(let index = 0; index < inputFile3[0].files.length; index++) {
             let file = inputFile3[0].files[index];
             newFiles.push(file);
-            files.push(file);
+            files_other.push(file);
         }
 
         newFiles.forEach(file => {
@@ -91,13 +92,13 @@ $(document).ready(function() {
 
             point.append(fileElement)
             point.append(delElement)
-            filesContainer.append(point)
+            $('#other_files').append(point)
 
             delElement.click(function(event) {
                 let fileElement = $(event.target).prev();
                 let indexToRemove = files.indexOf(fileElement.data('fileData'))
                 fileElement.parent().remove();
-                files.splice(indexToRemove, 1);
+                files_other.splice(indexToRemove, 1);
             });
         });
     });
@@ -399,10 +400,17 @@ $(document).ready(function() {
             form_data.append('kuratorsbr', kuratorsbr)
             form_data.append('needaccept', needaccept)
             form_data.append('neednotify', neednotify)
-
             $.each(files,function(index,value){
                 //console.log(value)
-                form_data.append('file'+index, value);
+                form_data.append('contracts[]', value);
+            });
+            $.each(files_pam,function(index,value){
+                //console.log(value)
+                form_data.append('pamyatka[]', value);
+            });
+            $.each(files_other,function(index,value){
+                //console.log(value)
+                form_data.append('other[]', value);
             });
             $.ajax({
                 url: '/ajax/add_contract.php',
