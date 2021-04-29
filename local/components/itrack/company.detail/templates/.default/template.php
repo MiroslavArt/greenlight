@@ -15,6 +15,9 @@ if(!empty($arParams['PAGE_TYPE']) && $arParams['PAGE_TYPE'] == 'contracts-list')
     include 'types/contracts-list.php';
 } else {
     switch ($arResult['COMPANY_TYPE']) {
+        case 'broker':
+            include 'types/broker.php';
+            break;
         case 'client':
             include 'types/client.php';
             break;

@@ -22,6 +22,7 @@ class ItrCompany extends CBitrixComponent
     private $userCompanyId;
 
     private $companyId;
+    private $companyParty;
 
     /** @var CUserRole $userRole */
     private $userRole;
@@ -32,8 +33,16 @@ class ItrCompany extends CBitrixComponent
         $this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
         $this->userRole = new CUserRole($this->userId);
 
-		// todo change CLIENT_ID to COMPANY_ID
+        // todo change CLIENT_ID to COMPANY_ID
         $this->companyId = $this->arParams['CLIENT_ID'] ?: $this->userCompanyId;
+
+        $this->getCompany();
+
+        $userPartyIsEqualToCompanyParty = $this->userRole->equalTo($this->companyParty);
+        $companyIsClient = $this->companyParty === CUserRole::CLIENT;
+        $userHasAccess = $userPartyIsEqualToCompanyParty || $this->userRole->isBroker() || $companyIsClient;
+
+        if (!$userHasAccess) LocalRedirect("/");
 
 
         $this->arResult["CAN_ADD_CONTRACT"] = $this->userRole->isSuperBroker();
@@ -42,7 +51,6 @@ class ItrCompany extends CBitrixComponent
 
         $arResult =& $this->arResult;
 
-        $this->getCompany();
 
         if(!empty($arResult['COMPANY']['PROPERTIES']['TYPE']['VALUE_XML_ID'])) {
             $arResult['COMPANY_TYPE'] = $arResult['COMPANY']['PROPERTIES']['TYPE']['VALUE_XML_ID'];
@@ -75,6 +83,7 @@ class ItrCompany extends CBitrixComponent
         $arCompany = Company::getElementByID($this->companyId);
         if(!empty($arCompany)) {
             $arResult['COMPANY'] = $arCompany;
+            $this->companyParty = $arCompany["PROPERTIES"]["TYPE"]["VALUE_XML_ID"];
         } else {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
@@ -100,8 +109,10 @@ class ItrCompany extends CBitrixComponent
 			"ID" => $arPermittedContractIds ?: false,
 		];
 
-		// filter for client detail
-		if ($this->companyIsClient()) {
+		$filterLikeContractList = in_array($this->companyParty, [CUserRole::CLIENT, CUserRole::BROKER]);
+
+		// filter for client/broker detail
+		if ($filterLikeContractList) {
 			$contractFilter[] = [
 				"LOGIC" => "OR",
 				"NAME" => $searchQuery ? "%$searchQuery%" : "",
@@ -119,7 +130,7 @@ class ItrCompany extends CBitrixComponent
 			$id = $arContract["ID"];
 
 			// filter for adjuster/insurer detail
-			if ($searchQuery && !$this->companyIsClient()) {
+			if ($searchQuery && !$filterLikeContractList) {
 				$arClient = $arLeaders[$id][CUserRole::getClientGroupCode()];
 
 				if (empty($arClient) || mb_stripos($arClient["NAME"], $searchQuery) === false) {
