@@ -37,6 +37,7 @@ class ItrLostDocument extends CBitrixComponent
     private $originalstatuset;
     private $originalgot;
     private $showadd;
+    private $declinestatus;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -67,6 +68,7 @@ class ItrLostDocument extends CBitrixComponent
             $arResult['ORIGINALSTATUSSET'] = $this->originalstatuset;
             $arResult['ORIGINALGOT'] =  $this->originalgot;
             $arResult['SHOWADD'] =  $this->showadd;
+            $arResult['DECLINESTATUS'] =  $this->declinestatus;
         }
 
         if($this->statuschanged) {
@@ -122,6 +124,7 @@ class ItrLostDocument extends CBitrixComponent
         $this->originalstatuset = false;
         $this->originalgot = false;
         $this->showadd = false;
+        $this->declinestatus = '';
 
         if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
             $this->shpworiginalpanel = true;
@@ -164,9 +167,30 @@ class ItrLostDocument extends CBitrixComponent
             }
         }
 
-        if($status==1 && $this->isclient) {
-            $this->showaccept = true;
-            $this->showadd = true;
+        if($status==1) {
+            $objHistory = new \Itrack\Custom\Highloadblock\HLBWrap('e_history_lost_document_status');
+            $rsHistory = $objHistory->getList([
+                "filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
+                "select" => array("*"),
+                "order" => array("ID" => "DESC")
+            ]);
+            $countstatus = 1;
+            while ($arStatus = $rsHistory->fetch()) {
+                if($countstatus == 2) {
+                    $objStatus = new \Itrack\Custom\Highloadblock\HLBWrap('e_lost_doc_status');
+                    $rsStatus = $objStatus->getList([
+                        "filter" => array("ID"=>$arStatus['UF_CODE_ID'])
+                    ])->fetch();
+                    $this->declinestatus = $rsStatus['UF_NAME'];
+                    break;
+                }
+                $countstatus++;
+            }
+
+            if($this->isclient) {
+                $this->showaccept = true;
+                $this->showadd = true;
+            }
         }
 
         if($status==2 && $issupusrcl) {

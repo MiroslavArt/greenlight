@@ -104,7 +104,7 @@ class ItrLostDocument extends CBitrixComponent
         $rsHistory = $objHistory->getList([
             "filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
             "select" => array("*"),
-            "order" => array("UF_DATE" => "DESC")
+            "order" => array("ID" => "DESC")
         ]);
 
         while ($arStatus = $rsHistory->fetch()) {

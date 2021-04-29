@@ -22,7 +22,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE'][$arResult['COLOR_FIELD']]?>">
                     <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']?>
                 </span>
-                <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?></span>
+                <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?>
+                <?php  if($arResult['DECLINESTATUS']) { ?>(ранее <?=$arResult['DECLINESTATUS']?>)<? } ?></span>
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
         <?php if($arResult['SHOWORIGINAL']) : ?>
