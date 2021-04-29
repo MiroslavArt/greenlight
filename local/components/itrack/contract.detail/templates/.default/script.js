@@ -79,7 +79,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_client_search_ins").val(ui.item.label);
+                    $( "#kur_client_search_ins").val('');
                     kuratoradd($( "#ins_kur_card" ), ui.item, 4, clientid, false, 'hard')
                 }
                 return false;
@@ -103,7 +103,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_client_search_ins_2").val(ui.item.label);
+                    $( "#kur_client_search_ins_2").val('');
                     kuratoradd($( "#ins_kur_card_2" ), ui.item, 4, clientid, false, 'simple')
                 }
                 return false;
@@ -139,7 +139,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_broker_search_ins").val(ui.item.label);
+                    $( "#kur_broker_search_ins").val('');
                     kuratoradd($( "#brok_kur_card" ), ui.item, 1, brokerid, false, 'hard')
                 }
                 return false;
@@ -163,7 +163,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_broker_search_ins_2").val(ui.item.label);
+                    $( "#kur_broker_search_ins_2").val('');
                     kuratoradd($( "#brok_kur_card_2" ), ui.item, 1, clientid, false, 'simple')
                 }
                 return false;
@@ -226,7 +226,7 @@ $(document).ready(function() {
                         }
                     })
                     if(foundkur==false) {
-                        kursearchinp .val(ui.item.label);
+                        kursearchinp .val('');
                         if ($(el).hasClass('foredit')) {
                             kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'simple')
                         } else {
@@ -254,12 +254,12 @@ $(document).ready(function() {
         $( "#search_adj" ).autocomplete({
             source: adjcompanies,
             focus: function( event, ui ) {
-                $( "#search_adj" ).val( ui.item.label );
+                //$( "#search_adj" ).val('');
                 return false;
             },
             select: function( event, ui ) {
                 $(this).parent().parent().toggleClass('hidden');
-                $( "#search_adj" ).val( ui.item.label );
+                $( "#search_adj" ).val('');
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
                 var form = BX.findParent(this, {"tag" : "form"});
@@ -331,7 +331,7 @@ $(document).ready(function() {
                                     }
                                 })
                                 if(foundkur==false) {
-                                    kursearchinp.val(ui.item.label);
+                                    kursearchinp.val('');
                                     kuratoradd(cardblock, ui.item, 3, ui.item.companyid, false, 'hard')
                                 }
                                 return false;
@@ -658,12 +658,12 @@ $(document).ready(function() {
         $( "#search_ins" ).autocomplete({
             source: inscompanies,
             focus: function( event, ui ) {
-                $( "#search_ins" ).val( ui.item.label );
+                //$( "#search_ins" ).val( ui.item.label );
                 return false;
             },
             select: function( event, ui ) {
                 $(this).parent().parent().toggleClass('hidden');
-                $( "#search_ins" ).val( ui.item.label );
+                $( "#search_ins" ).val('');
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
                 var form = BX.findParent(this, {"tag" : "form"});
@@ -730,7 +730,7 @@ $(document).ready(function() {
                                     }
                                 })
                                 if(foundkur==false) {
-                                    kursearchinp.val(ui.item.label);
+                                    kursearchinp.val('');
                                     kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, "simple")
                                 }
                                 return false;
