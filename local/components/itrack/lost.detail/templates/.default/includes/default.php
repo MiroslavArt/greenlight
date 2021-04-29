@@ -29,14 +29,18 @@
                 <th width="160">Телефон (моб)</th>
             </tr>
             <?php if (!empty($arResult['CURATORS'])) : ?>
-                <?php foreach ($arResult['CURATORS'] as $arCurator) : ?>
+                <?php foreach ($arResult['CURATORS'] as $arCurator) :
+                    if($arCurator['IS_LEADER']=='Y') :
+                    ?>
                     <tr>
                         <td><?= $arCurator['COMPANY_TYPE'] ?> <br/><?= $arCurator['COMPANY_NAME'] ?></td>
                         <td><?= CUser::formatName('#NAME# #SECOND_NAME# #LAST_NAME#', $arCurator, false, false); ?></td>
                         <td><?= $arCurator['POSITION'] ?></td>
                         <td><?= $arCurator['PHONE'] ?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php
+                    endif;
+                    endforeach; ?>
             <?php endif; ?>
         </table><!-- END table_curators -->
         <a href="<?= $arParams['PATH_TO']['lost-curators'] ?>" class="all_curators"><span>Все кураторы по убытку</span></a>

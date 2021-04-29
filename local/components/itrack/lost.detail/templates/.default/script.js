@@ -101,7 +101,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_client_search_ins").val(ui.item.label);
+                    $( "#kur_client_search_ins").val('');
                     kuratoradd($( "#ins_kur_card" ), ui.item, 4)
                 }
                 return false;
@@ -137,7 +137,7 @@ $(document).ready(function() {
                     }
                 })
                 if(foundkur==false) {
-                    $( "#kur_broker_search_ins").val(ui.item.label);
+                    $( "#kur_broker_search_ins").val('');
                     kuratoradd($( "#brok_kur_card" ), ui.item, 1)
                 }
                 return false;
@@ -187,7 +187,7 @@ $(document).ready(function() {
                         }
                     })
                     if(foundkur==false) {
-                        kursearchinp .val(ui.item.label);
+                        kursearchinp .val('');
                         kuratoradd(cardblock, ui.item, 2)
                     }
                     return false;
@@ -211,12 +211,12 @@ $(document).ready(function() {
         $( "#search_adj" ).autocomplete({
             source: adjcompanies,
             focus: function( event, ui ) {
-                $( "#search_adj" ).val( ui.item.label );
+                //$( "#search_adj" ).val('');
                 return false;
             },
             select: function( event, ui ) {
                 $(this).parent().parent().toggleClass('hidden');
-                $( "#search_adj" ).val( ui.item.label );
+                $( "#search_adj" ).val('');
                 //$( "#sel_ins" ).val( ui.item.value );
                 //console.log(this)
                 var form = BX.findParent(this, {"tag" : "form"});
@@ -282,7 +282,7 @@ $(document).ready(function() {
                                     }
                                 })
                                 if(foundkur==false) {
-                                    kursearchinp.val(ui.item.label);
+                                    kursearchinp.val('');
                                     kuratoradd(cardblock, ui.item, 3)
                                 }
                                 return false;
