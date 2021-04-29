@@ -295,7 +295,9 @@ class Signal extends Controller
                     }
                 }
             }
+            $dateupdate = date("d.m.Y H:i:s");
             $data['PROPERTY_VALUES']['STATUS'] = '1';
+            $data['PROPERTY_VALUES']['STATUS_DATE'] = $dateupdate;
 
 
             $ID = LostDocuments::createElement($data, []);
@@ -569,6 +571,7 @@ class Signal extends Controller
                 }
             }
             $nottempl = 'suc_decline';
+            $priornewstatus = 5;
         } else if($status==6 || $status==9) {
             $curclient = [];
             $participation = new CParticipation(new CLost($lostid));
@@ -583,6 +586,11 @@ class Signal extends Controller
                 }
             }
             $nottempl = 'sb_decline';
+            if($status==6) {
+                $priornewstatus = 8;
+            } else {
+                $priornewstatus = 11;
+            }
         }
 
         if($curclient) {
@@ -597,6 +605,21 @@ class Signal extends Controller
             $PROP[27] = $newstatus;
             $PROP[61] = $dateupdate;
             LostDocuments::updateElement($lostdocid, [], $PROP);
+
+            if($priornewstatus) {
+                $objHistory = new HLBWrap('e_history_lost_document_status');
+                $histdata = [
+                    'UF_CODE_ID' => $priornewstatus,
+                    'UF_DATE' => $dateupdate,
+                    'UF_LOST_ID' => $lostid,
+                    'UF_LOST_DOC_ID' => $lostdocid,
+                    'UF_USER_ID' => $user,
+                    'UF_COMMENT' => $comment
+                ];
+
+                $id = $objHistory->add($histdata);
+            }
+
             $objHistory = new HLBWrap('e_history_lost_document_status');
             $histdata = [
                 'UF_CODE_ID' => $newstatus,
@@ -604,7 +627,7 @@ class Signal extends Controller
                 'UF_LOST_ID' => $lostid,
                 'UF_LOST_DOC_ID' => $lostdocid,
                 'UF_USER_ID' => $user,
-                'UF_COMMENT' => $comment
+                'UF_COMMENT' => ''
             ];
 
             $id = $objHistory->add($histdata);
