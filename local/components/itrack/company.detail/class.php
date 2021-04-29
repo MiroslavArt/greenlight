@@ -90,7 +90,7 @@ class ItrCompany extends CBitrixComponent
 		$permittedLosts = $this->getPermittedLosts();
 		$arCounts = $this->getCountsOfLost($permittedLosts);
 
-		$arPermittedContractIds = $this->getPermittedContractIds();
+		$arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
 		$arLeaders = CContractParticipant::getLeaders($arPermittedContractIds);
 
 		$searchQuery = trim($this->request->get("search"));
@@ -193,7 +193,7 @@ class ItrCompany extends CBitrixComponent
         );
     }
 
-	private function getPermittedContractIds(): array {
+	private function getPermittedContractIds(array $permittedLosts): array {
         $contractsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CContract::class);
 
         if ($this->userRole->isSuperBroker()) {
@@ -205,10 +205,18 @@ class ItrCompany extends CBitrixComponent
             : CParticipation::getTargetIdsByUser($this->userId, CContract::class)
         ;
 
-        return array_intersect(
+        $permittedContracts = array_intersect(
             $contractsOfCompany,
             $contractsOfUser
         );
+
+
+        $contractsOfPermittedLosts = array_map(
+            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+            CLost::getElementsByConditions(["ID" => $permittedLosts ?: false], [], ["PROPERTY_CONTRACT"])
+        );
+
+        return array_merge($permittedContracts, $contractsOfPermittedLosts);
 	}
 
     private function prepareSearchQueryForDate($searchQuery) {
