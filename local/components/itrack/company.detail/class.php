@@ -207,8 +207,13 @@ class ItrCompany extends CBitrixComponent
 	private function getPermittedContractIds(array $permittedLosts): array {
         $contractsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CContract::class);
 
+        $contractsOfPermittedLosts = array_map(
+            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+            CLost::getElementsByConditions(["ID" => $permittedLosts ?: false], [], ["PROPERTY_CONTRACT"])
+        );
+
         if ($this->userRole->isSuperBroker()) {
-            return $contractsOfCompany;
+            return array_merge($contractsOfCompany, $contractsOfPermittedLosts);
         }
 
         $contractsOfUser = $this->userRole->isSuperUser()
@@ -219,12 +224,6 @@ class ItrCompany extends CBitrixComponent
         $permittedContracts = array_intersect(
             $contractsOfCompany,
             $contractsOfUser
-        );
-
-
-        $contractsOfPermittedLosts = array_map(
-            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
-            CLost::getElementsByConditions(["ID" => $permittedLosts ?: false], [], ["PROPERTY_CONTRACT"])
         );
 
         return array_merge($permittedContracts, $contractsOfPermittedLosts);
