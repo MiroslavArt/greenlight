@@ -35,22 +35,28 @@ if(!function_exists('__CrmPropductRowListEndResponse'))
     }
 }
 
-$fidids = [];
+// в начале проверяем номер на дубликат
+$arFilter['CODE'] = $_POST['docnum'];
+$arFilter["PROPERTY_CLIENT_LEADER.ID"] = $_POST['clientid'];
+$losses = Lost::getElementsByConditions($arFilter, [], []);
+if($losses) {
+    $loss= current($losses);
+    $numerror = false;
+    if($_POST['lostid']) {
+        if($_POST['lostid']!=$loss['ID']) {
+            $numerror = true;
+        }
+    } else {
+        $numerror = true;
+    }
+    if($numerror) {
+        __CrmPropductRowListEndResponse(array('error'=>"Убыток по данному клиенту с таким номером уже существует"));
+    }
+}
+
+// потом все остальное
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
-
-/*foreach ($_FILES as $file) {
-    $arr_file=Array(
-        "name" =>  $file['name'],
-        "size" => $file['size'],
-        "tmp_name" => $file['tmp_name'],
-        "type" => $file['type'],
-        "old_file" => "",
-        "del" => "Y",
-        "MODULE_ID" => "iblock");
-    $fid = CFile::SaveFile($arr_file, "lossdocs");
-    array_push($fidids, $fid);
-}*/
 
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
@@ -101,10 +107,6 @@ if($_POST['lostid']) {
     $PROP = [
         'NEED_ACCEPT' => $needaccept,
         'NEED_NOTIFY' => $neednotify,
-        //'CLIENT'=> array($_POST['clientid']),
-        //'CLIENT_LEADER'=> $_POST['clientid'],
-        //'INSURANCE_BROKER'=> array($_POST['brokerid']),
-        //'INSURANCE_BROKER_LEADER'=> $_POST['brokerid'],
         'INSURANCE_COMPANY' => $insarray,
         'INSURANCE_COMPANY_LEADER' => $_POST['insleader'],
         'ADJUSTER' => $adjarray,
@@ -154,22 +156,6 @@ if(intval($ID) > 0) {
         'UF_USER_ID' => $USER->GetID()
     ];
     $objHistory->add($histdata);
-
-    /*foreach ($fidids as $fid) {
-        $file = \CFile::MakeFileArray($fid);
-        $data = array(
-            "UF_MAINLOST_ID" => $id,
-            "UF_NAME"=>$_POST['reqdoc'],
-            "UF_FILE"=> $file,
-            "UF_COMMENT"=>$_POST['reqdoc'],
-            "UF_DATE_CREATED" => ConvertDateTime($_POST['reqdate'], "DD.MM.YYYY")." 23:59:59",
-            "UF_DATE_TERM" => ConvertDateTime($_POST['req_term'], "DD.MM.YYYY")." 23:59:59",
-            "UF_USER_ID" => $_POST['user'],
-            "UF_DOC_TYPE"=> '1'
-        );
-        $objDocument = new HLBWrap('uploaded_docs');
-        $objDocument->add($data);
-    }*/
 
     try {
         $participation = new CParticipation(new CLost($id));
