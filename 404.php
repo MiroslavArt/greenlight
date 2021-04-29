@@ -30,9 +30,9 @@ $APPLICATION->SetTitle("404 Not Found");
             </div><!-- END not_found_column -->
         </div><!-- END not_found_container -->
     </div><!-- END authorization_container -->
-    <div class="footer">
+    <!--<div class="footer">
         <a href="/html/" class="logo"></a>
         <p class="copy">Copyright &copyl; 2020 Willis Towers Watson. All rights reserved.</p>
-    </div><!-- END footer -->
+    </div>--><!-- END footer -->
 <?php
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

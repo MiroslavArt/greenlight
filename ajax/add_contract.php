@@ -45,6 +45,26 @@ function reArrayFiles(&$file_post)
     return $file_ary;
 }
 
+// в начале проверяем номер на дубликат
+$arFilter['NAME'] = $_POST['docnum'];
+$arFilter["PROPERTY_CLIENT_LEADER.ID"] = $_POST['clientid'];
+$contracts = Contract::getElementsByConditions($arFilter, [], []);
+if($contracts) {
+    $contract = current($contracts);
+    $numerror = false;
+    if($_POST['contractnum']) {
+        if($_POST['contractnum']!=$contract['ID']) {
+            $numerror = true;
+        }
+    } else {
+        $numerror = true;
+    }
+
+    if($numerror) {
+        __CrmPropductRowListEndResponse(array('error'=>"Договор по данному клиенту с таким номером уже существует"));
+    }
+}
+// потом все остальное
 $fidids = [
     'contracts' => [],
     'pamyatka' => [],
