@@ -4,6 +4,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
 use Itrack\Custom\CUserRole;
+use Itrack\Custom\CUserEx;
 use Itrack\Custom\Helpers\Utils;
 use Itrack\Custom\Highloadblock\HLBWrap;
 use Itrack\Custom\InfoBlocks\Company;
@@ -20,9 +21,14 @@ use \Bitrix\Iblock\Elements\ElementCompanyTable;
 
 class ItrContract extends CBitrixComponent
 {
+    private $userId;
+    private $userCompanyId;
     private $companyId;
     private $contractId;
     private $errors;
+
+    /** @var CUserRole $userRole */
+    private $userRole;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -38,6 +44,10 @@ class ItrContract extends CBitrixComponent
     public function executeComponent()
     {
         global $APPLICATION;
+
+        $this->userId = $GLOBALS["USER"]->GetID();
+        $this->userCompanyId = CUserEx::getUserCompanyId($this->userId);
+        $this->userRole = new CUserRole($this->userId);
 
         $arResult =& $this->arResult;
 
@@ -119,7 +129,17 @@ class ItrContract extends CBitrixComponent
     }
 
     private function getContract() {
+
+        $permittedLosts = $this->getPermittedLosts();
+        $arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
+
+        if(empty($arPermittedContractIds)) {
+            \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
+        }
+
         $arContract = Contract::getElementByID($this->contractId);
+
+
         if(!empty($arContract)) {
             if($arContract['PROPERTIES']['DOCS']['VALUE']) {
                 foreach ($arContract['PROPERTIES']['DOCS']['VALUE'] as $item) {
@@ -299,5 +319,49 @@ class ItrContract extends CBitrixComponent
         }
 
         return $result;
+    }
+
+
+    private function getPermittedLosts(): array {
+        $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
+
+        if ($this->userRole->isSuperBroker()) {
+            return $lostsOfCompany;
+        }
+
+        $lostsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        ;
+
+        return array_intersect(
+            $lostsOfCompany,
+            $lostsOfUser
+        );
+    }
+
+    private function getPermittedContractIds(array $permittedLosts): array {
+        $contractsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CContract::class);
+
+        $contractsOfPermittedLosts = array_map(
+            function($v) { return $v["PROPERTY_CONTRACT_VALUE"]; },
+            CLost::getElementsByConditions(["ID" => $permittedLosts ?: false], [], ["PROPERTY_CONTRACT"])
+        );
+
+        if ($this->userRole->isSuperBroker()) {
+            return array_merge($contractsOfCompany, $contractsOfPermittedLosts);
+        }
+
+        $contractsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CContract::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CContract::class)
+        ;
+
+        $permittedContracts = array_intersect(
+            $contractsOfCompany,
+            $contractsOfUser
+        );
+
+        return array_merge($permittedContracts, $contractsOfPermittedLosts);
     }
 }
