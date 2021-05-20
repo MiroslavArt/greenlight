@@ -12,3 +12,12 @@ if($arResult['SHOWORIGINAL']) {
 } else {
     $arResult['COLOR_FIELD'] = 'UF_COLOR';
 }
+
+if(empty($arResult['DOCUMENTS'])) {
+    if($arResult['SHOWACCEPT']) {
+        $arResult['SHOWACCEPT'] = false;
+    }
+    if($arResult['SHOWDECLINE']) {
+        $arResult['SHOWDECLINE'] = false;
+    }
+}

@@ -451,7 +451,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <!-- <span class="delete js_delete1"></span> -->
                                 <div class="input_container with_flag">
                                     <label class="big_label"><?=$insco['NAME']?></label>
-                                    <input class="inserted_co_id foredit" type="hidden" value="<?=$insco['ID'] ?>"/>
+                                    <input class="inserted_co_id2 foredit" type="hidden" value="<?=$insco['ID'] ?>"/>
                                     <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
                                 </div><!-- END input_container -->
                             </div><!-- END gray_block -->
@@ -461,7 +461,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     <input id="kur_search_ins_2" data-id="<?=$insco['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
                                 </div>
                             </div>-->
-                            <div class="company_card_container ins_kurators" data-id="<?= $insco['ID'] ?>">
+                            <div class="company_card_container ins_kurators2" data-id="<?= $insco['ID'] ?>">
                                 <? foreach ($arResult['CONTRACT']['PROPERTIES']['CURATORS'][$insco['ID']] as $item) { ?>
                                     <div class="company_card">
                                         <!-- <span class="delete"></span> -->
