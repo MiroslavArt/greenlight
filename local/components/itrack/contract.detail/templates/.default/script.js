@@ -174,6 +174,75 @@ $(document).ready(function() {
         console.log(error);
     });
 
+    // ск и его кураторы - ред договора
+    $(".inserted_co_id2").each(function (index, el){
+        var compid = $(el).val()
+        addedcompany[compid] = 0
+        if($(el).hasClass('foredit')) {
+            var cardblock =  $(el).parent().parent().next()
+        } else {
+            var cardblock = $("<div></div>").attr("class", "company_card_container ins_kurators").attr("data-id", compid)
+        }
+        var addkurtext = $("<span></span>").text("Добавить куратора")
+        var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+        addkur.append(addkurtext)
+        var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
+        var kursearch = $("<div></div>").attr("class", "input_container without_small")
+        var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
+            .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
+        kursearch.append(kursearchinp)
+        inplockdiv.append(kursearch)
+        if($(el).hasClass('foredit')) {
+            $(el).parent().parent().after(addkur)
+            addkur.after(inplockdiv)
+        } else {
+            $(el).parent().parent().parent().append(addkur)
+            $(el).parent().parent().parent().append(inplockdiv)
+            $(el).parent().parent().parent().append(cardblock)
+        }
+        BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+            data: {
+                company: compid
+            }
+        }).then(function (response) {
+            kursearchinp.autocomplete({
+                source: response.data,
+                focus: function( event, ui ) {
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $(this).parent().parent().toggleClass('hidden');
+                    var form = BX.findParent(this, {"tag": "form"});
+                    //console.log(form);
+                    if ($(el).hasClass('foredit')) {
+                        var kurids = BX.findChild(form, {"class": "inserted_kur_co_id_2"}, true, true)
+                    } else {
+                        var kurids = BX.findChild(form, {"class": "inserted_kur_co_id"}, true, true)
+                    }
+                    var foundkur = false
+                    kurids.forEach(function(element){
+                        if(element.getAttribute("value") == ui.item.value) {
+                            foundkur = true
+                        }
+                    })
+                    if(foundkur==false) {
+                        kursearchinp .val('');
+                        if ($(el).hasClass('foredit')) {
+                            kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'simple')
+                        } else {
+                            kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'hard')
+                        }
+                    }
+                    return false;
+                }
+            });
+        }, function (error) {
+            //сюда будут приходить все ответы, у которых status !== 'success'
+            console.log(error);
+        });
+
+    })
+
     // ск и его кураторы
     $(".inserted_co_id").each(function (index, el){
         var compid = $(el).val()
@@ -471,7 +540,9 @@ $(document).ready(function() {
         })
 
         var mistake = ''
-
+        console.log(kurleaders)
+        console.log(inscompanies)
+        console.log(adjusters)
         if(kurleaders.length != (2 + inscompanies.length + adjusters.length)) {
             mistake += 'Указаны не все кураторы-лидеры.'
         }
@@ -535,6 +606,7 @@ $(document).ready(function() {
                 //console.log(value)
                 form_data.append('file'+index, value);
             });*/
+            console.log(kuratorsins)
             $.ajax({
                 url: '/ajax/add_loss.php',
                 dataType: 'json',
