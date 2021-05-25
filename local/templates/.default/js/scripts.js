@@ -296,7 +296,7 @@ function matchCustom(params, data) {
 
 	// `params.term` should be the term that is used for searching
 	// `data.text` is the text that is displayed for the data object
-	if (data.text.indexOf(params.term) > -1) {
+	if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) > -1) {
 		var modifiedData = $.extend({}, data, true);
 		modifiedData.text += ' (найдено)';
 
