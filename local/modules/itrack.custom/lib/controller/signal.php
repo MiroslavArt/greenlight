@@ -9,6 +9,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\Request;
 use Itrack\Custom\CUserRole;
 use Itrack\Custom\Highloadblock\HLBWrap;
+use Itrack\Custom\Participation\ATarget;
 use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\Participation\CLost;
@@ -326,6 +327,23 @@ class Signal extends Controller
                     $objHistory->add($histdata);
                 }
                 $result = 'added';
+                $participation = new CParticipation(new CLost($data['PROPERTY_VALUES']['LOST']));
+                $partips = $participation->getParticipants();
+                $clients = [];
+                foreach ($partips as $partip) {
+                    $curators = $partip['PROPERTIES']['CURATORS']['VALUE'];
+                    foreach ($curators as $curator) {
+                        $isclient = (new CUserRole($curator))->isClient();
+                        if($isclient) {
+                            $clients[] = $curator;
+                        }
+                    }
+                }
+                if($clients) {
+                    CNotification::send('doc_added', $clients, 'nocomment', $data['PROPERTY_VALUES']['LOST'], $ID);
+                }
+
+
             } else {
                 $result = $ID;
             }
