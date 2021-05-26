@@ -119,6 +119,7 @@ $(function(){
 	$('.js_datapicker').datepicker({
 		// Можно выбрать тольо даты, идущие за сегодняшним днем, включая сегодня
 		//minDate: new Date()
+		autoClose: true
 	})
 
 	//form validation
