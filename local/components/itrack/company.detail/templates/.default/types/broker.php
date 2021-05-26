@@ -124,7 +124,7 @@
             </div>
             <div class="gray_block originals_required">
                 <div class="switch_container">
-                    <label id="provideoriginal" class="switch js_checkbox"><input type="checkbox"></label>
+                    <label id="provideoriginal" class="switch js_checkbox active"><input type="checkbox"></label>
                     <span>Предоставлять оригиналы</span>
                 </div><!-- END switch_container -->
                 <p>Переключите если договор  подразумевает «предоставление оригиналов»</p>
@@ -133,38 +133,38 @@
                 <div class="switches_container">
                     <label class="big_label">Необходимость акцепта</label>
                     <div class="switch_container">
-                        <label id="clientaccept" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="clientaccept" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Клиент</span>
                     </div>
                     <div class="switch_container">
-                        <label id="brokeraccept" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="brokeraccept" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Страховой Брокер</span>
                     </div>
                     <div class="switch_container">
-                        <label id="insaccept" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="insaccept" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Страховая Компания</span>
                     </div>
                     <div class="switch_container">
-                        <label id="adjaccept" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="adjaccept" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Аджастер</span>
                     </div>
                 </div>
                 <div class="switches_container">
                     <label class="big_label">Уведомления</label>
                     <div class="switch_container">
-                        <label id="clientnot" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="clientnot" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Клиент</span>
                     </div>
                     <div class="switch_container">
-                        <label id="brokernot" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="brokernot" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Страховой Брокер</span>
                     </div>
                     <div class="switch_container">
-                        <label id="insnot" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="insnot" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Страховая Компания</span>
                     </div>
                     <div class="switch_container">
-                        <label id="adjnot" class="switch js_checkbox"><input type="checkbox"></label>
+                        <label id="adjnot" class="switch js_checkbox active"><input type="checkbox"></label>
                         <span>Аджастер</span>
                     </div>
                 </div>
