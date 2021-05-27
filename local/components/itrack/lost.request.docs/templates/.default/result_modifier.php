@@ -6,3 +6,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @global \CUser $USER */
 /** @global \CDatabase $DB */
 /** @var CBitrixComponentTemplate $this */
+
+use Itrack\Custom\CUserRole;
+
+$isclient = (new CUserRole($USER->GetID()))->isClient();
+
+$arResult['BAN_DOC'] = $isclient;
