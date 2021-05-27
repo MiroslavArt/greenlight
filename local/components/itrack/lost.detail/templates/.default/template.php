@@ -27,9 +27,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow' && $arResult["CAN_CLOSE_LOSS"]) { ?>
                  <a href="#change_status" data-fancybox class="ico_settings link">Закрыть убыток</a>
             <? } ?>
-            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
-                <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
-            <? } ?>
+            <? if(!$arResult['BAN_DOC']) {
+                if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
+                    <a href="#add_doc2" data-fancybox class="btn">Добавить документ</a>
+                <?
+                }
+            } ?>
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red') { ?>
                 <a href="#edit_loss" data-fancybox class="btn">Редактировать <br>убыток</a>
             <? } ?>
