@@ -4,7 +4,11 @@
     <div class="desc">
         <span class="desc_title">Описание страхового случая</span>
         <?php if (!empty($arResult['LOST']['PROPERTIES']['DESCRIPTION'])) : ?>
-            <p data-fancybox data-src="#edit_comm" class="pointer"><?= $arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'] ?></p>
+            <p data-fancybox data-src="#edit_comm" class="pointer"><?= mb_substr($arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'], 0, 280) ?><?
+                if(mb_strlen($arResult['LOST']['PROPERTIES']['DESCRIPTION']['VALUE'])>280) {
+                    echo "...";
+                }
+                ?></p>
             <div class="popup add_comment" id="edit_comm">
                 <h6 class="small_title">Комментарий</h6>
                 <form class="form3">

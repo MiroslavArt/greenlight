@@ -608,7 +608,19 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             <div class="table_block align_left item3" data-name="Статус развернуто"><p><?=$arItem['STATUS']['UF_NAME']?></p></div>
                             <div class="table_block align_left item3" data-name="Уникальный номер"><p><a href="<?=$arItem['DETAIL_PAGE_URL']?>"><?=$arItem['NAME']?></a></p></div>
                             <div class="table_block align_left item2" data-name="Дата"><?=$arItem['DATE']?></div>
-                            <div class="table_block align_left item3" data-name="Описание"><?=$arItem['DESCRIPTION']?></div>
+                            <div class="table_block align_left item3" data-name="Описание">
+                                <p data-fancybox data-src="#view_comm<?=$arItem['ID']?>" class="pointer">
+                                    <?= mb_substr($arItem['DESCRIPTION'], 0, 100) ?><?
+                                    if(mb_strlen($arItem['DESCRIPTION'])>100) {
+                                        echo "...";
+                                    }
+                                    ?>
+                                </p>
+                                <div class="popup add_comment" id="view_comm<?=$arItem['ID']?>">
+                                    <h4 class="small_title">Описание страхового случая</h4>
+                                    <p><?= $arItem['DESCRIPTION'] ?></p>
+                                </div><!-- END popup -->
+                            </div>
                             <div class="table_block links_column item9" data-name="Ссылки">
                                 <a href="#ajusters<?= $arItem['ID'] ?>" data-fancybox class="link"><span>Список <br>Аджастеров</span></a>
                                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>" class="link"><span>Список <br>документов</span></a>
