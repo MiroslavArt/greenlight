@@ -80,7 +80,7 @@ class ItrCompaniesList extends CBitrixComponent
 				"PROPERTY_TYPE" => $this->getPermittedCompanyTypeId(),
 				"NAME" => $searchQuery ? "%$searchQuery%" : "",
 			],
-			[],
+			["NAME"=>'ASC'],
 			[
 				"ID",
 				"NAME",
