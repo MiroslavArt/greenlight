@@ -340,7 +340,7 @@ class Signal extends Controller
                     }
                 }
                 if($clients) {
-                    CNotification::send('doc_added', $clients, 'nocomment', $data['PROPERTY_VALUES']['LOST'], $ID);
+                    CNotification::send('doc_added', $clients, $data['PROPERTY_VALUES']['LOST'], $data['PROPERTY_VALUES']['LOST'], $ID);
                 }
 
 
