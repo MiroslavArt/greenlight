@@ -18,7 +18,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <?php endif; ?>
         <div class="cart_container">
             <div class="cart_block">
-                <span class="type_page">Карточка договор страхования клиента</span>
+                <span class="type_page">Карточка договора страхования</span>
                 <div class="client">
                     <img src="<?=$arResult['COMPANY']['LOGO_SRC']?>" alt="<?=$arResult['COMPANY']['NAME']?>" width="40" height="40">
                     <h1 class="block_title"><?=$arResult['COMPANY']['NAME']?></h1>
