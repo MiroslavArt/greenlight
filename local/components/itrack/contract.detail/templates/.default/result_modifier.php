@@ -12,6 +12,10 @@ if(!empty($arResult['INSURANCE_COMPANY']['PROPERTIES']['LOGO']['VALUE']) && intv
     $arResult['INSURANCE_COMPANY']['LOGO_SRC'] = CFile::ResizeImageGet($arResult['INSURANCE_COMPANY']['PROPERTIES']['LOGO']['VALUE'], ['width' => 80, 'height' => 80])['src'];
 }
 
+if(!empty($arResult['COMPANY']['PROPERTIES']['LOGO']['VALUE']) && intval($arResult['COMPANY']['PROPERTIES']['LOGO']['VALUE']) > 0 ) {
+    $arResult['COMPANY']['LOGO_SRC'] = CFile::ResizeImageGet($arResult['COMPANY']['PROPERTIES']['LOGO']['VALUE'], ['width' => 80, 'height' => 80])['src'];
+}
+
 $users = [];
 
 $filter = Array

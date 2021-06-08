@@ -20,8 +20,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <div class="cart_block">
                 <span class="type_page">Карточка договор страхования клиента</span>
                 <div class="client">
-                    <img src="<?=$arResult['INSURANCE_COMPANY']['LOGO_SRC']?>" alt="<?=$arResult['INSURANCE_COMPANY']['NAME']?>" width="40" height="40">
-                    <h1 class="block_title"><?=$arResult['INSURANCE_COMPANY']['NAME']?></h1>
+                    <img src="<?=$arResult['COMPANY']['LOGO_SRC']?>" alt="<?=$arResult['COMPANY']['NAME']?>" width="40" height="40">
+                    <h1 class="block_title"><?=$arResult['COMPANY']['NAME']?></h1>
                 </div><!-- END client -->
                 <p class="contract_number" data-id="<?=$arResult['CONTRACT']['ID']?>">№ договора<span><?=$arResult['CONTRACT']['NAME']?></span></p>
             </div><!-- END cart_block -->
