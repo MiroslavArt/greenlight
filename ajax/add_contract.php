@@ -88,7 +88,8 @@ foreach ($_FILES as $key => $filearr) {
                 "del" => "Y",
                 "MODULE_ID" => "iblock");
             $fid = CFile::SaveFile($arr_file, "contractdocs");
-            array_push($fidids[$key], $fid);
+            $fiddoc = \CFile::MakeFileArray($fid);
+            array_push($fidids[$key], $fiddoc);
         }
     }
 }
@@ -96,21 +97,24 @@ foreach ($_FILES as $key => $filearr) {
 if($_POST['curdocids']) {
     $curdocsarray = explode(",", $_POST['curdocids']);
     foreach ($curdocsarray as $curdoc) {
-        array_push($fidids['contracts'], $curdoc);
+        $curdocfile = \CFile::MakeFileArray($curdoc);
+        array_push($fidids['contracts'], $curdocfile);
     }
 }
 
 if($_POST['curdocids_pamyatka']) {
     $curdocsarray = explode(",", $_POST['curdocids_pamyatka']);
     foreach ($curdocsarray as $curdoc) {
-        array_push($fidids['pamyatka'], $curdoc);
+        $curdocfile = \CFile::MakeFileArray($curdoc);
+        array_push($fidids['pamyatka'], $curdocfile);
     }
 }
 
 if($_POST['curdocids_other']) {
     $curdocsarray = explode(",", $_POST['curdocids_other']);
     foreach ($curdocsarray as $curdoc) {
-        array_push($fidids['other'], $curdoc);
+        $curdocfile = \CFile::MakeFileArray($curdoc);
+        array_push($fidids['other'], $curdocfile);
     }
 }
 
@@ -162,7 +166,9 @@ $data = [
 
 if($_POST['contractnum']) {
     $ID = $_POST['contractnum'];
-    Contract::updateElement($ID, $data, []);
+    $updatedataprop = $data['PROPERTY_VALUES'];
+    unset($data['PROPERTY_VALUES']);
+    Contract::updateElement($ID, $data, $updatedataprop);
 } else {
     $ID = Contract::createElement($data, []);
 }
