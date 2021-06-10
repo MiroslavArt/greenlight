@@ -87,6 +87,8 @@ foreach ($_FILES as $key => $filearr) {
                 "old_file" => "",
                 "del" => "Y",
                 "MODULE_ID" => "iblock");
+            \Bitrix\Main\Diag\Debug::writeToFile($arr_file, "arrf", "__miros.log");
+
             $fid = CFile::SaveFile($arr_file, "contractdocs");
             $fiddoc = \CFile::MakeFileArray($fid);
             array_push($fidids[$key], $fiddoc);
@@ -166,6 +168,13 @@ $data = [
 
 if($_POST['contractnum']) {
     $ID = $_POST['contractnum'];
+    $clearfiles = [
+        'DOCS' => ['VALUE' => '', 'DESCRIPTION' => ''],
+        'DOCS_PAMYATKA' => ['VALUE' => '', 'DESCRIPTION' => ''],
+        'DOCS_OTHERS' => ['VALUE' => '', 'DESCRIPTION' => '']
+    ];
+    Contract::updateElement($ID, [], $clearfiles);
+
     $updatedataprop = $data['PROPERTY_VALUES'];
     unset($data['PROPERTY_VALUES']);
     Contract::updateElement($ID, $data, $updatedataprop);
