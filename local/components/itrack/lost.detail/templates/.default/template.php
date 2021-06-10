@@ -89,7 +89,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <input type="text" class="text_input ico_date js_datapicker" id="term_date" name="docterm" placeholder="Срок предоставления" />
                 </div><!-- END input_container -->
                 <div class="input_container column_50">
-                    <span>От куратора</span>
+                    <span>Автор запроса</span>
                     <select class="select js_select" id="author" name="author">
                         <? foreach ($arResult['CURATORS'] as $user) { ?>
                             <option value="<?= $user['ID']?>"><?= $user['NAME'].' '.$user['LAST_NAME']?></option>
