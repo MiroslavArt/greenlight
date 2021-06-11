@@ -538,44 +538,58 @@ $(document).ready(function() {
                 }
             }
         })
-
+        $("#mistaketext").empty()
+        $('#mistake').empty()
         var mistake = ''
-        console.log(kurleaders)
-        console.log(inscompanies)
-        console.log(adjusters)
+
         if(kurleaders.length != (2 + inscompanies.length + adjusters.length)) {
-            mistake += 'Указаны не все кураторы-лидеры.'
+            mistake = '- указаны не все кураторы-лидеры';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Указаны не все кураторы-лидеры.'
         }
 
         if(insleader==0) {
-            mistake += 'Не указана страховая компания-лидер.'
+            mistake = '- не указана страховая компания-лидер';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не указана страховая компания-лидер.'
         }
         if(adjleader==0) {
-            mistake += 'Не указан аджастер-лидер.'
+            mistake = '- не указан аджастер-лидер';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не указан аджастер-лидер.'
         }
         if(inscompanies.length == 0) {
-            mistake += 'Не выбрана страховая компания.'
-        }
-        if(inscompanies.length == 0) {
-            mistake += 'Не выбрана страховая компания.'
+            mistake = '- не выбрана страховая компания';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбрана страховая компания.'
         }
         if(adjusters.length == 0) {
-            mistake += 'Не выбран аджастер.'
+            mistake = '- не выбран аджастер';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбран аджастер.'
         }
         if(kuratorscl.length == 0) {
-            mistake += 'Не выбраны кураторы от клиента.'
+            mistake = '- не выбраны кураторы от клиента';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбраны кураторы от клиента.'
         }
         if(kuratorsbr.length == 0) {
-            mistake += 'Не выбраны кураторы от страхового брокера.'
+            mistake = '- не выбраны кураторы от страхового брокера';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбраны кураторы от страхового брокера.'
         }
         if(kuratorsins.length == 0) {
-            mistake += 'Не выбраны кураторы от страховой компании.'
+            mistake = '- не выбраны кураторы от страховой компании';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбраны кураторы от страховой компании.'
         }
         if(kuratorsadj.length == 0) {
-            mistake += 'Не выбраны кураторы от аджастера.'
+            mistake = '- не выбраны кураторы от аджастера';
+            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake += 'Не выбраны кураторы от аджастера.'
         }
         if(mistake) {
-            $("#mistake").text(mistake)
+            $("#mistaketext").text('В форме обнаружены ошибки:')
         } else {
             var form_data = new FormData();
             //console.log(files[0])
@@ -919,48 +933,78 @@ $(document).ready(function() {
             }
         })
 
-        var mistake = ''
+        $("#mistaketext2").empty()
+        $('#mistake2').empty()
+        var mistake2 = ''
 
         if(kurleaders.length != (2 + inscompanies.length)) {
-            mistake += 'Указаны не все кураторы-лидеры.'
+            mistake2 = '- указаны не все кураторы-лидеры';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Указаны не все кураторы-лидеры.'
         }
 
         if(insleader==0) {
-            mistake += 'Не указана страховая компания - лидер.'
-        }
-        if(inscompanies.length == 0) {
-            mistake += 'Не выбрана страховая компания.'
-        }
-        if(kuratorscl.length == 0) {
-            mistake += 'Не выбраны кураторы от клиента.'
-        }
-        if(kuratorsbr.length == 0) {
-            mistake += 'Не выбраны кураторы от страхового брокера.'
-        }
-        if(kuratorsins.length == 0) {
-            mistake += 'Не выбраны кураторы от страховой компании.'
+            mistake2 = '- не указана страховая компания - лидер';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не указана страховая компания - лидер.'
         }
 
-        var mistake = ''
+        if(inscompanies.length == 0) {
+            mistake2 = '- не выбрана страховая компания';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбрана страховая компания.'
+        }
+
+        if(kuratorscl.length == 0) {
+            mistake2 = '- не выбраны кураторы от клиента';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от клиента.'
+        }
+
+        if(kuratorsbr.length == 0) {
+            mistake2 = '- не выбраны кураторы от страхового брокера';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от страхового брокера.'
+        }
+
+        if(kuratorsins.length == 0) {
+            mistake2 = '- не выбраны кураторы от страховой компании';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от страховой компании.'
+        }
 
         if(insleader==0) {
-            mistake += 'Не указана страховая компания - лидер.'
-        }
-        if(inscompanies.length == 0) {
-            mistake += 'Не выбрана страховая компания.'
-        }
-        if(kuratorscl.length == 0) {
-            mistake += 'Не выбраны кураторы от клиента.'
-        }
-        if(kuratorsbr.length == 0) {
-            mistake += 'Не выбраны кураторы от страхового брокера.'
-        }
-        if(kuratorsins.length == 0) {
-            mistake += 'Не выбраны кураторы от страховой компании.'
+            mistake2 = '- не указана страховая компания - лидер';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не указана страховая компания - лидер.'
         }
 
-        if(mistake) {
-            $("#mistake2").text(mistake)
+        if(inscompanies.length == 0) {
+            mistake2 = '- не выбрана страховая компания';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбрана страховая компания.'
+        }
+
+        if(kuratorscl.length == 0) {
+            mistake2 = '- не выбраны кураторы от клиента';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от клиента.'
+        }
+
+        if(kuratorsbr.length == 0) {
+            mistake2 = '- не выбраны кураторы от страхового брокера';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от страхового брокера.'
+        }
+
+        if(kuratorsins.length == 0) {
+            mistake2 = '- не выбраны кураторы от страховой компании';
+            $('#mistake2').append('<li>'+mistake2+'</li>');
+            //mistake += 'Не выбраны кураторы от страховой компании.'
+        }
+
+        if(mistake2) {
+            $("#mistaketext2").text('В форме обнаружены ошибки:')
         } else {
             var form_data = new FormData();
             //console.log(files[0])

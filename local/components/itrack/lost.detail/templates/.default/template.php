@@ -398,7 +398,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div>
                 </div>
             </div>
-            <p class="link" id="mistake3"></p>
+            <p class="link" id="mistaketext3"></p>
+            <div><ul class="link" id="mistake3">
+            </ul></div>
             <input type="submit" class="btn" value="Отредактировать" />
         </form><!-- END form_edit_profile -->
     </div><!-- END popup -->
