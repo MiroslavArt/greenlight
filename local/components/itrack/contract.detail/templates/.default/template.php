@@ -247,7 +247,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <ul class="docs_list">
                     </ul>--><!-- END docs_list -->
                 <!--</div>--><!-- END form_row -->
-                <p class="link" id="mistake"></p>
+                <p class="link" id="mistaketext"></p>
+                <div><ul class="link" id="mistake">
+                </ul></div>
                 <input type="submit" class="btn" value="Добавить убыток" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->
@@ -587,7 +589,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div>
                 </div><!-- END form_row -->
                 <!-- <div class="btn senddoc">Добавить договор</div> -->
-                <p class="link" id="mistake2"></p>
+                <p class="link" id="mistaketext2"></p>
+                <div><ul class="link" id="mistake2">
+                </ul></div>
                 <input type="submit" class="btn" value="Отредактировать" />
             </form><!-- END form_edit_profile -->
         </div><!-- END popup -->

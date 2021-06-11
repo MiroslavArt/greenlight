@@ -170,7 +170,9 @@
                 </div>
             </div><!-- END form_row -->
             <!-- <div class="btn senddoc">Добавить договор</div> -->
-            <p class="link" id="mistake"></p>
+            <p class="link" id="mistaketext"></p>
+            <div><ul class="link" id="mistake">
+            </ul></div>
             <input type="submit" class="btn" value="Добавить договор" />
         </form><!-- END form_edit_profile -->
     </div><!-- END popup -->
