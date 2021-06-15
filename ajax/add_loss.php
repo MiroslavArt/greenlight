@@ -57,7 +57,9 @@ if($losses) {
 // потом все остальное
 $companies = [$_POST['clientid'], $_POST['brokerid']];
 $companiesleaders = [$_POST['clientid'], $_POST['brokerid'], $_POST['insleader'], $_POST['adjleader']];
-
+if($_POST['adjleader']!=0) {
+    array_push($companiesleaders, $_POST['adjleader']);
+}
 if($_POST['inscompanies']) {
     $insarray = explode(",", $_POST['inscompanies']);
 }
@@ -94,7 +96,10 @@ if($_POST['neednotify']) {
 }
 
 $companies = array_merge($companies, $insarray);
-$companies = array_merge($companies, $adjarray);
+if($adjarray) {
+    $companies = array_merge($companies, $adjarray);
+}
+
 
 if($_POST['lostid']) {
     $ID = $_POST['lostid'];
