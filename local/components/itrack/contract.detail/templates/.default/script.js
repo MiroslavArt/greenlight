@@ -553,7 +553,7 @@ $(document).ready(function() {
             $('#mistake').append('<li>'+mistake+'</li>');
             //mistake += 'Не указана страховая компания-лидер.'
         }
-        if(adjleader==0) {
+        if(adjusters.length>0 && adjleader==0) {
             mistake = '- не указан аджастер-лидер';
             $('#mistake').append('<li>'+mistake+'</li>');
             //mistake += 'Не указан аджастер-лидер.'
@@ -564,8 +564,8 @@ $(document).ready(function() {
             //mistake += 'Не выбрана страховая компания.'
         }
         if(adjusters.length == 0) {
-            mistake = '- не выбран аджастер';
-            $('#mistake').append('<li>'+mistake+'</li>');
+            //mistake = '- не выбран аджастер';
+            //$('#mistake').append('<li>'+mistake+'</li>');
             //mistake += 'Не выбран аджастер.'
         }
         if(kuratorscl.length == 0) {
@@ -583,7 +583,7 @@ $(document).ready(function() {
             $('#mistake').append('<li>'+mistake+'</li>');
             //mistake += 'Не выбраны кураторы от страховой компании.'
         }
-        if(kuratorsadj.length == 0) {
+        if(adjusters.length>0 && kuratorsadj.length == 0) {
             mistake = '- не выбраны кураторы от аджастера';
             $('#mistake').append('<li>'+mistake+'</li>');
             //mistake += 'Не выбраны кураторы от аджастера.'
