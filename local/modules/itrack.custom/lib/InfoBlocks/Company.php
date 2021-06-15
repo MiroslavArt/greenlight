@@ -65,7 +65,7 @@ class Company extends BaseClass
 	}
 
 	public static function getParties(array $companyIds) {
-		$arCompanies = self::getElementsByConditions(["ID" => $companyIds]);
+		$arCompanies = self::getElementsByConditions(["ID" => $companyIds ?: false]);
 
 		$arParties = [];
 

@@ -60,6 +60,10 @@ class CUserEx
 	}
 
 	public static function getUsersCompanies(array $users) {
+        if (count($users) <= 0) {
+            return [];
+        }
+
 		$res = \Bitrix\Main\UserTable::query()
 			->setSelect(["ID", "UF_COMPANY"])
 			->whereIn("ID", $users)
