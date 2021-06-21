@@ -10,6 +10,7 @@ use Itrack\Custom\Participation\CParticipation;
 use Itrack\Custom\Participation\CContract;
 use Itrack\Custom\InfoBlocks\Contract;
 use Itrack\Custom\UserAccess\CUserAccess;
+use \Itrack\Custom\InfoBlocks\UsefulDocuments;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php');
 
@@ -160,20 +161,20 @@ $data = [
         'NEED_ACCEPT' => $needaccept,
         'NEED_NOTIFY' => $neednotify,
         'ORIGIN_REQUIRED' => $_POST['original'],
-        'DOCS' => $fidids['contracts'],
-        'DOCS_PAMYATKA' => $fidids['pamyatka'],
-        'DOCS_OTHERS' => $fidids['other']
+        //'DOCS' => $fidids['contracts'],
+        //'DOCS_PAMYATKA' => $fidids['pamyatka'],
+        //'DOCS_OTHERS' => $fidids['other']
     ]
 ];
 
 if($_POST['contractnum']) {
     $ID = $_POST['contractnum'];
-    $clearfiles = [
+    /*$clearfiles = [
         'DOCS' => ['VALUE' => '', 'DESCRIPTION' => ''],
         'DOCS_PAMYATKA' => ['VALUE' => '', 'DESCRIPTION' => ''],
         'DOCS_OTHERS' => ['VALUE' => '', 'DESCRIPTION' => '']
     ];
-    Contract::updateElement($ID, [], $clearfiles);
+    Contract::updateElement($ID, [], $clearfiles);*/
 
     $updatedataprop = $data['PROPERTY_VALUES'];
     unset($data['PROPERTY_VALUES']);
@@ -183,7 +184,66 @@ if($_POST['contractnum']) {
 }
 
 if(intval($ID) > 0) {
+
     $id = intval($ID);
+    // добавляем полезные документы
+    if($fidids['contracts']) {
+        foreach ($fidids['contracts'] as $file) {
+            $date = date("d.m.Y H:i:s");
+            $arProperties['FILE'] = $file;
+            $arProperties['DOC_TYPE'] = DOG_FILE;
+            $arProperties['DATE_TO_LOAD'] = $date;
+            $arProperties['DATE_LOADED'] = $date;
+            $arProperties['CONTRACT_ID'] = $id;
+            $arFields = Array(
+                "DATE_CREATE"  => date("d.m.Y H:i:s"),
+                "CREATED_BY"    => $GLOBALS['USER']->GetID(),
+                "PROPERTY_VALUES"=> $arProperties,
+                "NAME"           => strip_tags($file['name']),
+                "ACTIVE"         => "Y",
+            );
+            $result = UsefulDocuments::createElement($arFields, []);
+        }
+    }
+
+    if($fidids['pamyatka']) {
+        foreach ($fidids['pamyatka'] as $file) {
+            $date = date("d.m.Y H:i:s");
+            $arProperties['FILE'] = $file;
+            $arProperties['DOC_TYPE'] = PAM_FILE;
+            $arProperties['DATE_TO_LOAD'] = $date;
+            $arProperties['DATE_LOADED'] = $date;
+            $arProperties['CONTRACT_ID'] = $id;
+            $arFields = Array(
+                "DATE_CREATE"  => date("d.m.Y H:i:s"),
+                "CREATED_BY"    => $GLOBALS['USER']->GetID(),
+                "PROPERTY_VALUES"=> $arProperties,
+                "NAME"           => strip_tags($file['name']),
+                "ACTIVE"         => "Y",
+            );
+            $result = UsefulDocuments::createElement($arFields, []);
+        }
+    }
+
+    if($fidids['other']) {
+        foreach ($fidids['other'] as $file) {
+            $date = date("d.m.Y H:i:s");
+            $arProperties['FILE'] = $file;
+            $arProperties['DOC_TYPE'] = OTHER_FILE;
+            $arProperties['DATE_TO_LOAD'] = $date;
+            $arProperties['DATE_LOADED'] = $date;
+            $arProperties['CONTRACT_ID'] = $id;
+            $arFields = Array(
+                "DATE_CREATE"  => date("d.m.Y H:i:s"),
+                "CREATED_BY"    => $GLOBALS['USER']->GetID(),
+                "PROPERTY_VALUES"=> $arProperties,
+                "NAME"           => strip_tags($file['name']),
+                "ACTIVE"         => "Y",
+            );
+            $result = UsefulDocuments::createElement($arFields, []);
+        }
+    }
+    // добавляем участников
     try {
         $participation = new CParticipation(new CContract($id));
         $participation->createFromArrays(
@@ -205,7 +265,7 @@ if(intval($ID) > 0) {
 
     $kuracceptance = [];
     $kurnotify = [];
-
+    // акцепт и уведомления
     if(in_array(17, $needaccept)) {
         foreach ($kuratorscl as $kurator) {
             $kuracceptance[] = $kurator;

@@ -14,3 +14,6 @@ define('INS_GROUP', '11');
 define('INS_SU_GROUP', '12');
 define('INS_BROKER_ID', '1');
 define('REG_GROUP', '5');
+define('DOG_FILE', '10');
+define('PAM_FILE', '11');
+define('OTHER_FILE', '35');

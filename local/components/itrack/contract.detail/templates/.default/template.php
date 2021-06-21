@@ -276,69 +276,69 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         </select><!-- END select -->
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
-                <div class="form_row">
+                <!--<div class="form_row">
                     <label class="big_label">Прикрепить полезные документы</label>
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input name='file1' class="cont_file1" type="file" />
                                 <span class="upload"><span>Договор страхования</span></span>
-                            </div><!-- END logo_upload -->
-                        </div><!-- END logo_upload_container -->
-                    </div><!-- END input_container -->
+                            </div>
+                        </div>
+                    </div>
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input name='file2' class="cont_file2" type="file" />
                                 <span class="upload"><span>Памятка</span></span>
-                            </div><!-- END logo_upload -->
-                        </div><!-- END logo_upload_container -->
-                    </div><!-- END input_container -->
+                            </div>
+                        </div>
+                    </div>
                     <div class="input_container column_25">
                         <div class="logo_upload_container without_img">
                             <div class="logo_upload">
                                 <input name='file3' class="cont_file3"  type="file" />
                                 <span class="upload"><span>Прочие документы</span></span>
-                            </div><!-- END logo_upload -->
-                        </div><!-- END logo_upload_container -->
-                    </div><!-- END input_container -->
+                            </div>
+                        </div>
+                    </div>
                     <div class="input_container column_25">
                         <p class="upload_desc">Прикрепите прочие документы в разделе «Полезные документы»</p>
-                    </div><!-- END input_container -->
-                </div><!-- END form_row -->
+                    </div>
+                </div>
                 <div class="form_row attached_container">
-                    <!--<label class="big_label">Документы</label> -->
+
                     <div class="input_container column_25">
                         <ul class="docs_list" id="contract_files">
-                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                            <? //foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
                                 <li>
-                                    <a href="<?=$item['SRC']?>" class="link doclink" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <a href="" class="link doclink" data-id="" download></a>
                                     <span class="delete js_delete"></span>
                                 </li>
-                            <? } ?>
-                        </ul><!-- END docs_list -->
+                            <? //} ?>
+                        </ul>
                     </div>
                     <div class="input_container column_25">
                         <ul class="docs_list" id="pamyatka_files">
-                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_PAMYATKA']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                            <? //foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_PAMYATKA']['VALUE_DETAIL'] as $itemid=>$item) { ?>
                                 <li>
-                                    <a href="<?=$item['SRC']?>" class="link doclink_pamyatka" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <a href="" class="link doclink_pamyatka" data-id="" download></a>
                                     <span class="delete js_delete"></span>
                                 </li>
-                            <? } ?>
-                        </ul><!-- END docs_list -->
+                            <? //} ?>
+                        </ul>
                     </div>
                     <div class="input_container column_25">
                         <ul class="docs_list" id="other_files">
-                            <? foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_OTHERS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
+                            <? //foreach ($arResult['CONTRACT']['PROPERTIES']['DOCS_OTHERS']['VALUE_DETAIL'] as $itemid=>$item) { ?>
                                 <li>
-                                    <a href="<?=$item['SRC']?>" class="link doclink_other" data-id="<?=$itemid ?>" download><?= $item['FILE_NAME'] ?></a>
+                                    <a href="" class="link doclink_other" data-id="" download></a>
                                     <span class="delete js_delete"></span>
                                 </li>
-                            <? } ?>
-                        </ul><!-- END docs_list -->
+                            <? //} ?>
+                        </ul>
                     </div>
-                </div><!-- END form_row -->
+                </div>--><!-- END form_row -->
                 <h3 class="subtitle">Кураторы</h3>
                 <h4 class="big_label">Клиент</h4>
                 <div class="gray_block">
