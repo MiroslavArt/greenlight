@@ -24,6 +24,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <h1 class="block_title"><?=$arResult['COMPANY']['NAME']?></h1>
                 </div><!-- END client -->
                 <p class="contract_number" data-id="<?=$arResult['CONTRACT']['ID']?>">№ договора<span><?=$arResult['CONTRACT']['NAME']?></span></p>
+                <span class="type_page">от <?= $arResult['CONTRACT']['PROPERTIES']['DATE']['VALUE'] ?></span>
             </div><!-- END cart_block -->
             <div class="title_right_block">
                 <a href="<?=$arParams['PATH_TO']['contract-useful-documents']?>" class="btn">Полезные документы</a>
