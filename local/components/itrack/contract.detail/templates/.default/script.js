@@ -1024,21 +1024,21 @@ $(document).ready(function() {
             form_data.append('kuratorsbr', kuratorsbr)
             form_data.append('needaccept', needaccept)
             form_data.append('neednotify', neednotify)
-            form_data.append('curdocids', curdocids)
-            form_data.append('curdocids_pamyatka', curdocids_pamyatka)
-            form_data.append('curdocids_other', curdocids_other)
+            //form_data.append('curdocids', curdocids)
+            //form_data.append('curdocids_pamyatka', curdocids_pamyatka)
+            //form_data.append('curdocids_other', curdocids_other)
 
             $.each(files,function(index,value){
                 //console.log(value)
-                form_data.append('contracts[]', value);
+                //form_data.append('contracts[]', value);
             });
             $.each(files_pam,function(index,value){
                 //console.log(value)
-                form_data.append('pamyatka[]', value);
+                //form_data.append('pamyatka[]', value);
             });
             $.each(files_other,function(index,value){
                 //console.log(value)
-                form_data.append('other[]', value);
+                //form_data.append('other[]', value);
             });
             $.ajax({
                 url: '/ajax/add_contract.php',
