@@ -129,7 +129,9 @@ class ItrLostDocument extends CBitrixComponent
         if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
             $this->shpworiginalpanel = true;
             if($status==12) {
-                $this->originalstatuset = true;
+                if($isbroker || $this->isclient) {
+                    $this->originalstatuset = true;
+                }
             } elseif ($status==14) {
                 $this->originalgot = true;
             }
@@ -239,10 +241,12 @@ class ItrLostDocument extends CBitrixComponent
                 $this->statuschanged = true;
                 //$this->showaccept = true;
                 //$this->showdecline = true;
+                $newstatus = '12';
+            }
+            if($isbroker || $this->isclient) {
                 if($this->shpworiginalpanel) {
                     $this->originalstatuset = true;
                 }
-                $newstatus = '12';
             }
         }
 
