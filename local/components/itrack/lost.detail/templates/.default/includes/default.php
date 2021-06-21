@@ -54,7 +54,7 @@
         <?php if(!empty($arResult['DOCS_STATUSES'])) : ?>
             <ul class="list_dosc">
                 <?php foreach ($arResult['DOCS_STATUSES'] as $key=>$arStatus) : ?>
-                    <li class="<?=$arResult['STATUSES'][$key]['UF_COLOR']?>">
+                    <li class="<?=$arResult['STATUSES'][$key][$arResult['COLOR_FIELD']]?>">
                         <p><?=$arResult['STATUSES'][$key]['UF_NAME']?></p>
                         <span><?=count($arStatus['DOCS'])?> док.</span>
                     </li>
