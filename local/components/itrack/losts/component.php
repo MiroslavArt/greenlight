@@ -24,6 +24,7 @@ $arDefaultUrlTemplates404 = array(
     "search" => "search/",
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
+    "lost-document" => "#ELEMENT_ID#/lost-document-#LOST_DOCUMENT_ID#/",
     "lost-document-history" => "#ELEMENT_ID#/lost-#LOST_DOCUMENT_ID#/status/",
 );
 
@@ -119,6 +120,10 @@ else
         "VARIABLES" => $arVariables,
         "ALIASES" => $arVariableAliases
     );
+}
+
+if(!empty($arResult['PATH_TO']['detail']) && empty($arResult['PATH_TO']['lost'])) {
+    $arResult['PATH_TO']['lost'] = $arResult['PATH_TO']['detail'];
 }
 
 $this->IncludeComponentTemplate($componentPage);
