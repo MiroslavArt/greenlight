@@ -20,7 +20,14 @@ $(function () {
 			action: "binding",
 			enable: $this.data("enable"),
 		}, function () {
+			if ($this.data("enable") === "n") {
+				// these two lines only disable UI switches, but do not send any requests
+				$row.find(".js-access-switch:checked[data-switch-type=acceptance]").trigger("click");
+				$row.find(".js-access-switch:checked[data-switch-type=notification]").trigger("click");
 
+				sendRequest($row, { action: "switch", switchType: "notification", enable: "n" });
+				sendRequest($row, { action: "switch", switchType: "acceptance",   enable: "n" });
+			}
 		})
 	});
 
