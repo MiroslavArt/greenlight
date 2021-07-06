@@ -52,8 +52,13 @@ $(function () {
 			dataType: "json",
 		}).done(function (answer) {
 			if (answer.success !== "y") {
-				alert("В процессе выполнения запроса возникла ошибка");
+				var err = answer.error === "There must be at least one curator from company."
+					? "У договора должен быть как минимум один куратор"
+					: "В процессе выполнения запроса возникла ошибка";
+
+				alert(err);
 				document.location.reload();
+				return;
 			}
 
 			if (callback)
