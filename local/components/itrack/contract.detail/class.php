@@ -222,7 +222,7 @@ class ItrContract extends CBitrixComponent
 
         foreach ($arCurators as $arCurator) {
             //$arCuratorsIds[] = $arCurator['PROPERTIES']['CURATORS']['VALUE'];
-            $arCuratorsIds = array_merge($arCuratorsIds, $arCurator['PROPERTIES']['CURATORS']['VALUE']);
+            $arCuratorsIds = array_merge($arCuratorsIds, $arCurator['PROPERTIES']['CURATORS']['VALUE'] ?: []);
             if(!empty($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) && intval($arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']) > 0) {
                 $this->arResult['CONTRACT']['PROPERTIES']['CURATORS_LEADERS'][$arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE']] = $arCurator['PROPERTIES']['CURATOR_LEADER']['VALUE'];
             }
