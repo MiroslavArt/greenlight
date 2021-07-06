@@ -54,7 +54,7 @@ abstract class AParticipant extends BaseInfoBlockClass implements IParticipant
 		$curators = array_unique(array_diff($curators, [$userId]));
 
 		if (count($curators) <= 0) {
-			$curators = false;
+			throw new \DomainException("There must be at least one curator from company.");
 		}
 
 		$leader = $participation["PROPERTIES"]["CURATOR_LEADER"]["VALUE"];
