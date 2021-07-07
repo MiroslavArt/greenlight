@@ -57,6 +57,11 @@ class ItrContract extends CBitrixComponent
         //get company
         if(!empty($this->companyId)) {
             $arResult['COMPANY'] = $this->getCompany($this->companyId);
+            if($arResult["COMPANY"]["PROPERTIES"]["TYPE"]["VALUE_XML_ID"] == CUserRole::getClientGroupCode()) {
+                $arResult['KLIENT'] = $arResult['COMPANY'];
+            } else {
+                $arResult['KLIENT'] = $this->getCompany(current($arResult['CONTRACT']['PROPERTIES']['CLIENT']['VALUE']));
+            }
         }
 
         //get insurance company
