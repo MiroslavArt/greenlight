@@ -57,8 +57,12 @@ class ItrLost extends CBitrixComponent
             $this->getContract();
         }
 
+        if(empty($this->companyId) && $arResult['LOST']) {
+            $this->companyId = current($arResult['LOST']['PROPERTIES']['CLIENT']['VALUE']);
+        }
+
         //get company
-        if(!empty($this->arParams['CLIENT_ID'])) {
+        if(!empty($this->companyId)) {
             $arResult['COMPANY'] = $this->getCompany($this->companyId);
             //get insurance company
             if (!empty($arResult['CONTRACT']['PROPERTIES']['INSURANCE_COMPANY_LEADER']['VALUE'])) {
