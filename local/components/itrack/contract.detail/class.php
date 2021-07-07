@@ -37,7 +37,7 @@ class ItrContract extends CBitrixComponent
         }
 
         $this->contractId = $arParams['CONTRACT_ID'];
-        $this->userRole = new CUserRole($this->userId);
+
 
         return $arParams;
     }
@@ -150,7 +150,8 @@ class ItrContract extends CBitrixComponent
     private function getContract() {
 
         $permittedLosts = $this->getPermittedLosts();
-        \Bitrix\Main\Diag\Debug::writeToFile($permittedLosts, "lostlists2", "__miros.log");
+
+
 
         $arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
 
