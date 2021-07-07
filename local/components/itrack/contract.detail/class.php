@@ -37,6 +37,7 @@ class ItrContract extends CBitrixComponent
         }
 
         $this->contractId = $arParams['CONTRACT_ID'];
+        $this->userRole = new CUserRole($this->userId);
 
         return $arParams;
     }
@@ -112,6 +113,24 @@ class ItrContract extends CBitrixComponent
         }
     }
 
+    private function getPermittedLosts(): array {
+        $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
+
+        if ($this->userRole->isSuperBroker()) {
+            return $lostsOfCompany;
+        }
+
+        $lostsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        ;
+
+        return array_intersect(
+            $lostsOfCompany,
+            $lostsOfUser
+        );
+    }
+
     private function getInstypes() {
         $arResult =& $this->arResult;
 
@@ -131,6 +150,8 @@ class ItrContract extends CBitrixComponent
     private function getContract() {
 
         $permittedLosts = $this->getPermittedLosts();
+        \Bitrix\Main\Diag\Debug::writeToFile($permittedLosts, "lostlists2", "__miros.log");
+
         $arPermittedContractIds = $this->getPermittedContractIds($permittedLosts);
 
         if(empty($arPermittedContractIds)) {
@@ -164,6 +185,8 @@ class ItrContract extends CBitrixComponent
 
     private function getLostList(array $arFilter = [])
     {
+        $arLostIds = $this->getPermittedLosts();
+        $arFilter['ID'] = $arLostIds ?: false;
         $arResult =& $this->arResult;
         $elements = Lost::getElementsByConditions($arFilter, [], []);
 
@@ -322,23 +345,7 @@ class ItrContract extends CBitrixComponent
     }
 
 
-    private function getPermittedLosts(): array {
-        $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
 
-        if ($this->userRole->isSuperBroker()) {
-            return $lostsOfCompany;
-        }
-
-        $lostsOfUser = $this->userRole->isSuperUser()
-            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
-            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
-        ;
-
-        return array_intersect(
-            $lostsOfCompany,
-            $lostsOfUser
-        );
-    }
 
     private function getPermittedContractIds(array $permittedLosts): array {
         $contractsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CContract::class);
