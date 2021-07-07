@@ -47,9 +47,13 @@ class ItrLost extends CBitrixComponent
         if ($this->getLost()) {
             $arResult['LOST'] = $this->arLost;
         }
+        // простановка контракта, если его нет в гиперссылке
+        if(empty($this->contractId) && $arResult['LOST']) {
+            $this->contractId = $arResult['LOST']['PROPERTIES']['CONTRACT']['VALUE'];
+        }
 
         //Contract
-        if(!empty($this->arParams['CONTRACT_ID'])) {
+        if(!empty($this->contractId)) {
             $this->getContract();
         }
 
