@@ -195,7 +195,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <div class="table_block align_left item3"><p>Статус развернуто</p></div>
                         <div class="table_block align_left item3"><p>Уникальный номер</p></div>
                         <div class="table_block align_left item2"><p>Дата</p></div>
-                        <div class="table_block align_left item2"><p>Описание</p></div>
+                        <div class="table_block align_left item3"><p>Описание</p></div>
                         <div class="table_block links_column align_left item9"><p>Ссылки</p></div>
                     </li>
                     <?php foreach ($arResult['LOSTS'] as $arItem) : ?>

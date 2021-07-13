@@ -25,7 +25,8 @@ $arDefaultUrlTemplates404 = array(
     "detail" => "#ELEMENT_ID#/",
     "edit" => "",
     "lost-document" => "#ELEMENT_ID#/lost-document-#LOST_DOCUMENT_ID#/",
-    "lost-document-history" => "#ELEMENT_ID#/lost-#LOST_DOCUMENT_ID#/status/",
+    "lost-document-history" => "#ELEMENT_ID#/lost-document-#LOST_DOCUMENT_ID#/status/",
+    "lost-curators" => "#ELEMENT_ID#/curators/",
 );
 
 $arDefaultVariableAliases404 = array();
