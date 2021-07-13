@@ -133,7 +133,9 @@
                     <span data-fancybox-close class="link close_modal">Закрыть описание</span>
                 </div><!-- END popup -->
                 <? } else { ?>
-                    <a href="#" class="link ico_remarks">Замечаний нет</a></div>
+                    <!--<a href="#" class="link ico_remarks">Замечаний нет</a>-->
+                    <span class="link">Замечаний нет</span>
+                    </div>
                 <? } ?>
             </li>
         <?php endforeach; ?>

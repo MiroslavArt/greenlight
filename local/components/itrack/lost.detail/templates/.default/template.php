@@ -17,7 +17,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <span class="type_page"><?= GetMessage('ALL_LOST_CURATORS') ?></span>
             <h2 class="block_title"><?= $arResult['LOST']['NAME'] ?></h2>
             <div class="card_status_container">
-                <span class="card_status <?= $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR'] ?>">Статус: <?= (!empty($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']) ? $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME'] : ' не установлен') ?></span>
+                <span class="card_status <?= $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR'] ?>">Статус убытка: <?= (!empty($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']) ? $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_NAME'] : ' не установлен') ?></span>
                 <span class="type_page">от <?= $arResult['LOST']['DATE_ACTIVE_FROM']// (new  \DateTime($arResult['TIMESTAMP_X']))->format('d.m.Y') ?></span>
 
             </div><!-- END card_status_container -->

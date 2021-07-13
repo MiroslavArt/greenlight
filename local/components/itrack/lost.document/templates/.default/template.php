@@ -20,7 +20,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </h2>
             <div class="card_status_container">
                 <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE'][$arResult['COLOR_FIELD']]?>">
-                    <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']?>
+                    Статус документа: <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']?>
                 </span>
                 <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?>
                 <?php  if($arResult['DECLINESTATUS']) { ?>(ранее <?=$arResult['DECLINESTATUS']?>)<? } ?></span>

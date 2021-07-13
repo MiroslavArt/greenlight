@@ -126,17 +126,6 @@ class ItrLostDocument extends CBitrixComponent
         $this->showadd = false;
         $this->declinestatus = '';
 
-        if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
-            $this->shpworiginalpanel = true;
-            if($status==12) {
-                if($isbroker || $this->isclient) {
-                    $this->originalstatuset = true;
-                }
-            } elseif ($status==14) {
-                $this->originalgot = true;
-            }
-        }
-
         $participation = new CParticipation(new CLost($lostid));
         $partips = $participation->getParticipants();
 
@@ -166,6 +155,17 @@ class ItrLostDocument extends CBitrixComponent
             }
             if(in_array(AJ_GROUP, $arGroups)) {
                 $isadj = true;
+            }
+        }
+
+        if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
+            $this->shpworiginalpanel = true;
+            if($status==12) {
+                if($isbroker || $this->isclient) {
+                    $this->originalstatuset = true;
+                }
+            } elseif ($status==14) {
+                $this->originalgot = true;
             }
         }
 

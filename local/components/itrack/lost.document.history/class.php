@@ -69,6 +69,10 @@ class ItrLostDocument extends CBitrixComponent
     private function getDocument()
     {
         $arDocument = LostDocuments::getElementByID($this->documentId);
+        \Bitrix\Main\Diag\Debug::writeToFile($arDocument, "doc", "__miros.log");
+        if(!$this->lostId) {
+            $this->lostId = $arDocument['PROPERTIES']['LOST']['VALUE'];
+        }
         if (empty($arDocument)) {
             \Bitrix\Iblock\Component\Tools::process404("", true, true, true);
         }
@@ -98,11 +102,15 @@ class ItrLostDocument extends CBitrixComponent
 
     private function getHistory()
     {
+        \Bitrix\Main\Diag\Debug::writeToFile($this->lostId, "lid", "__miros.log");
+        \Bitrix\Main\Diag\Debug::writeToFile($this->documentId, "did", "__miros.log");
+
         //ToDo переделать выборку файлов
         $arHistory = [];
         $objHistory = new \Itrack\Custom\Highloadblock\HLBWrap('e_history_lost_document_status');
         $rsHistory = $objHistory->getList([
             "filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
+            //"filter" => array('UF_LOST_DOC_ID' => $this->documentId),
             "select" => array("*"),
             "order" => array("ID" => "DESC")
         ]);
