@@ -32,6 +32,7 @@
         </div><!-- END docs_container_bottom -->
     </div><!-- END docs_container -->
 </div><!-- END desc_container -->
+<span class="type_page">Все кураторы по убытку</span><br/>
 <?php if (!empty($arResult['CURATORS'])) : ?>
 <ul class="data_table">
     <li class="row table_head">
