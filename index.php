@@ -34,7 +34,13 @@ $APPLICATION->SetTitle("Главная страница");
                     )
                 );?>
             </div><!-- END tile -->
-            <a href="/clients/" class="tile_link ico_1">Клиенты</a>
+            <?
+                global $USER;
+                $isclient = (new \Itrack\Custom\CUserRole($USER->GetID()))->isClient();
+                if(!$isclient) {
+            ?>
+                <a href="/clients/" class="tile_link ico_1">Клиенты</a>
+            <? } ?>
             <a href="/insurance-companies/" class="tile_link ico_2">Страховые компании</a>
             <a href="/adjusters/" class="tile_link ico_3">Аджастеры</a>
             <a href="/settings/" class="tile_link ico_4">Настройки</a>
