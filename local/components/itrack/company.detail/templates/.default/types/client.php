@@ -20,6 +20,8 @@
             <? } ?>
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
+    <span class="type_page">Список договоров страхования</span>
+    <br/>
     <div class="popup" id="add_contract">
         <h3 class="block_title">Добавление договора</h3>
         <form class="form_popup">
