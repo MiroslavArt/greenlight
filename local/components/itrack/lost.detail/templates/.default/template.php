@@ -25,7 +25,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div><!-- END title_block -->
         <div class="title_right_block">
             <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow' && $arResult["CAN_CLOSE_LOSS"]) { ?>
-                 <a href="#change_status" data-fancybox class="ico_settings link">Закрыть убыток</a>
+                 <a href="#change_status" data-fancybox class="ico_remarks link">Закрыть убыток</a>
             <? } ?>
             <? if(!$arResult['BAN_DOC']) {
                 if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' || $arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='yellow') { ?>
