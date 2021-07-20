@@ -102,7 +102,7 @@ class ItrLostList extends CBitrixComponent
     {
         $arResult =& $this->arResult;
         $selectElement =   ['ID', 'IBLOCK_ID', 'ACTIVE', 'SORT', 'IBLOCK_SECTION', 'CODE', 'DATE_CREATE', 'TIMESTAMP_X', 'NAME', 'PREVIEW_TEXT', 'DETAIL_PAGE_URL', 'PROPERTY_*'];
-        $elements = Lost::getElementsByConditions($arFilter, [], $selectElement);
+        $elements = Lost::getElementsByConditions($arFilter, ['DATE_ACTIVE_FROM'=>'DESC'], $selectElement);
 
         if(empty($elements)) {
             return false;

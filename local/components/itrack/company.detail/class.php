@@ -121,7 +121,7 @@ class ItrCompany extends CBitrixComponent
 			];
 		}
 
-		$arContracts = Contract::getElementsByConditions($contractFilter);
+		$arContracts = Contract::getElementsByConditions($contractFilter, ['PROPERTY_DATE'=>'DESC']);
 
 		$result = [];
         $countsTotal = [];

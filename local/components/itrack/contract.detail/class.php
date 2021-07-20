@@ -194,7 +194,7 @@ class ItrContract extends CBitrixComponent
         $arLostIds = $this->getPermittedLosts();
         $arFilter['ID'] = $arLostIds ?: false;
         $arResult =& $this->arResult;
-        $elements = Lost::getElementsByConditions($arFilter, [], []);
+        $elements = Lost::getElementsByConditions($arFilter, ['DATE_ACTIVE_FROM'=>'DESC'], []);
 
         if(empty($elements)) {
             return false;
