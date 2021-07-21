@@ -38,6 +38,8 @@ class ItrLostDocument extends CBitrixComponent
     private $originalgot;
     private $showadd;
     private $declinestatus;
+    private $showdocs;
+    private $candelete;
 
     public function onPrepareComponentParams($arParams)
     {
@@ -69,6 +71,7 @@ class ItrLostDocument extends CBitrixComponent
             $arResult['ORIGINALGOT'] =  $this->originalgot;
             $arResult['SHOWADD'] =  $this->showadd;
             $arResult['DECLINESTATUS'] =  $this->declinestatus;
+            $arResult['CANDELETE'] =  $this->candelete;
         }
 
         if($this->statuschanged) {
@@ -86,7 +89,9 @@ class ItrLostDocument extends CBitrixComponent
             }
         }
         //Document Files
-        $arResult['DOCUMENTS'] = $this->getDocuments();
+        if($this->showdocs) {
+            $arResult['DOCUMENTS'] = $this->getDocuments();
+        }
 
         if (isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $arResult['IS_AJAX'] = 'Y';
@@ -124,6 +129,8 @@ class ItrLostDocument extends CBitrixComponent
         $this->originalstatuset = false;
         $this->originalgot = false;
         $this->showadd = false;
+        $this->showdocs = true;
+        $this->candelete = true;
         $this->declinestatus = '';
 
         $participation = new CParticipation(new CLost($lostid));
@@ -251,6 +258,7 @@ class ItrLostDocument extends CBitrixComponent
         }
 
         if($this->statuschanged) {
+            $status = $newstatus;
             $PROP[27] = $newstatus;
             $PROP[61] = $dateupdate;
             LostDocuments::updateElement($lostdocid, [], $PROP);
@@ -263,6 +271,29 @@ class ItrLostDocument extends CBitrixComponent
                 'UF_USER_ID' =>$usid
             ];
             $id = $objHistory->add($histdata);
+        }
+
+        if($status<6) {
+            if(!$this->isclient) {
+                $this->showdocs = false;
+            }
+        } elseif($status>=6 && $status<=11) {
+            if($isins || $isadj) {
+                $this->showdocs = false;
+            }
+            if($this->isclient) {
+                $this->candelete = false;
+            }
+        } else {
+            if($isins || $isadj) {
+                $this->candelete = false;
+            }
+            if($this->isclient) {
+                $this->candelete = false;
+            }
+            if($isbroker) {
+                $this->candelete = false;
+            }
         }
 
         return true;
