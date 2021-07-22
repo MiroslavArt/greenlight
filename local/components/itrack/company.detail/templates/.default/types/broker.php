@@ -174,6 +174,8 @@
             <input type="submit" class="btn" value="Добавить договор" />
         </form><!-- END form_edit_profile -->
     </div><!-- END popup -->
+    <span class="type_page">Список договоров страхования</span>
+    <br/>
     <?php if (!empty($arResult['ITEMS'])): ?>
         <div id="contracts-list">
             <ul class="data_table">

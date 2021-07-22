@@ -16,6 +16,8 @@
             </form><!-- END search_form -->
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
+    <span class="type_page">Список договоров страхования</span>
+    <br/>
     <?php if (!empty($arResult['ITEMS'])): ?>
         <div id="contracts-list">
             <ul class="data_table">

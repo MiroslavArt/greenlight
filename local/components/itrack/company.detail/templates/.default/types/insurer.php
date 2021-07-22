@@ -17,6 +17,8 @@
             <!--<a href="#" class="btn">Добавить клиента</a> -->
         </div><!-- END title_right_block -->
     </div><!-- END title_container -->
+    <span class="type_page">Список договоров страхования</span>
+    <br/>
 	<div id="contracts-list">
 	<?php if (!empty($arResult['ITEMS'])):?>
 		<ul class="data_table">
