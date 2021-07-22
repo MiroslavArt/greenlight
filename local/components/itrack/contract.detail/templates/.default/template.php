@@ -28,7 +28,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div><!-- END cart_block -->
             <div class="title_right_block">
                 <a href="<?=$arParams['PATH_TO']['contract-useful-documents']?>" class="btn">Полезные документы</a>
-                <a href="#edit_contract" class="btn" data-fancybox>Редактировать <br>договор</a>
+                <? if(!$arResult['BAN_CNT_EDIT']) { ?><a href="#edit_contract" class="btn" data-fancybox>Редактировать <br>договор</a><? } ?>
                 <?php if(!empty($arResult['INSURANCE_COMPANIES'])) : ?>
                 <a href="#all_sk" data-fancybox="" class="btn">Все СК по договору</a>
                 <?php endif; ?>

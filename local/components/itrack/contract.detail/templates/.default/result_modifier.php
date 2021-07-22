@@ -6,6 +6,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /** @global \CUser $USER */
 /** @global \CDatabase $DB */
 /** @var CBitrixComponentTemplate $this */
+use Itrack\Custom\CUserRole;
 
 
 if(!empty($arResult['INSURANCE_COMPANY']['PROPERTIES']['LOGO']['VALUE']) && intval($arResult['INSURANCE_COMPANY']['PROPERTIES']['LOGO']['VALUE']) > 0 ) {
@@ -31,3 +32,10 @@ while ($arResUser = $rsUser->Fetch()) {
 }
 
 $arResult['USERS'] = $users;
+
+$isinsuer = (new CUserRole($USER->GetID()))->isInsurer();
+$isadjuster = (new CUserRole($USER->GetID()))->isAdjuster();
+
+if($isinsuer || $isadjuster) {
+    $arResult['BAN_CNT_EDIT'] = true;
+}

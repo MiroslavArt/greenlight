@@ -33,7 +33,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <?
                 }
             } ?>
-            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red') { ?>
+            <? if($arResult['LOST']['PROPERTIES']['STATUS']['VALUE']['UF_COLOR']=='red' && !$arResult['BAN_LOSS_EDIT']) { ?>
                 <a href="#edit_loss" data-fancybox class="btn">Редактировать <br>убыток</a>
             <? } ?>
         </div><!-- END title_right_block -->
