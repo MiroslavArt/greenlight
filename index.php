@@ -43,8 +43,9 @@ $APPLICATION->SetTitle("Главная страница");
                 <a href="/insurance-companies/" class="tile_link ico_2">Страховые компании</a>
                 <a href="/adjusters/" class="tile_link ico_3">Аджастеры</a>
             <? } ?>
-            <a href="/settings/" class="tile_link ico_4">Настройки</a>
             <a href="/losts/" class="tile_link ico_5">Все убытки</a>
+            <a href="/settings/" class="tile_link ico_4">Настройки</a>
+
         </div><!-- END tiles_container -->
         <? $APPLICATION->IncludeComponent(
             "bitrix:main.include",
