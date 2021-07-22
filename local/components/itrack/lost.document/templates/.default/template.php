@@ -22,15 +22,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <span class="card_status <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE'][$arResult['COLOR_FIELD']]?>">
                     Статус документа: <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS']['VALUE']['UF_NAME']?>
                 </span>
-                <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?>
-                <?php  if($arResult['DECLINESTATUS']) { ?>(ранее <?=$arResult['DECLINESTATUS']?>)<? } ?></span>
+                <span class="type_page">от <?=$arResult['DOCUMENT']['PROPERTIES']['STATUS_DATE']['VALUE']?></span>
+                <?php  if($arResult['DECLINESTATUS']) { ?><span class="link">(ранее <?=$arResult['DECLINESTATUS']?> с комментарием "<?=$arResult['DECLINEDCOMMENT']?>")<? } ?></span>
             </div><!-- END card_status_container -->
         </div><!-- END title_block -->
+
         <?php if($arResult['SHOWORIGINAL']) : ?>
         <div class="title_right_block">
             <div class="docs_container desc_left">
                 <?php if($arResult['ORIGINALSTATUSSET']) { ?>
-                    <a href="#change_status" data-fancybox class="ico_settings link"></a>
+                    <a href="#change_status" data-fancybox class="ico_remarks link"></a>
                 <? } ?>
                 <!--<ul class="list_dosc">
                     <li> -->
@@ -50,6 +51,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div><!-- END title_right_block -->
         <?php endif;?>
     </div><!-- END title_container -->
+
     <div class="popup change_status" id="change_status">
         <h2 class="block_title">Зафиксировать предоставление оригинала</h2>
         <form class="status_form form_popup4">

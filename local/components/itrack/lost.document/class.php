@@ -38,6 +38,7 @@ class ItrLostDocument extends CBitrixComponent
     private $originalgot;
     private $showadd;
     private $declinestatus;
+    private $declinedcomment;
     private $showdocs;
     private $candelete;
 
@@ -71,6 +72,7 @@ class ItrLostDocument extends CBitrixComponent
             $arResult['ORIGINALGOT'] =  $this->originalgot;
             $arResult['SHOWADD'] =  $this->showadd;
             $arResult['DECLINESTATUS'] =  $this->declinestatus;
+            $arResult['DECLINEDCOMMENT'] =  $this->declinedcomment;
             $arResult['CANDELETE'] =  $this->candelete;
         }
 
@@ -132,6 +134,7 @@ class ItrLostDocument extends CBitrixComponent
         $this->showdocs = true;
         $this->candelete = true;
         $this->declinestatus = '';
+        $this->declinedcomment = '';
 
         $participation = new CParticipation(new CLost($lostid));
         $partips = $participation->getParticipants();
@@ -177,20 +180,25 @@ class ItrLostDocument extends CBitrixComponent
         }
 
         if($status==1) {
+
             $objHistory = new \Itrack\Custom\Highloadblock\HLBWrap('e_history_lost_document_status');
             $rsHistory = $objHistory->getList([
-                "filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
+                //"filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
+                "filter" => array('UF_LOST_DOC_ID' => $this->documentId),
                 "select" => array("*"),
                 "order" => array("ID" => "DESC")
             ]);
             $countstatus = 1;
             while ($arStatus = $rsHistory->fetch()) {
+
                 if($countstatus == 2) {
+                    \Bitrix\Main\Diag\Debug::writeToFile($arStatus['UF_CODE_ID'], "match", "__miros.log");
                     $objStatus = new \Itrack\Custom\Highloadblock\HLBWrap('e_lost_doc_status');
                     $rsStatus = $objStatus->getList([
                         "filter" => array("ID"=>$arStatus['UF_CODE_ID'])
                     ])->fetch();
                     $this->declinestatus = $rsStatus['UF_NAME'];
+                    $this->declinedcomment = $arStatus['UF_COMMENT'];
                     break;
                 }
                 $countstatus++;
@@ -274,7 +282,11 @@ class ItrLostDocument extends CBitrixComponent
         }
 
         if($status<6) {
-            if(!$this->isclient) {
+            if($isbroker && !$this->declinestatus) {
+                $this->showdocs = false;
+            } elseif($isins) {
+                $this->showdocs = false;
+            } elseif($isadj) {
                 $this->showdocs = false;
             }
         } elseif($status>=6 && $status<=11) {
