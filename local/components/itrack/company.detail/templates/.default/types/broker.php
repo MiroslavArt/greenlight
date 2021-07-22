@@ -85,18 +85,13 @@
             </div><!-- END form_row -->
             <h3 class="subtitle">Кураторы</h3>
             <h4 class="big_label">Клиент</h4>
-            <div class="gray_block">
-                <div class="input_container">
-                    <label class="big_label"><?=$arResult['COMPANY']['NAME']?></label>
+            <a href="#" class="link ico_add js_add"><span>Добавить клиента</span></a>
+            <div class="form_row ins_comp hidden">
+                <div class="input_container column_100">
+                    <input id="search_cl" type="text" class="text_input inserted_co_label" placeholder="Выберите клиента по вводу букв из названия" />
                 </div><!-- END input_container -->
-            </div><!-- END gray_block -->
-            <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
-            <div class="form_row client_comp hidden">
-                <div class="input_container without_small">
-                    <input id="kur_client_search_ins" data-id="<?=$arResult['COMPANY']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от клиента по вводу букв из ФИО" />
-                </div><!-- END input_container -->
-            </div>
-            <div id="ins_kur_card" class="company_card_container">
+            </div> <!-- END form_row -->
+            <div class="gray_blocks" id="ins_client">
             </div>
             <h4 class="big_label">Страховой брокер</h4>
             <div class="gray_block">

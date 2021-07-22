@@ -103,7 +103,119 @@ $(document).ready(function() {
         });
     });
 
-    // клиент и его кураторы
+    // выбор клиента
+    var clients = []
+    var clientiddouble = 0
+    BX.ajax.runAction('itrack:custom.api.signal.getCompanies', {
+        data: {
+            type: '4'
+        }
+    }).then(function (response) {
+        clients = response.data
+        $( "#search_cl" ).autocomplete({
+            source: clients,
+            focus: function( event, ui ) {
+                //$( "#search_ins" ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+
+                $(this).parent().parent().toggleClass('hidden');
+                $( "#search_cl" ).val('');
+                //$( "#sel_ins" ).val( ui.item.value );
+                //console.log(this)
+                var form = BX.findParent(this, {"tag" : "form"});
+                //console.log(form);
+
+                var insids = BX.findChild(form, {"class" : "inserted_co_id"}, true, true);
+                var foundcomp = false
+                insids.forEach(function(element){
+                    if(element.getAttribute("value") == ui.item.value) {
+                        foundcomp = true
+                    }
+                });
+                if(foundcomp==false) {
+                    $('#ins_client').empty()
+                    clientiddouble = ui.item.value
+                    var allblocks = $("<div></div>").attr("class", "ins_client")
+                    var coblock = $("<div></div>").attr("class", "gray_block")
+                    //var delblock = $("<span></span>").attr("class", "delete js_delete1")
+                    var inplock = $("<div></div>").attr("class", "input_container with_flag")
+                    var labelcomp =  $("<label></label>").attr("class", "big_label").text(ui.item.label)
+                    var inpcomp =  $("<input>").attr("type", "hidden").attr("class", "inserted_co_id co_cl_id").val(ui.item.value)
+                    //if(addedins==0) {
+                    //    var labelleader = $("<label></label>").attr("class", "flag js_checkbox active")
+                    //} else {
+                    //    var labelleader = $("<label></label>").attr("class", "flag js_checkbox")
+                    //}
+                    //var leaderbox =  $("<input>").attr("type", "checkbox").attr("data-insc-leader", ui.item.value)
+                    //labelleader.append(leaderbox)
+                    var addkur = $("<a>").attr("href", '#').attr("class","link ico_add js_add")
+                    var addkurtext = $("<span></span>").text("Добавить куратора")
+                    addkur.append(addkurtext)
+                    var inplockdiv = $("<div></div>").attr("class", "form_row brok_comp hidden")
+                    var kursearch = $("<div></div>").attr("class", "input_container without_small")
+                    var kursearchinp = $("<input>").attr("type", "text").attr("class", "text_input inserted_co_label kur_select")
+                        .attr("placeholder", 'Выберите куратора(-ов) от клиента по вводу букв из ФИО')
+                    var cardblock = $("<div></div>").attr("class", "company_card_container")
+                    kursearch.append(kursearchinp)
+                    inplockdiv.append(kursearch)
+                    inplock.append(labelcomp)
+                    inplock.append(inpcomp)
+                    //inplock.append(labelleader)
+                    //coblock.append(delblock)
+                    coblock.append(inplock)
+                    allblocks.append(coblock)
+                    allblocks.append(addkur)
+                    allblocks.append(inplockdiv)
+                    allblocks.append(cardblock)
+                    $("#ins_client").append(allblocks)
+                    //addedins++
+                    addedcompany[ui.item.value] = 0
+                    BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+                        data: {
+                            company: ui.item.value
+                        }
+                    }).then(function (response) {
+                        //console.log(response);
+                        kursearchinp.autocomplete({
+                            source: response.data,
+                            focus: function( event, ui ) {
+                                return false;
+                            },
+                            select: function( event, ui ) {
+                                $(this).parent().parent().toggleClass('hidden');
+                                var form = BX.findParent(this, {"tag" : "form"});
+                                var kurids = BX.findChild(form, {"class" : "inserted_kur_co_id"}, true, true)
+                                var foundkur = false
+                                kurids.forEach(function(element){
+                                    if(element.getAttribute("value") == ui.item.value) {
+                                        foundkur = true
+                                    }
+                                })
+                                if(foundkur==false) {
+                                    kursearchinp.val('');
+                                    kuratoradd(cardblock, ui.item, 4, ui.item.companyid)
+                                }
+                                return false;
+                            }
+                        });
+                    }, function (error) {
+                        //сюда будут приходить все ответы, у которых status !== 'success'
+                        console.log(error);
+
+                    });
+                }
+                return false;
+            }
+        })
+    }, function (error) {
+        //сюда будут приходить все ответы, у которых status !== 'success'
+        console.log(error);
+
+    });
+
+    // сущ. клиент и его кураторы
     var clientid = $( "#kur_client_search_ins").attr('data-id')
     addedcompany[clientid] = 0
     BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
@@ -329,11 +441,15 @@ $(document).ready(function() {
         var kuratorsbr = []
         var kuratorsins = []
 
+        if(clientiddouble) {
+            clientid = clientiddouble
+        }
+
         $(".inserted_co_id").each(function (index, el){
             // Для каждого элемента сохраняем значение в personsIdsArray,
             // если значение есть.
             var v  = $(el).val();
-            if (v) inscompanies.push(v);
+            if (v && !$(el).hasClass('co_cl_id') ) inscompanies.push(v);
             if($(el).next().hasClass('active')) {
                 insleader = v
             }
