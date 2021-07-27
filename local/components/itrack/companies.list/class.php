@@ -7,7 +7,9 @@ use Itrack\Custom\CUserRole;
 use Itrack\Custom\InfoBlocks\Company;
 use Itrack\Custom\Participation\CLost;
 use Itrack\Custom\Participation\CLostParticipant;
+use Itrack\Custom\Participation\CContractParticipant;
 use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CContract;
 
 /*
 
@@ -73,6 +75,13 @@ class ItrCompaniesList extends CBitrixComponent
 		$availableCompanyIds = array_keys($counts);
 		$searchQuery = trim($this->request->get("search"));
 
+		if(!$this->userRole->isSuperBroker() && $this->userRole->isBroker()) {
+            $ids = CParticipation::getTargetIdsByUser($this->userId, CContract::class);
+            $extraavailableCompanyIds = $this->getContractsCountsByCompany($ids);
+            $availableCompanyIds = array_merge($availableCompanyIds, $extraavailableCompanyIds);
+            $availableCompanyIds = array_unique($availableCompanyIds);
+        }
+
 
 		$arCompanies = Company::getElementsByConditions(
 			[
@@ -112,7 +121,21 @@ class ItrCompaniesList extends CBitrixComponent
 		$this->arResult["CNT_TOTAL"] = $countsTotal;
     }
 
+    private function getContractsCountsByCompany($permittedContractsIds) {
+        $arParticipants = CContractParticipant::getElementsByConditions([
+            "PROPERTY_TARGET_ID" => $permittedContractsIds
+        ], [], [
+            "PROPERTY_TARGET_ID.PROPERTY_STATUS",
+            "PROPERTY_PARTICIPANT_ID",
+        ]);
 
+        $companies = [];
+        foreach ($arParticipants as $arParticipant) {
+            $companies[] = $arParticipant["PROPERTY_PARTICIPANT_ID_VALUE"];
+        }
+        $companies = array_unique($companies);
+        return $companies;
+    }
 
     private function getLostCountsByCompany($permittedLostIds) {
 		$arParticipants = CLostParticipant::getElementsByConditions([
