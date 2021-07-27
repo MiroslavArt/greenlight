@@ -147,138 +147,138 @@ class ItrLostDocument extends CBitrixComponent
             }
         }
 
+        //if($iskurator==true) {
+        if(in_array(CL_GROUP, $arGroups)) {
+            $this->isclient = true;
+        }
+        if(in_array(CL_SU_GROUP, $arGroups)) {
+            $issupusrcl = true;
+        }
+        if(in_array(SB_GROUP, $arGroups)) {
+            $isbroker = true;
+        }
+        if(in_array(SB_SU_GROUP, $arGroups)) {
+            $issupbroker  = true;
+        }
+        if(in_array(INS_GROUP, $arGroups)) {
+            $isins = true;
+        }
+        if(in_array(AJ_GROUP, $arGroups)) {
+            $isadj = true;
+        }
+        //}
         if($iskurator==true) {
-            if(in_array(CL_GROUP, $arGroups)) {
-                $this->isclient = true;
-            }
-            if(in_array(CL_SU_GROUP, $arGroups)) {
-                $issupusrcl = true;
-            }
-            if(in_array(SB_GROUP, $arGroups)) {
-                $isbroker = true;
-            }
-            if(in_array(SB_SU_GROUP, $arGroups)) {
-                $issupbroker  = true;
-            }
-            if(in_array(INS_GROUP, $arGroups)) {
-                $isins = true;
-            }
-            if(in_array(AJ_GROUP, $arGroups)) {
-                $isadj = true;
-            }
-        }
-
-        if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
-            $this->shpworiginalpanel = true;
-            if($status==12) {
-                if($isbroker || $this->isclient) {
-                    $this->originalstatuset = true;
+            if($document['PROPERTIES']['GET_ORIGINAL']['VALUE'] == 'Да') {
+                $this->shpworiginalpanel = true;
+                if($status==12) {
+                    if($isbroker || $this->isclient) {
+                        $this->originalstatuset = true;
+                    }
+                } elseif ($status==14) {
+                    $this->originalgot = true;
                 }
-            } elseif ($status==14) {
-                $this->originalgot = true;
             }
-        }
 
-        if($status==1) {
+            if($status==1) {
 
-            $objHistory = new \Itrack\Custom\Highloadblock\HLBWrap('e_history_lost_document_status');
-            $rsHistory = $objHistory->getList([
-                //"filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
-                "filter" => array('UF_LOST_DOC_ID' => $this->documentId),
-                "select" => array("*"),
-                "order" => array("ID" => "DESC")
-            ]);
-            $countstatus = 1;
-            while ($arStatus = $rsHistory->fetch()) {
+                $objHistory = new \Itrack\Custom\Highloadblock\HLBWrap('e_history_lost_document_status');
+                $rsHistory = $objHistory->getList([
+                    //"filter" => array('UF_LOST_ID' => $this->lostId, 'UF_LOST_DOC_ID' => $this->documentId),
+                    "filter" => array('UF_LOST_DOC_ID' => $this->documentId),
+                    "select" => array("*"),
+                    "order" => array("ID" => "DESC")
+                ]);
+                $countstatus = 1;
+                while ($arStatus = $rsHistory->fetch()) {
 
-                if($countstatus == 2) {
-                    \Bitrix\Main\Diag\Debug::writeToFile($arStatus['UF_CODE_ID'], "match", "__miros.log");
-                    $objStatus = new \Itrack\Custom\Highloadblock\HLBWrap('e_lost_doc_status');
-                    $rsStatus = $objStatus->getList([
-                        "filter" => array("ID"=>$arStatus['UF_CODE_ID'])
-                    ])->fetch();
-                    $this->declinestatus = $rsStatus['UF_NAME'];
-                    $this->declinedcomment = $arStatus['UF_COMMENT'];
-                    break;
+                    if($countstatus == 2) {
+                        $objStatus = new \Itrack\Custom\Highloadblock\HLBWrap('e_lost_doc_status');
+                        $rsStatus = $objStatus->getList([
+                            "filter" => array("ID"=>$arStatus['UF_CODE_ID'])
+                        ])->fetch();
+                        $this->declinestatus = $rsStatus['UF_NAME'];
+                        $this->declinedcomment = $arStatus['UF_COMMENT'];
+                        break;
+                    }
+                    $countstatus++;
                 }
-                $countstatus++;
+
+                if($this->isclient) {
+                    $this->showaccept = true;
+                    $this->showadd = true;
+                }
             }
 
-            if($this->isclient) {
-                $this->showaccept = true;
-                $this->showadd = true;
-            }
-        }
-
-        if($status==2 && $issupusrcl) {
-            $newstatus = '3';
-            $this->statuschanged = true;
-            $this->showaccept = true;
-            $this->showdecline = true;
-        }
-
-        if($status==3 && $issupusrcl) {
-            $this->showaccept = true;
-            $this->showdecline = true;
-        }
-
-        if($status==4) {
-            if($isbroker) {
+            if($status==2 && $issupusrcl) {
+                $newstatus = '3';
                 $this->statuschanged = true;
                 $this->showaccept = true;
                 $this->showdecline = true;
-                if(!$issupbroker) {
-                    $newstatus = '6';
-                } else {
+            }
+
+            if($status==3 && $issupusrcl) {
+                $this->showaccept = true;
+                $this->showdecline = true;
+            }
+
+            if($status==4) {
+                if($isbroker) {
+                    $this->statuschanged = true;
+                    $this->showaccept = true;
+                    $this->showdecline = true;
+                    if(!$issupbroker) {
+                        $newstatus = '6';
+                    } else {
+                        $newstatus = '9';
+                    }
+                }
+            }
+
+            if($status==6) {
+                if($isbroker) {
+                    $this->showaccept = true;
+                    $this->showdecline = true;
+                }
+            }
+
+            if($status==7 || $status==9) {
+                if($issupbroker) {
+                    $this->statuschanged = true;
+                    $this->showaccept = true;
+                    $this->showdecline = true;
                     $newstatus = '9';
                 }
             }
-        }
 
-        if($status==6) {
-            if($isbroker) {
-                $this->showaccept = true;
-                $this->showdecline = true;
-            }
-        }
-
-        if($status==7 || $status==9) {
-            if($issupbroker) {
-                $this->statuschanged = true;
-                $this->showaccept = true;
-                $this->showdecline = true;
-                $newstatus = '9';
-            }
-        }
-
-        if($status==10) {
-            if($isadj || $isins) {
-                $this->statuschanged = true;
-                //$this->showaccept = true;
-                //$this->showdecline = true;
-                $newstatus = '12';
-            }
-            if($isbroker || $this->isclient) {
-                if($this->shpworiginalpanel) {
-                    $this->originalstatuset = true;
+            if($status==10) {
+                if($isadj || $isins) {
+                    $this->statuschanged = true;
+                    //$this->showaccept = true;
+                    //$this->showdecline = true;
+                    $newstatus = '12';
+                }
+                if($isbroker || $this->isclient) {
+                    if($this->shpworiginalpanel) {
+                        $this->originalstatuset = true;
+                    }
                 }
             }
-        }
 
-        if($this->statuschanged) {
-            $status = $newstatus;
-            $PROP[27] = $newstatus;
-            $PROP[61] = $dateupdate;
-            LostDocuments::updateElement($lostdocid, [], $PROP);
-            $objHistory = new HLBWrap('e_history_lost_document_status');
-            $histdata = [
-                'UF_CODE_ID' => $newstatus,
-                'UF_DATE' => $dateupdate,
-                'UF_LOST_ID' => $lostid,
-                'UF_LOST_DOC_ID' => $lostdocid,
-                'UF_USER_ID' =>$usid
-            ];
-            $id = $objHistory->add($histdata);
+            if($this->statuschanged) {
+                $status = $newstatus;
+                $PROP[27] = $newstatus;
+                $PROP[61] = $dateupdate;
+                LostDocuments::updateElement($lostdocid, [], $PROP);
+                $objHistory = new HLBWrap('e_history_lost_document_status');
+                $histdata = [
+                    'UF_CODE_ID' => $newstatus,
+                    'UF_DATE' => $dateupdate,
+                    'UF_LOST_ID' => $lostid,
+                    'UF_LOST_DOC_ID' => $lostdocid,
+                    'UF_USER_ID' =>$usid
+                ];
+                $id = $objHistory->add($histdata);
+            }
         }
 
         if($status<6) {
