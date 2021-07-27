@@ -55,7 +55,7 @@ class ItrCompaniesList extends CBitrixComponent
 
 		if (!$userHasAccess) LocalRedirect("/");
 
-		$this->arResult["USER_IS_BROKER"] = $this->userRole->isBroker();
+		$this->arResult["USER_IS_BROKER"] = $this->userRole->isSuperBroker();
 
         if(isset($this->request['is_ajax']) && $this->request['is_ajax'] == 'y') {
             $this->arResult['IS_AJAX'] = 'Y';
