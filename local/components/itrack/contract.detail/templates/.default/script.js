@@ -173,7 +173,7 @@ $(document).ready(function() {
         //сюда будут приходить все ответы, у которых status !== 'success'
         console.log(error);
     });
-
+    var fulledit =  $('#full_edit').val()
     // ск и его кураторы - ред договора
     $(".inserted_co_id2").each(function (index, el){
         var compid = $(el).val()
@@ -192,55 +192,56 @@ $(document).ready(function() {
             .attr("placeholder", 'Выберите куратора(-ов) от СК по вводу букв из ФИО')
         kursearch.append(kursearchinp)
         inplockdiv.append(kursearch)
-        if($(el).hasClass('foredit')) {
-            $(el).parent().parent().after(addkur)
-            addkur.after(inplockdiv)
-        } else {
-            $(el).parent().parent().parent().append(addkur)
-            $(el).parent().parent().parent().append(inplockdiv)
-            $(el).parent().parent().parent().append(cardblock)
-        }
-        BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
-            data: {
-                company: compid
+        if(fulledit) {
+            if($(el).hasClass('foredit')) {
+                $(el).parent().parent().after(addkur)
+                addkur.after(inplockdiv)
+            } else {
+                $(el).parent().parent().parent().append(addkur)
+                $(el).parent().parent().parent().append(inplockdiv)
+                $(el).parent().parent().parent().append(cardblock)
             }
-        }).then(function (response) {
-            kursearchinp.autocomplete({
-                source: response.data,
-                focus: function( event, ui ) {
-                    return false;
-                },
-                select: function( event, ui ) {
-                    $(this).parent().parent().toggleClass('hidden');
-                    var form = BX.findParent(this, {"tag": "form"});
-                    //console.log(form);
-                    if ($(el).hasClass('foredit')) {
-                        var kurids = BX.findChild(form, {"class": "inserted_kur_co_id_2"}, true, true)
-                    } else {
-                        var kurids = BX.findChild(form, {"class": "inserted_kur_co_id"}, true, true)
-                    }
-                    var foundkur = false
-                    kurids.forEach(function(element){
-                        if(element.getAttribute("value") == ui.item.value) {
-                            foundkur = true
-                        }
-                    })
-                    if(foundkur==false) {
-                        kursearchinp .val('');
-                        if ($(el).hasClass('foredit')) {
-                            kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'simple')
-                        } else {
-                            kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'hard')
-                        }
-                    }
-                    return false;
+            BX.ajax.runAction('itrack:custom.api.signal.getUsers', {
+                data: {
+                    company: compid
                 }
+            }).then(function (response) {
+                kursearchinp.autocomplete({
+                    source: response.data,
+                    focus: function( event, ui ) {
+                        return false;
+                    },
+                    select: function( event, ui ) {
+                        $(this).parent().parent().toggleClass('hidden');
+                        var form = BX.findParent(this, {"tag": "form"});
+                        //console.log(form);
+                        if ($(el).hasClass('foredit')) {
+                            var kurids = BX.findChild(form, {"class": "inserted_kur_co_id_2"}, true, true)
+                        } else {
+                            var kurids = BX.findChild(form, {"class": "inserted_kur_co_id"}, true, true)
+                        }
+                        var foundkur = false
+                        kurids.forEach(function(element){
+                            if(element.getAttribute("value") == ui.item.value) {
+                                foundkur = true
+                            }
+                        })
+                        if(foundkur==false) {
+                            kursearchinp .val('');
+                            if ($(el).hasClass('foredit')) {
+                                kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'simple')
+                            } else {
+                                kuratoradd(cardblock, ui.item, 2, ui.item.companyid, false, 'hard')
+                            }
+                        }
+                        return false;
+                    }
+                });
+            }, function (error) {
+                //сюда будут приходить все ответы, у которых status !== 'success'
+                console.log(error);
             });
-        }, function (error) {
-            //сюда будут приходить все ответы, у которых status !== 'success'
-            console.log(error);
-        });
-
+        }
     })
 
     // ск и его кураторы

@@ -33,9 +33,16 @@ while ($arResUser = $rsUser->Fetch()) {
 
 $arResult['USERS'] = $users;
 
+$arResult['ALL_EDIT'] = true;
+
 $isinsuer = (new CUserRole($USER->GetID()))->isInsurer();
 $isadjuster = (new CUserRole($USER->GetID()))->isAdjuster();
+$isclient = (new CUserRole($USER->GetID()))->isClient();
 
 if($isinsuer || $isadjuster) {
     $arResult['BAN_CNT_EDIT'] = true;
+}
+
+if($isclient) {
+    $arResult['ALL_EDIT'] = false;
 }

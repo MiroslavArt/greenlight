@@ -257,15 +257,20 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <div class="popup" id="edit_contract">
             <h3 class="block_title">Редактирование договора</h3>
             <form class="form_popup form2">
+                <input type="hidden" id="full_edit" value="<?= $arResult['ALL_EDIT'] ?>" />
                 <div class="form_row">
                     <div class="input_container column_25">
-                        <input type="text" id="docnum" class="text_input" name="docnum" placeholder="Номер договора" value="<?= $arResult['CONTRACT']['NAME'] ?>" />
+                        <input type="text" id="docnum" class="text_input" name="docnum" placeholder="Номер договора"
+                               value="<?= $arResult['CONTRACT']['NAME'] ?>" <? if(!$arResult['ALL_EDIT']) { ?>disabled<? }?>/>
                     </div><!-- END input_container -->
                     <div class="input_container column_25">
-                        <input type="text" id="docdate" class="text_input ico_date js_datapicker" name="docdata" placeholder="Дата договора" value="<?= $arResult['CONTRACT']['PROPERTIES']['DATE']['VALUE'] ?>" />
+                        <input type="text" id="docdate" class="text_input ico_date js_datapicker" name="docdata"
+                               placeholder="Дата договора" value="<?= $arResult['CONTRACT']['PROPERTIES']['DATE']['VALUE'] ?>"
+                               <? if(!$arResult['ALL_EDIT']) { ?>disabled<? }?>/>
                     </div><!-- END input_container -->
                     <div class="input_container column_50">
-                        <select data-placeholder="Введите часть имени..." id="instype" class="select js_select" name='responsibleIds[]'>
+                        <select data-placeholder="Введите часть имени..." id="instype" class="select js_select"
+                                name='responsibleIds[]' <? if(!$arResult['ALL_EDIT']) { ?>disabled<? }?>>
                             <? foreach ($arResult['INSTYPES'] as $instype) {
                                 if($instype['UF_NAME'] == $arResult['CONTRACT']['PROPERTIES']['TYPE']['VALUE']) {
                                     ?>
@@ -277,6 +282,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         </select><!-- END select -->
                     </div><!-- END input_container -->
                 </div><!-- END form_row -->
+
                 <!--<div class="form_row">
                     <label class="big_label">Прикрепить полезные документы</label>
                     <div class="input_container column_25">
@@ -397,7 +403,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div><!-- END input_container -->
                     <!-- <a href="#" class="link ico_add"><span>Добавить куратора</span></a> -->
                 </div><!-- END gray_block -->
-                <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+                <? if($arResult['ALL_EDIT']) { ?>
+                    <a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
+                <? } ?>
                 <div class="form_row brok_comp hidden">
                     <div class="input_container without_small">
                         <input id="kur_broker_search_ins_2" data-id="<?=$arResult['BROKER']['ID']?>" type="text" class="text_input inserted_co_label" placeholder="Выберите куратора от страхового брокера по вводу букв из ФИО" />
@@ -431,9 +439,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <li>
                                     <input type="hidden" class="inserted_kur_co_id_2" value="<?= $item['ID'] ?>" />
                                     <? if($item['IS_LEADER']=='Y') { ?>
-                                        <label class="leader broker js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader broker <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } else { ?>
-                                        <label class="leader broker js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                        <label class="leader broker <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox" checked />Назначен лидером</label>
                                     <? } ?>
                                 </li>
                             </ul><!-- END company_card_list -->
@@ -441,7 +449,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <? } ?>
                 </div>
                 <h4 class="big_label">Страховая компания</h4>
-                <a href="#" class="link ico_add js_add"><span>Добавить страховую компанию</span></a>
+                <? if($arResult['ALL_EDIT']) { ?>
+                    <a href="#" class="link ico_add js_add"><span>Добавить страховую компанию</span></a>
+                <? } ?>
                 <div class="form_row ins_comp hidden">
                     <div class="input_container column_100">
                         <input id="search_ins" type="text" class="text_input inserted_co_label" placeholder="Выберите страховую компанию по вводу букв из названия" />
@@ -455,7 +465,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 <div class="input_container with_flag">
                                     <label class="big_label"><?=$insco['NAME']?></label>
                                     <input class="inserted_co_id2 foredit" type="hidden" value="<?=$insco['ID'] ?>"/>
-                                    <label class="flag js_checkbox <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
+                                    <label class="flag <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> <? if($insco['ID']==$arResult['INSURANCE_COMPANY']['ID']) { ?>active<? } ?>"><input type="checkbox"></label>
                                 </div><!-- END input_container -->
                             </div><!-- END gray_block -->
                             <!--<a href="#" class="link ico_add js_add"><span>Добавить куратора</span></a>
@@ -492,9 +502,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                             <li>
                                                 <input type="hidden" class="inserted_kur_co_id_2" value="<?= $item['ID'] ?>" />
                                                 <? if($item['IS_LEADER']=='Y') { ?>
-                                                    <label class="leader insco js_checkbox active"><input type="checkbox" checked />Назначен лидером</label>
+                                                    <label class="leader insco <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox" checked />Назначен лидером</label>
                                                 <? } else { ?>
-                                                    <label class="leader insco js_checkbox"><input type="checkbox" checked />Назначен лидером</label>
+                                                    <label class="leader insco <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox" checked />Назначен лидером</label>
                                                 <? } ?>
                                             </li>
                                         </ul><!-- END company_card_list -->
@@ -509,9 +519,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="gray_block originals_required">
                     <div class="switch_container">
                         <? if($arResult['CONTRACT']['PROPERTIES']['ORIGIN_REQUIRED']['VALUE']) { ?>
-                            <label id="provideoriginal" class="switch js_checkbox active"><input type="checkbox"></label>
+                            <label id="provideoriginal" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                         <? } else { ?>
-                            <label id="provideoriginal" class="switch js_checkbox"><input type="checkbox"></label>
+                            <label id="provideoriginal" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                         <? } ?>
                         <span>Предоставлять оригиналы</span>
                     </div><!-- END switch_container -->
@@ -522,33 +532,33 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <label class="big_label">Необходимость акцепта</label>
                         <div class="switch_container">
                             <? if(in_array("CL",  $arResult['CONTRACT']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
-                                <label id="clientaccept_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="clientaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="clientaccept_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="clientaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("BR",  $arResult['CONTRACT']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
-                                <label id="brokeraccept_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="brokeraccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="brokeraccept_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="brokeraccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("INS",  $arResult['CONTRACT']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
-                                <label id="insaccept_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="insaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="insaccept_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="insaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("AJ",  $arResult['CONTRACT']['PROPERTIES']['NEED_ACCEPT']['VALUE_XML_ID'])) { ?>
-                                <label id="adjaccept_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="adjaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="adjaccept_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="adjaccept_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Аджастер</span>
                         </div>
@@ -557,33 +567,33 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         <label class="big_label">Уведомления</label>
                         <div class="switch_container">
                             <? if(in_array("CL",  $arResult['CONTRACT']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
-                                <label id="clientnot_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="clientnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="clientnot_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="clientnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Клиент</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("BR",  $arResult['CONTRACT']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
-                                <label id="brokernot_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="brokernot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="brokernot_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="brokernot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховой Брокер</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("INS",  $arResult['CONTRACT']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
-                                <label id="insnot_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="insnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="insnot_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="insnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Страховая Компания</span>
                         </div>
                         <div class="switch_container">
                             <? if(in_array("AJ",  $arResult['CONTRACT']['PROPERTIES']['NEED_NOTIFY']['VALUE_XML_ID'])) { ?>
-                                <label id="adjnot_2" class="switch js_checkbox active"><input type="checkbox"></label>
+                                <label id="adjnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?> active"><input type="checkbox"></label>
                             <? } else { ?>
-                                <label id="adjnot_2" class="switch js_checkbox"><input type="checkbox"></label>
+                                <label id="adjnot_2" class="switch <? if($arResult['ALL_EDIT']) { ?>js_checkbox<? }?>"><input type="checkbox"></label>
                             <? } ?>
                             <span>Аджастер</span>
                         </div>
