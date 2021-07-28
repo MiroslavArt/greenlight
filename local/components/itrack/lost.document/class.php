@@ -289,7 +289,7 @@ class ItrLostDocument extends CBitrixComponent
             } elseif($isadj) {
                 $this->showdocs = false;
             }
-            if($status>=3 && $status<6) {
+            if($status>=2 && $status<6) {
                 if($this->isclient && !$issupusrcl) {
                     $this->candelete = false;
                 }
@@ -301,7 +301,7 @@ class ItrLostDocument extends CBitrixComponent
             if($this->isclient) {
                 $this->candelete = false;
             }
-            if($status>=9 && $status<=11) {
+            if($status>=7 && $status<=11) {
                 if($isbroker && !$issupbroker) {
                     $this->candelete = false;
                 }
