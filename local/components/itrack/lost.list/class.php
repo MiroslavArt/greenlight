@@ -12,6 +12,8 @@ use \Bitrix\Main\GroupTable;
 use \Bitrix\Main\Context;
 use Itrack\Custom\CUserEx;
 use \Itrack\Custom\CUserRole;
+use Itrack\Custom\Participation\CParticipation;
+use Itrack\Custom\Participation\CLost;
 
 class ItrLostList extends CBitrixComponent
 {
@@ -73,11 +75,32 @@ class ItrLostList extends CBitrixComponent
             $arResult['IS_AJAX'] = 'Y';
         }
 
+        $arLostIds = $this->getPermittedLosts();
+        $arFilter['ID'] = $arLostIds ?: false;
+
         $this->getLostList($arFilter);
 
         $APPLICATION->SetTitle($arResult['CONTRACT']['NAME']);
 
         $this->includeComponentTemplate();
+    }
+
+    private function getPermittedLosts(): array {
+        $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
+
+        if ($this->userRole->isSuperBroker()) {
+            return $lostsOfCompany;
+        }
+
+        $lostsOfUser = $this->userRole->isSuperUser()
+            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
+            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        ;
+
+        return array_intersect(
+            $lostsOfCompany,
+            $lostsOfUser
+        );
     }
 
     private function getCompany(int $companyId) {
