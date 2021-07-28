@@ -55,11 +55,12 @@ foreach($curadj as $item) {
 $arResult['CURATORS'] = $curallorder;
 
 $isclient = (new CUserRole($USER->GetID()))->isClient();
-
-$arResult['BAN_DOC'] = $isclient;
-
 $isinsuer = (new CUserRole($USER->GetID()))->isInsurer();
 $isadjuster = (new CUserRole($USER->GetID()))->isAdjuster();
+
+if($isclient || $isinsuer || $isadjuster) {
+    $arResult['BAN_DOC'] = true;
+}
 
 if($isinsuer || $isadjuster) {
     $arResult['BAN_LOSS_EDIT'] = true;

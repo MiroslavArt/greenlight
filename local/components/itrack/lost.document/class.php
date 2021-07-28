@@ -289,12 +289,22 @@ class ItrLostDocument extends CBitrixComponent
             } elseif($isadj) {
                 $this->showdocs = false;
             }
+            if($status>=3 && $status<6) {
+                if($this->isclient && !$issupusrcl) {
+                    $this->candelete = false;
+                }
+            }
         } elseif($status>=6 && $status<=11) {
             if($isins || $isadj) {
                 $this->showdocs = false;
             }
             if($this->isclient) {
                 $this->candelete = false;
+            }
+            if($status>=9 && $status<=11) {
+                if($isbroker && !$issupbroker) {
+                    $this->candelete = false;
+                }
             }
         } else {
             if($isins || $isadj) {
