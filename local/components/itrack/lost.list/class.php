@@ -88,14 +88,16 @@ class ItrLostList extends CBitrixComponent
     private function getPermittedLosts(): array {
         $lostsOfCompany = CParticipation::getTargetIdsByCompany($this->companyId, CLost::class);
 
-        if ($this->userRole->isSuperBroker()) {
+        if ($this->userRole->isSuperBroker() || $this->userRole->isSuperUser()) {
             return $lostsOfCompany;
         }
 
-        $lostsOfUser = $this->userRole->isSuperUser()
-            ? CParticipation::getTargetIdsByCompany($this->userCompanyId, CLost::class)
-            : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
-        ;
+        //$lostsOfUser = $this->userRole->isSuperUser()
+        //    ? CParticipation::getTargetIdsByCompany($this->companyId, CLost::class)
+        //    : CParticipation::getTargetIdsByUser($this->userId, CLost::class)
+        //;
+
+        $lostsOfUser = CParticipation::getTargetIdsByUser($this->userId, CLost::class);
 
         return array_intersect(
             $lostsOfCompany,
